@@ -1,7 +1,7 @@
 """Tiny static server for the dashboard. Serves the project root so the page
 can fetch ../data/state.json. Run:  py serve.py  then open the printed URL.
 """
-import http.server, socketserver, webbrowser, os
+import http.server, socketserver, webbrowser, os, time
 from pathlib import Path
 
 PORT = 8765
@@ -12,7 +12,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path in ("/", "/index.html"):
             self.send_response(302)
-            self.send_header("Location", "/dashboard/index.html")
+            self.send_header("Location", f"/dashboard/index.html?v={time.time()}")
             self.end_headers()
             return
         super().do_GET()
