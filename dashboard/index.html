@@ -170,6 +170,7 @@
     </div>
     <div class="hctl">
       <div class="no">N°1</div>
+      <button class="toggle" onclick="location.href=location.pathname+'?t='+Date.now()">↻ REFRESH</button>
       <button class="toggle" id="themeBtn"><span class="dotmark"></span><span id="themeLabel">DARK</span></button>
     </div>
   </header>
@@ -285,7 +286,7 @@ async function main(){
   document.getElementById('periodTag').textContent=m.start_date+' – '+m.last_date;
   document.getElementById('benchName').textContent=m.benchmark_label;
   document.getElementById('disclaimer').textContent=m.disclaimer;
-  document.getElementById('ovMeta').textContent=S.curve.length+' sessions';
+  document.getElementById('ovMeta').textContent='updated '+((S.intraday&&S.intraday.length)?S.intraday[S.intraday.length-1].t+' ET':m.last_date);
 
   // Overview reads from the SAME source as the chart (latest point vs inception),
   // so the cards and the chart's ALL view always agree — incl. extended hours.
