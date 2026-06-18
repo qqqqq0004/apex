@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: apex-daily
+  group: apex-publish     # shared with the intraday refresh so pushes serialize
   cancel-in-progress: false
 
 jobs:

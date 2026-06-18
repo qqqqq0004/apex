@@ -2,19 +2,20 @@ name: Apex intraday refresh
 
 on:
   schedule:
-    # Every 30 min through the US session, weekdays. 13:00-20:30 UTC ≈ 9am-4:30pm
-    # ET (regular hours + early after-hours); stays clear of the 21:30 daily run.
-    # Data-only: NO trades happen here. Extended-hours bars still render via the
-    # daily run + the first refresh of each morning.
-    - cron: "0,30 13-20 * * 1-5"
+    # Every 30 min across the FULL extended session, weekdays. 08:00-23:30 UTC ≈
+    # 4:00am-7:30pm ET (pre-market + regular + after-hours), plus the 8pm ET close.
+    # Data-only: NO trades happen here.
+    - cron: "0,30 8-23 * * 1-5"
+    - cron: "0 0 * * 2-6"
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
+# Shared queue with the daily run so the two never push at the same instant.
 concurrency:
-  group: apex-refresh
-  cancel-in-progress: true
+  group: apex-publish
+  cancel-in-progress: false
 
 jobs:
   refresh:
