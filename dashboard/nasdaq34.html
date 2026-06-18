@@ -246,6 +246,12 @@ function tradeSummary(td){
   const p=[];
   if(td.closed.length) p.push('Sold '+td.closed.map(c=>c.ticker).join(', '));
   if(td.opened.length) p.push('Bought '+(td.opened.length>4?td.opened.length+' names':td.opened.map(o=>o.ticker).join(', ')));
+  if(td.changed&&td.changed.length){
+    const tr=td.changed.filter(c=>c.to<c.from).map(c=>c.ticker);
+    const ad=td.changed.filter(c=>c.to>=c.from).map(c=>c.ticker);
+    if(tr.length) p.push('Trimmed '+tr.join(', '));
+    if(ad.length) p.push('Added '+ad.join(', '));
+  }
   return p.join('   ·   ');
 }
 
@@ -457,6 +463,9 @@ async function main(){
         ${t.opened.length?`<div class="gl">Opened</div>`+t.opened.map(o=>`
           <div class="trow"><span class="tt">${o.ticker}</span><span class="tsub">${o.theme}</span>
             <span class="tw"><b>0%</b><span class="ax">→</span><b>${(o.weight*100).toFixed(1)}%</b></span></div>`).join(''):''}
+        ${t.changed&&t.changed.length?`<div class="gl">Rebalanced</div>`+t.changed.map(c=>`
+          <div class="trow"><span class="tt">${c.ticker}</span><span class="tsub">${c.theme}</span>
+            <span class="tw"><b>${(c.from*100).toFixed(2)}%</b><span class="ax">→</span><b>${(c.to*100).toFixed(2)}%</b></span></div>`).join(''):''}
       </div></div>
     </div>`).join(''):'<div class="empty">No trades yet</div>';
   document.querySelectorAll('.tdhead').forEach(h=>

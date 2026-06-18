@@ -30,6 +30,8 @@ CAPITAL = 100000.0
 BENCH = "QQQ"
 BENCH_LABEL = "Nasdaq-100"
 STRATEGY = "Top 34 Nasdaq-100 · equal-weight buy & hold"
+REBAL_AMOUNT = 150.0   # tiny monthly trim->add: registers as an Autopilot move,
+                       # negligible return drag (drift-sized, not a full rebalance)
 
 TICKERS = ["NVDA", "GOOGL", "GOOG", "AAPL", "MSFT", "AMZN", "AVGO", "TSLA", "META",
            "WMT", "MU", "AMD", "ASML", "INTC", "CSCO", "COST", "LRCX", "NFLX",
@@ -126,9 +128,46 @@ def build():
     bench_seed = _closeon(daily[BENCH], SEED_DATE)
 
     dates = [d for d in daily.index if d >= SEED_DATE]
+    held = list(shares)
+    moves = [{"date": SEED_DATE, "ticker": None, "action": "BUY", "rule": "Seed",
+              "rationale": f"Bought the top {len(held)} Nasdaq-100 names, equal "
+                           "weight. Buy & hold.", "judge": "mechanical", "price": None}]
+    trade_days = [{"date": SEED_DATE, "n": len(held), "theme": "Nasdaq-100",
+                   "closed": [], "changed": [],
+                   "opened": [{"ticker": t, "weight": round(1 / len(held), 4),
+                               "theme": SECTOR[t]} for t in held]}]
+
     curve = []
+    prev_month = SEED_DATE[:7]
+    n_rebal = 0
     for d in dates:
-        val = sum(shares[t] * daily[t].get(d) for t in shares
+        if d[:7] != prev_month:               # first trading day of a new month
+            prev_month = d[:7]
+            vals = {t: shares[t] * float(daily[t].get(d)) for t in held
+                    if pd.notna(daily[t].get(d))}
+            if vals:
+                tot = sum(vals.values())
+                over = max(vals, key=vals.get)
+                under = min(vals, key=vals.get)
+                if over != under:
+                    po, pu = float(daily[over].get(d)), float(daily[under].get(d))
+                    amt = min(REBAL_AMOUNT, vals[over] * 0.9)
+                    fo, fu = vals[over] / tot, vals[under] / tot
+                    shares[over] -= amt / po
+                    shares[under] += amt / pu
+                    to_, tu = shares[over] * po / tot, shares[under] * pu / tot
+                    n_rebal += 1
+                    trade_days.append({"date": d, "n": 2, "theme": "Rebalance",
+                        "opened": [], "closed": [], "changed": [
+                          {"ticker": over, "from": round(fo, 4), "to": round(to_, 4), "theme": SECTOR[over]},
+                          {"ticker": under, "from": round(fu, 4), "to": round(tu, 4), "theme": SECTOR[under]}]})
+                    moves.append({"date": d, "ticker": over, "action": "TRIM", "rule": "Rebalance",
+                        "rationale": f"Monthly rebalance — trimmed ${amt:.0f} of {over} (top weight) into {under}.",
+                        "judge": "mechanical", "price": round(po, 2)})
+                    moves.append({"date": d, "ticker": under, "action": "ADD", "rule": "Rebalance",
+                        "rationale": f"Monthly rebalance — added ${amt:.0f} to {under} (lowest weight) from {over}.",
+                        "judge": "mechanical", "price": round(pu, 2)})
+        val = sum(shares[t] * float(daily[t].get(d)) for t in held
                   if pd.notna(daily[t].get(d)))
         bp = daily[BENCH].get(d)
         bval = CAPITAL * bp / bench_seed if pd.notna(bp) and bench_seed else None
@@ -139,10 +178,10 @@ def build():
                       "cash": 0})
 
     last = dates[-1]
-    last_px = {t: float(daily[t].get(last)) for t in shares if pd.notna(daily[t].get(last))}
+    last_px = {t: float(daily[t].get(last)) for t in held if pd.notna(daily[t].get(last))}
     total = sum(shares[t] * last_px[t] for t in last_px)
     positions, theme_val = [], defaultdict(float)
-    for t in shares:
+    for t in held:
         price = last_px.get(t, seed_px[t])
         value = shares[t] * price
         theme_val[SECTOR[t]] += value
@@ -158,13 +197,8 @@ def build():
     themes = [{"theme": k, "weight": round(v / total, 4)} for k, v in
               sorted(theme_val.items(), key=lambda kv: -kv[1])]
 
-    trade_days = [{"date": SEED_DATE, "n": len(shares), "theme": "Nasdaq-100",
-                   "closed": [],
-                   "opened": [{"ticker": t, "weight": round(1 / len(shares), 4),
-                               "theme": SECTOR[t]} for t in TICKERS if t in shares]}]
-    moves = [{"date": SEED_DATE, "ticker": None, "action": "BUY", "rule": "Seed",
-              "rationale": f"Bought the top {len(shares)} Nasdaq-100 names, equal "
-                           "weight. Buy & hold.", "judge": "mechanical", "price": None}]
+    moves = list(reversed(moves))
+    trade_days = list(reversed(trade_days))
 
     intraday = _intraday(shares)
 
@@ -175,7 +209,7 @@ def build():
                  "total_value": round(total, 2), "cash": 0,
                  "total_return": f["ret"], "benchmark_return": f["benchmark_ret"],
                  "alpha": round((f["ret"] or 0) - (f["benchmark_ret"] or 0), 4),
-                 "num_trades": 0, "benchmark_label": BENCH_LABEL,
+                 "num_trades": n_rebal, "benchmark_label": BENCH_LABEL,
                  "disclaimer": DISCLAIMER},
         "curve": curve, "positions": positions, "themes": themes,
         "moves": moves, "trade_days": trade_days, "intraday": intraday,
