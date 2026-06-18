@@ -27,9 +27,8 @@ except Exception:
 STATE = DATA_DIR / "nasdaq34_state.json"
 SEED_DATE = "2026-05-22"
 CAPITAL = 100000.0
-BENCH = "QQQ"
-BENCH_LABEL = "Nasdaq-100"
-SP = "SPY"            # S&P 500 proxy (has extended hours), second benchmark line
+BENCH = "SPY"            # S&P 500 proxy (has extended hours) — the single benchmark
+BENCH_LABEL = "S&P 500"
 STRATEGY = "Top 34 Nasdaq-100 · equal-weight buy & hold"
 REBAL_AMOUNT = 150.0   # tiny monthly trim->add: registers as an Autopilot move,
                        # negligible return drag (drift-sized, not a full rebalance)
@@ -65,10 +64,10 @@ def _closeon(s, date):
 
 
 def _daily(end=None):
-    df = yf.download(TICKERS + [BENCH, SP], start="2026-05-18", end=end,
+    df = yf.download(TICKERS + [BENCH], start="2026-05-18", end=end,
                      auto_adjust=False, progress=False, group_by="ticker")
     out = {}
-    for t in TICKERS + [BENCH, SP]:
+    for t in TICKERS + [BENCH]:
         try:
             out[t] = df[t]["Close"]
         except Exception:
@@ -84,7 +83,7 @@ def _intraday(shares, end=None):
     try:
         raw = yf.download(TICKERS, start=start, interval="30m", auto_adjust=False,
                           progress=False, group_by="ticker", prepost=True)
-        braw = yf.download([BENCH, SP], start=start, interval="30m", auto_adjust=False,
+        braw = yf.download([BENCH], start=start, interval="30m", auto_adjust=False,
                            progress=False, group_by="ticker", prepost=True)
     except Exception:
         return []
@@ -94,18 +93,16 @@ def _intraday(shares, end=None):
             cols[t] = raw[t]["Close"]
         except Exception:
             pass
-    for t in [BENCH, SP]:
-        try:
-            cols[t] = braw[t]["Close"]
-        except Exception:
-            pass
+    try:
+        cols[BENCH] = braw["Close"] if "Close" in braw else braw[BENCH]["Close"]
+    except Exception:
+        pass
     if BENCH not in cols:
         return []
     df = pd.DataFrame(cols).ffill().dropna(subset=[BENCH])
     if df.empty:
         return []
     b0 = float(df[BENCH].iloc[0])
-    sp0 = float(df[SP].iloc[0]) if SP in df else None
     out = []
     for ts, row in df.iterrows():
         d = ts.strftime("%Y-%m-%d")
@@ -114,10 +111,8 @@ def _intraday(shares, end=None):
         val = sum(shares[t] * row[t] for t in TICKERS
                   if t in row and pd.notna(row[t]))
         bp = row[BENCH]
-        spp = row[SP] if SP in row else None
         out.append({"t": ts.strftime("%Y-%m-%d %H:%M"), "value": round(val, 2),
-                    "benchmark": round(CAPITAL * bp / b0, 2) if pd.notna(bp) else None,
-                    "sp500": round(CAPITAL * spp / sp0, 2) if (sp0 and pd.notna(spp)) else None})
+                    "benchmark": round(CAPITAL * bp / b0, 2) if pd.notna(bp) else None})
     # anchor inception at the seed regular close (one point), then forward
     seed_pts = [p for p in out if p["t"][:10] == SEED_DATE]
     if seed_pts:
@@ -136,7 +131,6 @@ def build():
     per = CAPITAL / len(TICKERS)
     shares = {t: per / seed_px[t] for t in TICKERS if seed_px.get(t)}
     bench_seed = _closeon(daily[BENCH], SEED_DATE)
-    sp_seed = _closeon(daily[SP], SEED_DATE) if SP in daily else None
 
     dates = [d for d in daily.index if d >= SEED_DATE]
     held = list(shares)
@@ -182,13 +176,10 @@ def build():
                   if pd.notna(daily[t].get(d)))
         bp = daily[BENCH].get(d)
         bval = CAPITAL * bp / bench_seed if pd.notna(bp) and bench_seed else None
-        spp = daily[SP].get(d) if SP in daily else None
-        spval = CAPITAL * spp / sp_seed if (sp_seed and pd.notna(spp)) else None
         curve.append({"date": d, "value": round(val, 2),
                       "ret": round(val / CAPITAL - 1, 4),
                       "benchmark": round(bval, 2) if bval else None,
                       "benchmark_ret": round(bp / bench_seed - 1, 4) if (bp and bench_seed) else None,
-                      "sp500": round(spval, 2) if spval else None,
                       "cash": 0})
 
     last = dates[-1]
@@ -222,7 +213,6 @@ def build():
                  "last_date": last, "mode": "forward", "strategy": STRATEGY,
                  "total_value": round(total, 2), "cash": 0,
                  "total_return": f["ret"], "benchmark_return": f["benchmark_ret"],
-                 "sp500_return": round(f["sp500"] / CAPITAL - 1, 4) if f.get("sp500") else None,
                  "alpha": round((f["ret"] or 0) - (f["benchmark_ret"] or 0), 4),
                  "num_trades": n_rebal, "benchmark_label": BENCH_LABEL,
                  "disclaimer": DISCLAIMER},

@@ -273,7 +273,6 @@ function themeChart(ch){
   const ink=cssv('--ink'),mut=cssv('--mut'),grid=cssv('--grid');
   ch.data.datasets[0].borderColor=ink;
   ch.data.datasets[1].borderColor=mut;
-  if(ch.data.datasets[2]) ch.data.datasets[2].borderColor=mut;
   ch.options.scales.x.ticks.color=mut; ch.options.scales.y.ticks.color=mut;
   ch.options.scales.y.grid.color=grid;
   ch.options.plugins.legend.labels.color=mut;
@@ -352,7 +351,6 @@ async function main(){
     data:{labels:[],datasets:[
       {label:'Top 34',data:[],borderWidth:2,pointRadius:0,tension:.02,fill:false},
       {label:m.benchmark_label,data:[],borderWidth:1.4,borderDash:[5,4],pointRadius:0,tension:.02,fill:false},
-      {label:'S&P 500',data:[],borderWidth:1.3,borderDash:[1,4],pointRadius:0,tension:.02,fill:false},
     ]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{labels:{boxWidth:10,font:{family:'Helvetica Neue',size:10},
@@ -368,8 +366,8 @@ async function main(){
   window.__chart=chart; themeChart(chart);
 
   const RANGES=[['1D',1],['1W',7],['1M',30],['3M',90],['6M',180],['1Y',365],['2Y',730],['ALL',1e9]];
-  const daily=S.curve.map(p=>({x:p.date,t:new Date(p.date),value:p.value,benchmark:p.benchmark,sp500:p.sp500}));
-  const intra=(S.intraday||[]).map(p=>({x:p.t,t:new Date(p.t.replace(' ','T')),value:p.value,benchmark:p.benchmark,sp500:p.sp500}));
+  const daily=S.curve.map(p=>({x:p.date,t:new Date(p.date),value:p.value,benchmark:p.benchmark}));
+  const intra=(S.intraday||[]).map(p=>({x:p.t,t:new Date(p.t.replace(' ','T')),value:p.value,benchmark:p.benchmark}));
   const intraSpan=intra.length>=2?(intra[intra.length-1].t-intra[0].t)/86400000:0;
   const sessionGrid=[...new Set(intra.map(p=>p.x.slice(11)))].sort();
   // 1D = the latest session, x-axis padded to the full session; line drawn only
@@ -394,27 +392,22 @@ async function main(){
     const c=windowPoints(days);
     const nn=c.filter(p=>p.value!=null);
     if(!nn.length) return;
-    const sNN=c.filter(p=>p.sp500!=null);
-    const a0=nn[0].value, b0=nn[0].benchmark, s0=sNN.length?sNN[0].sp500:null;
-    const a1=nn[nn.length-1].value, b1=nn[nn.length-1].benchmark, s1=sNN.length?sNN[sNN.length-1].sp500:null;
+    const a0=nn[0].value, b0=nn[0].benchmark, a1=nn[nn.length-1].value, b1=nn[nn.length-1].benchmark;
     chart.data.labels=c.map(p=>p.x);
     if(valueMode==='%'){
       chart.data.datasets[0].data=c.map(p=>p.value!=null?(p.value/a0-1)*100:null);
       chart.data.datasets[1].data=c.map(p=>(b0&&p.benchmark!=null)?(p.benchmark/b0-1)*100:null);
-      chart.data.datasets[2].data=c.map(p=>(s0&&p.sp500!=null)?(p.sp500/s0-1)*100:null);
     }else{
       chart.data.datasets[0].data=c.map(p=>p.value!=null?1e5*p.value/a0:null);
       chart.data.datasets[1].data=c.map(p=>(b0&&p.benchmark!=null)?1e5*p.benchmark/b0:null);
-      chart.data.datasets[2].data=c.map(p=>(s0&&p.sp500!=null)?1e5*p.sp500/s0:null);
     }
     chart.update('none');
     buildTradeDots(c);
-    const ar=a1/a0-1,br=(b0&&b1)?b1/b0-1:null,sr=(s0&&s1)?s1/s0-1:null;
+    const ar=a1/a0-1,br=(b0&&b1)?b1/b0-1:null;
     const span=nn[0].x.slice(0,10)+' — '+nn[nn.length-1].x.slice(0,10);
     document.getElementById('rangeStat').innerHTML=
       `${span} &nbsp;/&nbsp; Top 34 <b>${pct(ar)}</b>`+
-      (br!=null?` &nbsp;/&nbsp; ${m.benchmark_label} <b>${pct(br)}</b>`:'')+
-      (sr!=null?` &nbsp;/&nbsp; S&amp;P <b>${pct(sr)}</b>`:'');
+      (br!=null?` &nbsp;/&nbsp; ${m.benchmark_label} <b>${pct(br)}</b>`:'');
   }
   document.getElementById('ranges').innerHTML=RANGES.map(([l,d])=>
     `<b class="${l==='ALL'?'on':''}" data-d="${d}">${l}</b>`).join('');
