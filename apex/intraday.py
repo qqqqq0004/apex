@@ -23,8 +23,9 @@ from .paths import STATE_JSON
 def build(days=30, interval="30m"):
     with ledger.connect() as conn:
         initial = float(ledger.get_meta(conn, "initial_deposit", 100000) or 100000)
-        fw = ledger.get_meta(conn, "framework", {}) or {}
-        bench = (fw.get("instruments") or {}).get("benchmark", "^GSPC")
+        # Intraday benchmark uses SPY (the ETF), which trades pre-/post-market;
+        # the ^GSPC index itself has no extended-hours quote. ~identical once rebased.
+        bench = "SPY"
         txns = [dict(r) for r in conn.execute(
             "SELECT date,ticker,action,shares FROM transactions ORDER BY id").fetchall()]
         eq = [dict(r) for r in conn.execute(
@@ -64,7 +65,8 @@ def build(days=30, interval="30m"):
                 eq_dates[0])
     try:
         raw = yf.download(tickers + [bench], start=start, interval=interval,
-                          auto_adjust=True, progress=False, group_by="ticker")
+                          auto_adjust=True, progress=False, group_by="ticker",
+                          prepost=True)   # include pre-market + after-hours
     except Exception:
         return []
 
@@ -98,12 +100,14 @@ def build(days=30, interval="30m"):
             "value": round(float(val), 2),
             "benchmark": round(float(initial * bp / b0), 2) if pd.notna(bp) else None,
         })
-    # The book is seeded at the launch *close*, so it has no real intraday history
-    # on launch day. Keep only the launch-day close as the $100k inception anchor;
-    # real intraday begins the next session.
+    # The book is seeded at the launch *regular close*, so it has no real intraday
+    # history on launch day. Keep only the regular-close bar as the $100k inception
+    # anchor (not an after-hours bar); real intraday begins the next session.
     launch_pts = [p for p in out if p["t"][:10] == launch]
     if launch_pts:
-        out = [launch_pts[-1]] + [p for p in out if p["t"][:10] != launch]
+        reg = [p for p in launch_pts if p["t"][11:] <= "16:00"]
+        anchor = reg[-1] if reg else launch_pts[-1]
+        out = [anchor] + [p for p in out if p["t"][:10] != launch]
     return out
 
 

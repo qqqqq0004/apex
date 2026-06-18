@@ -1,0 +1,42 @@
+name: Apex intraday refresh
+
+on:
+  schedule:
+    # Every 30 min through the US session, weekdays. 13:00-20:30 UTC ≈ 9am-4:30pm
+    # ET (regular hours + early after-hours); stays clear of the 21:30 daily run.
+    # Data-only: NO trades happen here. Extended-hours bars still render via the
+    # daily run + the first refresh of each morning.
+    - cron: "0,30 13-20 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apex-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Re-price book + rebuild intraday (no trading)
+        run: python -m apex.momentum_live refresh
+      - name: Publish updated dashboard data
+        run: |
+          git config user.name "apex-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/state.json
+          if git diff --cached --quiet; then
+            echo "No data change."
+          else
+            git commit -m "Intraday refresh $(date -u +'%Y-%m-%d %H:%M')"
+            git pull --rebase --autostash || true
+            git push
+          fi

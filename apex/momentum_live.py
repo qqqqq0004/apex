@@ -198,17 +198,42 @@ def run(end=None):
     print(f"{date}: {moves} move(s). Portfolio ${total:,.0f}.")
 
 
+def refresh():
+    """Data-only refresh: re-price the book and rebuild the intraday curve, with
+    NO trading. Safe to run repeatedly during the session so the dashboard (and the
+    1D 'today' view) update live. Trades only ever happen in run() at the close."""
+    with ledger.connect() as conn:
+        holds = [p["ticker"] for p in ledger.open_positions(conn)]
+    df = _download(holds + [BENCH], days=8).ffill()
+    if df.empty:
+        print("No data; skipping refresh.")
+        return
+    last = df.iloc[-1]
+    with ledger.connect() as conn:
+        lp = ledger.get_meta(conn, "last_prices", {}) or {}
+        for t in holds + [BENCH]:
+            if t in last and pd.notna(last[t]):
+                lp[t] = float(last[t])
+        ledger.set_meta(conn, "last_prices", lp)
+    export.export_state()
+    intraday.attach()
+    print(f"Refreshed at {df.index[-1].strftime('%Y-%m-%d')} (no trades).")
+
+
 def main():
     import argparse
     ap = argparse.ArgumentParser(prog="apex.momentum_live")
     sub = ap.add_subparsers(dest="cmd", required=True)
     pi = sub.add_parser("init"); pi.add_argument("--capital", type=float)
     sub.add_parser("run")
+    sub.add_parser("refresh")
     a = ap.parse_args()
     if a.cmd == "init":
         init(a.capital)
     elif a.cmd == "run":
         run()
+    elif a.cmd == "refresh":
+        refresh()
 
 
 if __name__ == "__main__":
