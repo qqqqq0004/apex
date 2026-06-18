@@ -388,9 +388,11 @@ async function main(){
     const nn=c.filter(p=>p.value!=null);
     if(!nn.length) return;
     let a0=nn[0].value, b0=nn[0].benchmark;
-    if(days===1){   // 1D = change vs YESTERDAY'S close, so pre-market opens at its real gap (not 0%)
+    if(days===1){   // 1D = change vs YESTERDAY'S close. Baseline from the INTRADAY series so the
+                    // benchmark instrument matches "now" (avoids index-vs-ETF mismatch on Apex).
       const today=nn[0].x.slice(0,10);
-      const prev=[...daily].reverse().find(p=>p.x<today && p.value!=null);
+      const pb=intra.filter(p=>p.x.slice(0,10)<today && p.x.slice(11)<'16:00' && p.value!=null);
+      const prev=pb.length?pb[pb.length-1]:[...daily].reverse().find(p=>p.x<today && p.value!=null);
       if(prev){ a0=prev.value; if(prev.benchmark!=null) b0=prev.benchmark; }
     }
     const a1=nn[nn.length-1].value, b1=nn[nn.length-1].benchmark;
