@@ -318,8 +318,9 @@ async function main(){
       chart.data.datasets[0].data=c.map(p=>(p.value/a0-1)*100);
       chart.data.datasets[1].data=c.map(p=>(b0&&p.benchmark!=null)?(p.benchmark/b0-1)*100:null);
     }else{
-      chart.data.datasets[0].data=c.map(p=>p.value);
-      chart.data.datasets[1].data=c.map(p=>p.benchmark);
+      // both rebased to $100k at the window start, mirroring % mode's 0% baseline
+      chart.data.datasets[0].data=c.map(p=>1e5*p.value/a0);
+      chart.data.datasets[1].data=c.map(p=>(b0&&p.benchmark!=null)?1e5*p.benchmark/b0:null);
     }
     chart.update();
     const ar=a1/a0-1,br=(b0&&b1)?b1/b0-1:null;

@@ -52,15 +52,11 @@ def build(days=30, interval="30m"):
         return {k: v for k, v in h.items() if abs(v) > 1e-9}
 
     def holdings_for(d):
-        # Launch day: value the seeded book from the open (else the line is flat
-        # at $100k all morning, since the seed executes at the close). Later days:
-        # use the book held *during* the session (pre-close trades) so a rotation
+        # Use the book held *during* the session (pre-close trades), so a rotation
         # at the close doesn't retroactively distort that whole day.
-        return holdings_asof(d, inclusive=(d == launch))
+        return holdings_asof(d, inclusive=False)
 
     def cash_for(d):
-        if d == launch:
-            return cash_by_date[launch]
         prior = [x for x in eq_dates if x < d]
         return cash_by_date[prior[-1]] if prior else initial
 
@@ -102,6 +98,12 @@ def build(days=30, interval="30m"):
             "value": round(float(val), 2),
             "benchmark": round(float(initial * bp / b0), 2) if pd.notna(bp) else None,
         })
+    # The book is seeded at the launch *close*, so it has no real intraday history
+    # on launch day. Keep only the launch-day close as the $100k inception anchor;
+    # real intraday begins the next session.
+    launch_pts = [p for p in out if p["t"][:10] == launch]
+    if launch_pts:
+        out = [launch_pts[-1]] + [p for p in out if p["t"][:10] != launch]
     return out
 
 
