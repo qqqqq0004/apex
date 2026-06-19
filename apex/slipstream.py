@@ -60,6 +60,12 @@ MIN_HOLD = 5                      # hold a fresh name >=1 week before the lock /
                                   # stalled doors can fire (stop & target always
                                   # active). Tempers intraweek churn.
 
+# Market-wide circuit breaker: if the S&P closes <= this on the day, it's a
+# broad risk-off session, not a thesis break. The book SKIPS trading entirely —
+# no stops, no rotations, no core swaps — and re-evaluates next session. A
+# genuinely broken name will still be down on a normal day and get sold then.
+PANIC_DROP = -0.02
+
 # Once a name is sold (any sleeve), it can't be re-bought for this many trading
 # days (~1 month). Forces the book to give other candidates a turn instead of
 # churning the same ticker in and out.
@@ -256,12 +262,31 @@ def build():
         return f"{x*100:+.1f}%"
 
     # ---- walk forward ----
+    prev_bench = bench_seed
     for k in range(k0 + 1, len(dates)):
         d = dates[k]
         if pd.isna(px[BENCH].iloc[k]):
             continue
-        pv_open = cash + sum(h["shares"] * float(px[t].iloc[k])
-                             for t, h in holdings.items() if pd.notna(px[t].iloc[k]))
+        bp = float(px[BENCH].iloc[k])
+        mkt = bp / prev_bench - 1.0          # S&P close-to-close move this session
+        prev_bench = bp
+        val_held = cash + sum(h["shares"] * float(px[t].iloc[k])
+                              for t, h in holdings.items() if pd.notna(px[t].iloc[k]))
+
+        # market-wide selloff → skip the day entirely (no panic selling)
+        if mkt <= PANIC_DROP:
+            moves.append({"date": d, "ticker": None, "action": "HOLD",
+                          "rule": "Risk-off skip",
+                          "rationale": f"S&P {pct(mkt)} — a broad market selloff, not a "
+                          "thesis break. Held everything; no stops, no rotations. "
+                          "Re-evaluated next session.", "judge": "mechanical", "price": None})
+            curve.append({"date": d, "value": round(val_held, 2),
+                          "ret": round(val_held / CAPITAL - 1, 4),
+                          "benchmark": round(CAPITAL * bp / bench_seed, 2),
+                          "benchmark_ret": round(bp / bench_seed - 1, 4), "cash": round(cash, 2)})
+            continue
+
+        pv_open = val_held
         day_sells, day_buys = [], []
         core_cash, rot_cash = 0.0, 0.0      # keep sleeves' proceeds separate
 
@@ -374,7 +399,6 @@ def build():
 
         val = cash + sum(h["shares"] * float(px[t].iloc[k])
                          for t, h in holdings.items() if pd.notna(px[t].iloc[k]))
-        bp = float(px[BENCH].iloc[k])
         curve.append({"date": d, "value": round(val, 2), "ret": round(val / CAPITAL - 1, 4),
                       "benchmark": round(CAPITAL * bp / bench_seed, 2),
                       "benchmark_ret": round(bp / bench_seed - 1, 4),
