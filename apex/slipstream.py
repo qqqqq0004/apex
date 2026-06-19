@@ -3,9 +3,8 @@
 A medium-risk book that rotates through whatever global ETFs are running hot,
 and bails the moment the move tires. Two sleeves:
 
-  • Core anchors (~35%): a few slow-growth international / dividend ETFs, held
-    throughout — the ballast.
-  • Rotation (~65%): the hottest names on a fixed, broad universe of regional
+  • Core anchors (~35%): broad international funds, held as ballast.
+  • Rotation (~65%): the hottest names on a broad universe of country, region
     and sector ETFs, ranked by trailing 1-month + 3-month trend.
 
 Each rotation position lives or dies by four "doors", measured from its entry:
@@ -13,13 +12,19 @@ Each rotation position lives or dies by four "doors", measured from its entry:
   • +13% → it's "armed". After that: slip back below +13% and it's sold (lock
     the gain); push past +21% and it's sold (target); or sit in the +13–21%
     hallway for two weeks without resolving and it's sold (stalled).
-When a name dies, the cash rotates straight into the next-hottest ETF.
+A sold name then sits out a ~1-month cooldown; a fresh name is held a minimum
+1 week before profit-doors can fire (so the book doesn't churn intraweek).
 
-HONESTY: this is simulated as if started ~1 month ago. Every pick — at the
-seed and at every rotation — is ranked using ONLY price data available on that
-date. No name is ever chosen with prices that hadn't happened yet. The universe
-is a fixed, broad list (winners AND losers), so selection is momentum-driven,
-not cherry-picked. NAV is price return; dividends are tracked apart.
+UNIVERSE — built mechanically, NOT hand-picked: a wide net is cast by whole ETF
+families (the full single-country lineup incl. the obscure ones, all SPDR
+sectors + a broad industry/thematic net, the standard regions, broad intl funds
+for the core), then pruned by a rule only — must have 3-month history by the
+seed and clear a liquidity floor measured at inception. No ticker gets special
+treatment; the survivor list is frozen at the seed so the book's menu is stable.
+
+HONESTY: simulated as if started ~1 month ago. Every pick — at the seed and at
+every rotation — is ranked using ONLY data available on that date. NAV is price
+return; dividends are tracked apart.
 """
 from __future__ import annotations
 
@@ -51,6 +56,9 @@ STOP = -0.08
 ARM = 0.13
 TARGET = 0.21
 HALL_DAYS = 10                    # ~2 trading weeks in the +13–21% hallway
+MIN_HOLD = 5                      # hold a fresh name >=1 week before the lock /
+                                  # stalled doors can fire (stop & target always
+                                  # active). Tempers intraweek churn.
 
 # Once a name is sold (any sleeve), it can't be re-bought for this many trading
 # days (~1 month). Forces the book to give other candidates a turn instead of
@@ -67,59 +75,92 @@ CORE_FAST_DAYS = 20               # ...within ~1 month of entry → bank it
 CORE_TP_ABS = 0.30               # +30% at any pace → no longer a calm anchor
 
 # Sleeves
-CORE = ["VYMI", "IXUS", "IDV", "SCHF"]   # the 4 anchors we open with
 CORE_ALLOC = 0.35
+CORE_SLOTS = 4                    # number of core anchors held
 ROT_N = 11                        # rotation slots (total book = 4 core + 11 = 15)
 TILT_N = 3                        # hottest few get an overweight tilt
 TILT_MULT = 1.4
 
-# Fixed, broad universe of liquid regional + sector ETFs. Deliberately mixed —
-# strong and weak alike — so the momentum rank does the picking, not hindsight.
-CAT = {
-    # core-style anchors (slow-growth intl / dividend) — the pool cores rotate within
-    "VYMI": "Intl Dividend", "IXUS": "Intl Broad", "IDV": "Intl Dividend", "SCHF": "Developed Intl",
-    "VEA": "Developed Intl", "VXUS": "Total Intl", "EFA": "Developed Intl",
-    "IEFA": "Developed Intl", "VEU": "Intl ex-US", "VIGI": "Intl Div Growth",
-    "SCHY": "Intl Dividend", "ACWX": "World ex-US",
-    # single-country
-    "EWY": "South Korea", "EWT": "Taiwan", "EWJ": "Japan", "EWG": "Germany",
-    "EWQ": "France", "EWP": "Spain", "EWI": "Italy", "EWU": "United Kingdom",
-    "EWL": "Switzerland", "EWN": "Netherlands", "EWD": "Sweden", "EPOL": "Poland",
-    "EWZ": "Brazil", "EWW": "Mexico", "EWC": "Canada", "EWA": "Australia",
-    "INDA": "India", "EIDO": "Indonesia", "THD": "Thailand", "TUR": "Turkey",
-    "GREK": "Greece", "EZA": "South Africa", "ARGT": "Argentina", "KSA": "Saudi Arabia",
-    # regions
-    "EMXC": "EM ex-China", "ILF": "Latin America", "VGK": "Europe",
-    "FEZ": "Eurozone", "EPP": "Asia Pacific",
-    # sectors
-    "SMH": "Semiconductors", "XLE": "Energy", "XOP": "Oil & Gas", "IEZ": "Oil Equipment",
-    "XLF": "Financials", "KRE": "Regional Banks", "XLU": "Utilities",
-    "XLI": "Industrials", "XLB": "Materials", "XME": "Metals & Mining",
-    "GDX": "Gold Miners", "SIL": "Silver Miners", "URA": "Uranium",
-    "TAN": "Solar", "ITA": "Defense", "IBB": "Biotech",
+# Universe is built mechanically from these families + a liquidity filter (see
+# module docstring) — never hand-picked. Liquidity floor measured at inception.
+LIQ_MIN = 3_000_000              # $3M average daily dollar volume
+# Optional volatility ceiling (annualized, measured at inception). Drops the
+# hyper-volatile narrow thematics (solar/uranium/lithium/ARKK…) that whip the
+# book with cluster stop-outs. None = keep the full net.
+MAX_VOL = None
+
+COUNTRY = {
+    "EWA": "Australia", "EWO": "Austria", "EWK": "Belgium", "EWZ": "Brazil",
+    "EWC": "Canada", "ECH": "Chile", "MCHI": "China", "EDEN": "Denmark",
+    "EFNL": "Finland", "EWQ": "France", "EWG": "Germany", "GREK": "Greece",
+    "EWH": "Hong Kong", "INDA": "India", "EIDO": "Indonesia", "EIS": "Israel",
+    "EWI": "Italy", "EWJ": "Japan", "EWM": "Malaysia", "EWW": "Mexico",
+    "EWN": "Netherlands", "ENZL": "New Zealand", "NORW": "Norway", "EPU": "Peru",
+    "EPHE": "Philippines", "EPOL": "Poland", "QAT": "Qatar", "KSA": "Saudi Arabia",
+    "EWS": "Singapore", "EZA": "South Africa", "EWY": "South Korea", "EWP": "Spain",
+    "EWD": "Sweden", "EWL": "Switzerland", "EWT": "Taiwan", "THD": "Thailand",
+    "TUR": "Turkey", "UAE": "UAE", "EWU": "United Kingdom", "ARGT": "Argentina",
+    "VNM": "Vietnam",
 }
-# core-style ETFs cores may rotate among (anchors, not momentum chasers)
-CORE_POOL = ["VYMI", "IXUS", "IDV", "SCHF", "VEA", "VXUS", "EFA",
-             "IEFA", "VEU", "VIGI", "SCHY", "ACWX"]
-UNIVERSE = [t for t in CAT if t not in CORE_POOL]   # rotation candidates only
-ALL = list(CAT)
+REGION = {
+    "EEM": "Emerging Mkts", "IEMG": "Emerging Mkts", "VWO": "Emerging Mkts",
+    "EMXC": "EM ex-China", "VGK": "Europe", "FEZ": "Eurozone", "EZU": "Eurozone",
+    "EPP": "Asia Pacific", "AAXJ": "Asia ex-Japan", "ILF": "Latin America",
+    "SCZ": "Intl Small-Cap",
+}
+SECTOR = {
+    "XLB": "Materials", "XLC": "Comm Services", "XLE": "Energy", "XLF": "Financials",
+    "XLI": "Industrials", "XLK": "Technology", "XLP": "Staples", "XLRE": "Real Estate",
+    "XLU": "Utilities", "XLV": "Health Care", "XLY": "Discretionary",
+    "SMH": "Semiconductors", "SOXX": "Semiconductors", "XBI": "Biotech", "IBB": "Biotech",
+    "KRE": "Regional Banks", "KBE": "Banks", "XME": "Metals & Mining", "GDX": "Gold Miners",
+    "GDXJ": "Jr Gold Miners", "SIL": "Silver Miners", "XOP": "Oil & Gas E&P",
+    "OIH": "Oil Services", "IEZ": "Oil Equipment", "TAN": "Solar", "ICLN": "Clean Energy",
+    "URA": "Uranium", "URNM": "Uranium", "LIT": "Lithium", "ITA": "Defense",
+    "XAR": "Aero & Defense", "PAVE": "Infrastructure", "JETS": "Airlines",
+    "IYT": "Transport", "KIE": "Insurance", "IGV": "Software", "HACK": "Cybersecurity",
+    "SKYY": "Cloud", "FDN": "Internet", "ARKK": "Innovation", "XHB": "Homebuilders",
+    "ITB": "Homebuilders", "XRT": "Retail", "KWEB": "China Internet", "REMX": "Rare Earth",
+    "COPX": "Copper Miners", "GUNR": "Natural Resources",
+}
+CORE_FAMILY = {
+    "VEA": "Developed Intl", "VXUS": "Total Intl", "IXUS": "Total Intl",
+    "SCHF": "Developed Intl", "EFA": "Developed Intl", "IEFA": "Developed Intl",
+    "VEU": "Intl ex-US", "ACWX": "World ex-US", "SPDW": "Developed Intl",
+    "VYMI": "Intl Dividend", "IDV": "Intl Dividend", "VIGI": "Intl Div Growth",
+    "SCHY": "Intl Dividend", "DEM": "EM Dividend", "DTH": "Intl Dividend",
+    "IQDF": "Intl Dividend",
+}
+BUCKET, LABEL = {}, {}
+for _d, _b in [(COUNTRY, "country"), (REGION, "region"), (SECTOR, "sector"),
+               (CORE_FAMILY, "core")]:
+    for _t, _lab in _d.items():
+        BUCKET[_t] = _b
+        LABEL[_t] = _lab
+CANDIDATES = list(LABEL)
 
 DISCLAIMER = ("Paper-tracked. Not investment advice. No brokerage connection — "
               "you execute your own trades.")
 
 
-def _prices():
-    df = yf.download(ALL + [BENCH], start=FETCH_START, auto_adjust=False,
-                     progress=False, group_by="ticker")
-    out = {}
-    for t in ALL + [BENCH]:
+def _fetch():
+    """Close prices (ffilled) + average daily dollar volume for every candidate."""
+    raw = yf.download(CANDIDATES + [BENCH], start=FETCH_START, auto_adjust=False,
+                      progress=False, group_by="ticker")
+    close, dvol = {}, {}
+    for t in CANDIDATES + [BENCH]:
         try:
-            out[t] = df[t]["Close"]
+            c, v = raw[t]["Close"], raw[t]["Volume"]
         except Exception:
-            pass
-    d = pd.DataFrame(out)
-    d.index = pd.to_datetime(d.index).strftime("%Y-%m-%d")
-    return d.sort_index().ffill()
+            continue
+        if c.dropna().empty:
+            continue
+        close[t] = c
+        if t != BENCH:
+            dvol[t] = float((c * v).dropna().mean())
+    px = pd.DataFrame(close)
+    px.index = pd.to_datetime(px.index).strftime("%Y-%m-%d")
+    return px.sort_index().ffill(), dvol
 
 
 def _score(px, t, k):
@@ -135,10 +176,16 @@ def _score(px, t, k):
     return sum(parts) / len(parts) if parts else None
 
 
+def _vol(px, t, k):
+    """Annualized realized volatility from daily returns up to row k (inception)."""
+    r = px[t].iloc[:k + 1].pct_change().dropna()
+    return float(r.std() * (252 ** 0.5)) if len(r) > 5 else 0.0
+
+
 def build():
-    px = _prices()
+    px, dvol = _fetch()
     dates = list(px.index)
-    if not dates:
+    if not dates or BENCH not in px.columns:
         print("WARN slipstream: empty price fetch; keeping existing state.")
         return None
     # seed = first trading day >= SEED_DATE that has a benchmark print
@@ -149,6 +196,21 @@ def build():
         return None
     seed = dates[k0]
     bench_seed = float(px[BENCH].iloc[k0])
+
+    # ---- build the universe mechanically: families pruned by 3m-history-at-seed
+    # + a liquidity floor (measured at inception). Frozen here so the menu is
+    # stable for the life of the book. No ticker is hand-selected.
+    survivors = [t for t in CANDIDATES if t in px.columns
+                 and _score(px, t, k0) is not None and dvol.get(t, 0) >= LIQ_MIN
+                 and (MAX_VOL is None or _vol(px, t, k0) <= MAX_VOL)]
+    CAT = {t: LABEL[t] for t in survivors}
+    CORE_POOL = sorted((t for t in survivors if BUCKET[t] == "core"),
+                       key=lambda t: dvol.get(t, 0), reverse=True)
+    CORE = CORE_POOL[:CORE_SLOTS]                     # biggest broad funds = anchors
+    UNIVERSE = [t for t in survivors if BUCKET[t] != "core"]
+    if not CORE or not UNIVERSE:
+        print("WARN slipstream: universe filter left no names; keeping existing state.")
+        return None
 
     # ---- initial book at the seed (ranked on data <= seed only) ----
     ranked = sorted((t for t in UNIVERSE if _score(px, t, k0) is not None),
@@ -225,12 +287,13 @@ def build():
                 elif r >= CORE_TP_FAST and held_days <= CORE_FAST_DAYS:
                     reason = "Core fast gain"
             else:
-                if r <= STOP:
+                held_days = k - h["entry_k"]
+                if r <= STOP:                              # capital protection: always on
                     reason = "Stop −8%"
-                elif h["armed"]:
-                    if r >= TARGET:
-                        reason = "Target +21%"
-                    elif r < ARM:
+                elif h["armed"] and r >= TARGET:           # bank a big win: always on
+                    reason = "Target +21%"
+                elif h["armed"] and held_days >= MIN_HOLD:  # lock / stalled: only after min-hold
+                    if r < ARM:
                         reason = "Locked +13%"
                     elif h["armed_days"] >= HALL_DAYS:
                         reason = "Stalled 2wk"
