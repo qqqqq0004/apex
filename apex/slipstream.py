@@ -46,14 +46,28 @@ BENCH_LABEL = "S&P 500"
 STRATEGY = "Slipstream · momentum ETF rotation"
 RISK = "Medium"
 
-# Door rules (return measured from entry)
+# Rotation door rules (return measured from entry)
 STOP = -0.08
 ARM = 0.13
 TARGET = 0.21
 HALL_DAYS = 10                    # ~2 trading weeks in the +13–21% hallway
 
+# Once a name is sold (any sleeve), it can't be re-bought for this many trading
+# days (~1 month). Forces the book to give other candidates a turn instead of
+# churning the same ticker in and out.
+COOLDOWN_DAYS = 21
+
+# Core anchors don't follow the tight doors — they're meant to hold things
+# together — but they're not held forever either. A core is replaced (by another
+# core-style ETF) only on a BIG move: an outsized fast gain (abnormal for a slow
+# anchor — bank it), an outsized gain at any speed, or a deep loss.
+CORE_STOP = -0.18
+CORE_TP_FAST = 0.18               # +18% reached fast...
+CORE_FAST_DAYS = 20               # ...within ~1 month of entry → bank it
+CORE_TP_ABS = 0.30               # +30% at any pace → no longer a calm anchor
+
 # Sleeves
-CORE = ["VYMI", "IXUS", "IDV", "SCHF"]   # slow-growth intl / dividend anchors
+CORE = ["VYMI", "IXUS", "IDV", "SCHF"]   # the 4 anchors we open with
 CORE_ALLOC = 0.35
 ROT_N = 11                        # rotation slots (total book = 4 core + 11 = 15)
 TILT_N = 3                        # hottest few get an overweight tilt
@@ -62,8 +76,11 @@ TILT_MULT = 1.4
 # Fixed, broad universe of liquid regional + sector ETFs. Deliberately mixed —
 # strong and weak alike — so the momentum rank does the picking, not hindsight.
 CAT = {
-    # core anchors
+    # core-style anchors (slow-growth intl / dividend) — the pool cores rotate within
     "VYMI": "Intl Dividend", "IXUS": "Intl Broad", "IDV": "Intl Dividend", "SCHF": "Developed Intl",
+    "VEA": "Developed Intl", "VXUS": "Total Intl", "EFA": "Developed Intl",
+    "IEFA": "Developed Intl", "VEU": "Intl ex-US", "VIGI": "Intl Div Growth",
+    "SCHY": "Intl Dividend", "ACWX": "World ex-US",
     # single-country
     "EWY": "South Korea", "EWT": "Taiwan", "EWJ": "Japan", "EWG": "Germany",
     "EWQ": "France", "EWP": "Spain", "EWI": "Italy", "EWU": "United Kingdom",
@@ -81,7 +98,10 @@ CAT = {
     "GDX": "Gold Miners", "SIL": "Silver Miners", "URA": "Uranium",
     "TAN": "Solar", "ITA": "Defense", "IBB": "Biotech",
 }
-UNIVERSE = [t for t in CAT if t not in CORE]   # rotation candidates
+# core-style ETFs cores may rotate among (anchors, not momentum chasers)
+CORE_POOL = ["VYMI", "IXUS", "IDV", "SCHF", "VEA", "VXUS", "EFA",
+             "IEFA", "VEU", "VIGI", "SCHY", "ACWX"]
+UNIVERSE = [t for t in CAT if t not in CORE_POOL]   # rotation candidates only
 ALL = list(CAT)
 
 DISCLAIMER = ("Paper-tracked. Not investment advice. No brokerage connection — "
@@ -147,15 +167,17 @@ def build():
     for t in cores:
         p = float(px[t].iloc[k0])
         holdings[t] = {"shares": CAPITAL * core_each / p, "entry_price": p,
-                       "entry_date": seed, "armed": False, "armed_days": 0,
-                       "core": True, "cat": CAT[t]}
+                       "entry_date": seed, "entry_k": k0, "armed": False,
+                       "armed_days": 0, "core": True, "cat": CAT[t]}
         opened.append({"ticker": t, "weight": round(core_each, 4), "theme": CAT[t]})
     for t in picks:
         p = float(px[t].iloc[k0])
         holdings[t] = {"shares": CAPITAL * weights[t] / p, "entry_price": p,
-                       "entry_date": seed, "armed": False, "armed_days": 0,
-                       "core": False, "cat": CAT[t]}
+                       "entry_date": seed, "entry_k": k0, "armed": False,
+                       "armed_days": 0, "core": False, "cat": CAT[t]}
         opened.append({"ticker": t, "weight": round(weights[t], 4), "theme": CAT[t]})
+
+    last_exit = {}   # ticker -> k of its most recent sale (cooldown gate)
 
     moves = [{"date": seed, "ticker": None, "action": "BUY", "rule": "Seed",
               "rationale": f"Opened {len(holdings)} ETFs — {len(cores)} slow-growth "
@@ -179,70 +201,108 @@ def build():
         pv_open = cash + sum(h["shares"] * float(px[t].iloc[k])
                              for t, h in holdings.items() if pd.notna(px[t].iloc[k]))
         day_sells, day_buys = [], []
+        core_cash, rot_cash = 0.0, 0.0      # keep sleeves' proceeds separate
 
-        # 1) process rotation exits
+        def _ok(t):   # off cooldown + has a usable price/score today
+            return (t not in last_exit or k - last_exit[t] >= COOLDOWN_DAYS) \
+                and _score(px, t, k) is not None and pd.notna(px[t].iloc[k])
+
+        # 1) process exits — cores on big moves, rotation on the doors
         for t in list(holdings):
             h = holdings[t]
-            if h["core"]:
-                continue
             p = px[t].iloc[k]
             if pd.isna(p):
                 continue
             p = float(p)
             r = p / h["entry_price"] - 1.0
             reason = None
-            if r <= STOP:
-                reason = "Stop −8%"
-            elif h["armed"]:
-                if r >= TARGET:
-                    reason = "Target +21%"
-                elif r < ARM:
-                    reason = "Locked +13%"
-                elif h["armed_days"] >= HALL_DAYS:
-                    reason = "Stalled 2wk"
+            if h["core"]:
+                held_days = k - h["entry_k"]
+                if r <= CORE_STOP:
+                    reason = "Core stop −18%"
+                elif r >= CORE_TP_ABS:
+                    reason = "Core take-profit"
+                elif r >= CORE_TP_FAST and held_days <= CORE_FAST_DAYS:
+                    reason = "Core fast gain"
+            else:
+                if r <= STOP:
+                    reason = "Stop −8%"
+                elif h["armed"]:
+                    if r >= TARGET:
+                        reason = "Target +21%"
+                    elif r < ARM:
+                        reason = "Locked +13%"
+                    elif h["armed_days"] >= HALL_DAYS:
+                        reason = "Stalled 2wk"
             if reason:
-                cash += h["shares"] * p
-                wprev = (h["shares"] * p / pv_open) if pv_open else 0
+                proceeds = h["shares"] * p
+                if h["core"]:
+                    core_cash += proceeds
+                else:
+                    rot_cash += proceeds
+                wprev = (proceeds / pv_open) if pv_open else 0
                 day_sells.append({"ticker": t, "weight": round(wprev, 4), "theme": h["cat"]})
                 msg = {"Stop −8%": f"Cut {t} — broke the −8% stop ({pct(r)}).",
                        "Target +21%": f"Banked {t} — tagged the +21% target ({pct(r)}).",
                        "Locked +13%": f"Locked {t} — slipped back through the +13% door ({pct(r)}).",
-                       "Stalled 2wk": f"Dropped {t} — stalled in the +13–21% hallway two weeks ({pct(r)})."}[reason]
+                       "Stalled 2wk": f"Dropped {t} — stalled in the +13–21% hallway two weeks ({pct(r)}).",
+                       "Core stop −18%": f"Cut core {t} — deep {pct(r)} loss, swapping the anchor.",
+                       "Core take-profit": f"Banked core {t} — outsized {pct(r)} gain, no longer a calm anchor.",
+                       "Core fast gain": f"Banked core {t} — {pct(r)} in under a month is abnormal for an anchor; rotating it."}[reason]
                 moves.append({"date": d, "ticker": t, "action": "SELL", "rule": reason,
                               "rationale": msg, "judge": "mechanical", "price": round(p, 2)})
                 n_moves += 1
+                last_exit[t] = k
                 del holdings[t]
-            else:
+            elif not h["core"]:
                 if not h["armed"] and r >= ARM:
                     h["armed"] = True
                     h["armed_days"] = 0
                 elif h["armed"]:
                     h["armed_days"] += 1
 
-        # 2) refill open rotation slots with the next-hottest names (ranked at d)
-        open_slots = ROT_N - sum(1 for h in holdings.values() if not h["core"])
-        if open_slots > 0 and cash > 1:
-            held = set(holdings)
-            sold_today = {s["ticker"] for s in day_sells}
-            cands = sorted(
-                (t for t in UNIVERSE if t not in held and t not in sold_today
-                 and _score(px, t, k) is not None and pd.notna(px[t].iloc[k])),
-                key=lambda t: _score(px, t, k), reverse=True)
-            fill = cands[:open_slots]
-            if fill:
-                per = cash / len(fill)
-                for t in fill:
+        # 2) refill core slots from the core pool (steady anchors, ranked by trend)
+        open_core = len(CORE) - sum(1 for h in holdings.values() if h["core"])
+        if open_core > 0 and core_cash > 1:
+            cands = sorted((t for t in CORE_POOL if t not in holdings and _ok(t)),
+                           key=lambda t: _score(px, t, k), reverse=True)[:open_core]
+            if cands:
+                per = core_cash / len(cands)
+                for t in cands:
                     p = float(px[t].iloc[k])
                     holdings[t] = {"shares": per / p, "entry_price": p, "entry_date": d,
-                                   "armed": False, "armed_days": 0, "core": False, "cat": CAT[t]}
+                                   "entry_k": k, "armed": False, "armed_days": 0,
+                                   "core": True, "cat": CAT[t]}
+                    day_buys.append({"ticker": t, "weight": round(per / pv_open, 4) if pv_open else 0,
+                                     "theme": CAT[t]})
+                    moves.append({"date": d, "ticker": t, "action": "BUY", "rule": "New anchor",
+                                  "rationale": f"New core anchor {t} ({CAT[t]}) — strongest-trending "
+                                  "intl / dividend ETF available to replace it.", "judge": "mechanical", "price": round(p, 2)})
+                    n_moves += 1
+                    core_cash -= per
+
+        # 3) refill rotation slots with the next-hottest names (ranked at d)
+        open_rot = ROT_N - sum(1 for h in holdings.values() if not h["core"])
+        if open_rot > 0 and rot_cash > 1:
+            cands = sorted((t for t in UNIVERSE if t not in holdings and _ok(t)),
+                           key=lambda t: _score(px, t, k), reverse=True)[:open_rot]
+            if cands:
+                per = rot_cash / len(cands)
+                for t in cands:
+                    p = float(px[t].iloc[k])
+                    holdings[t] = {"shares": per / p, "entry_price": p, "entry_date": d,
+                                   "entry_k": k, "armed": False, "armed_days": 0,
+                                   "core": False, "cat": CAT[t]}
                     day_buys.append({"ticker": t, "weight": round(per / pv_open, 4) if pv_open else 0,
                                      "theme": CAT[t]})
                     moves.append({"date": d, "ticker": t, "action": "BUY", "rule": "Rotate in",
                                   "rationale": f"Rotated into {t} ({CAT[t]}) — top of the 1m+3m "
-                                  "momentum board among names not yet held.",
+                                  "momentum board among names not on cooldown.",
                                   "judge": "mechanical", "price": round(p, 2)})
                     n_moves += 1
-                cash = 0.0
+                    rot_cash -= per
+
+        cash += core_cash + rot_cash        # tiny rounding remainder only
 
         if day_sells or day_buys:
             trade_days.append({"date": d, "n": len(day_sells) + len(day_buys),

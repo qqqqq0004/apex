@@ -5,12 +5,12 @@
     "last_date": "2026-06-18",
     "mode": "forward",
     "strategy": "Slipstream \u00b7 momentum ETF rotation",
-    "total_value": 105720.62,
+    "total_value": 104764.83,
     "cash": 0.0,
-    "total_return": 0.0572,
+    "total_return": 0.0476,
     "benchmark_return": 0.0177,
-    "alpha": 0.0395,
-    "num_trades": 22,
+    "alpha": 0.0299,
+    "num_trades": 16,
     "benchmark_label": "S&P 500",
     "risk": "Medium",
     "disclaimer": "Paper-tracked. Not investment advice. No brokerage connection \u2014 you execute your own trades."
@@ -90,110 +90,123 @@
     },
     {
       "date": "2026-06-02",
-      "value": 106889.98,
-      "ret": 0.0689,
+      "value": 106731.15,
+      "ret": 0.0673,
       "benchmark": 103521.74,
       "benchmark_ret": 0.0352,
       "cash": 0.0
     },
     {
       "date": "2026-06-03",
-      "value": 105779.34,
-      "ret": 0.0578,
+      "value": 105732.15,
+      "ret": 0.0573,
       "benchmark": 102795.31,
       "benchmark_ret": 0.028,
       "cash": 0.0
     },
     {
       "date": "2026-06-04",
-      "value": 105949.51,
-      "ret": 0.0595,
+      "value": 105890.2,
+      "ret": 0.0589,
       "benchmark": 103183.74,
       "benchmark_ret": 0.0318,
       "cash": 0.0
     },
     {
       "date": "2026-06-05",
-      "value": 100626.61,
-      "ret": 0.0063,
+      "value": 101192.55,
+      "ret": 0.0119,
       "benchmark": 100520.63,
       "benchmark_ret": 0.0052,
       "cash": 0.0
     },
     {
       "date": "2026-06-08",
-      "value": 101999.17,
-      "ret": 0.02,
+      "value": 102223.24,
+      "ret": 0.0222,
       "benchmark": 100748.23,
       "benchmark_ret": 0.0075,
       "cash": 0.0
     },
     {
       "date": "2026-06-09",
-      "value": 102017.67,
-      "ret": 0.0202,
+      "value": 102405.89,
+      "ret": 0.0241,
       "benchmark": 100452.48,
       "benchmark_ret": 0.0045,
       "cash": 0.0
     },
     {
       "date": "2026-06-10",
-      "value": 100793.37,
-      "ret": 0.0079,
+      "value": 101307.61,
+      "ret": 0.0131,
       "benchmark": 98868.8,
       "benchmark_ret": -0.0113,
       "cash": 0.0
     },
     {
       "date": "2026-06-11",
-      "value": 104868.27,
-      "ret": 0.0487,
+      "value": 104493.35,
+      "ret": 0.0449,
       "benchmark": 100549.25,
       "benchmark_ret": 0.0055,
       "cash": 0.0
     },
     {
       "date": "2026-06-12",
-      "value": 105381.88,
-      "ret": 0.0538,
+      "value": 105069.08,
+      "ret": 0.0507,
       "benchmark": 101093.05,
       "benchmark_ret": 0.0109,
       "cash": 0.0
     },
     {
       "date": "2026-06-15",
-      "value": 105728.89,
-      "ret": 0.0573,
+      "value": 104843.35,
+      "ret": 0.0484,
       "benchmark": 102875.72,
       "benchmark_ret": 0.0288,
       "cash": 0.0
     },
     {
       "date": "2026-06-16",
-      "value": 105008.38,
-      "ret": 0.0501,
+      "value": 104927.63,
+      "ret": 0.0493,
       "benchmark": 102262.42,
       "benchmark_ret": 0.0226,
       "cash": 0.0
     },
     {
       "date": "2026-06-17",
-      "value": 104472.36,
-      "ret": 0.0447,
+      "value": 104216.2,
+      "ret": 0.0422,
       "benchmark": 100985.38,
       "benchmark_ret": 0.0099,
       "cash": 0.0
     },
     {
       "date": "2026-06-18",
-      "value": 105720.62,
-      "ret": 0.0572,
+      "value": 104764.83,
+      "ret": 0.0476,
       "benchmark": 101773.13,
       "benchmark_ret": 0.0177,
       "cash": 0.0
     }
   ],
   "positions": [
+    {
+      "ticker": "GREK",
+      "theme": "Greece",
+      "conviction": "rotation",
+      "shares": 124.509,
+      "avg_entry": 74.6,
+      "price": 77.19,
+      "value": 9610.89,
+      "drawdown": 0,
+      "ret": 0.0347,
+      "thesis": "Greece \u2014 momentum rotation.",
+      "weight": 0.0917
+    },
     {
       "ticker": "SCHF",
       "theme": "Developed Intl",
@@ -205,7 +218,7 @@
       "drawdown": 0,
       "ret": 0.0577,
       "thesis": "Developed Intl \u2014 core anchor.",
-      "weight": 0.0875
+      "weight": 0.0883
     },
     {
       "ticker": "IXUS",
@@ -218,20 +231,7 @@
       "drawdown": 0,
       "ret": 0.0419,
       "thesis": "Intl Broad \u2014 core anchor.",
-      "weight": 0.0862
-    },
-    {
-      "ticker": "EWT",
-      "theme": "Taiwan",
-      "conviction": "rotation",
-      "shares": 80.515,
-      "avg_entry": 102.62,
-      "price": 109.99,
-      "value": 8855.85,
-      "drawdown": 0,
-      "ret": 0.0718,
-      "thesis": "Taiwan \u2014 momentum rotation.",
-      "weight": 0.0838
+      "weight": 0.087
     },
     {
       "ticker": "VYMI",
@@ -244,7 +244,7 @@
       "drawdown": 0,
       "ret": 0.0063,
       "thesis": "Intl Dividend \u2014 core anchor.",
-      "weight": 0.0833
+      "weight": 0.084
     },
     {
       "ticker": "IDV",
@@ -257,33 +257,33 @@
       "drawdown": 0.0577,
       "ret": -0.0577,
       "thesis": "Intl Dividend \u2014 core anchor.",
-      "weight": 0.078
+      "weight": 0.0787
     },
     {
-      "ticker": "GREK",
-      "theme": "Greece",
+      "ticker": "EWI",
+      "theme": "Italy",
       "conviction": "rotation",
-      "shares": 102.216,
-      "avg_entry": 71.72,
-      "price": 77.19,
-      "value": 7890.09,
+      "shares": 117.411,
+      "avg_entry": 58.04,
+      "price": 60.6,
+      "value": 7115.08,
       "drawdown": 0,
-      "ret": 0.0763,
-      "thesis": "Greece \u2014 momentum rotation.",
-      "weight": 0.0746
+      "ret": 0.0441,
+      "thesis": "Italy \u2014 momentum rotation.",
+      "weight": 0.0679
     },
     {
       "ticker": "KRE",
       "theme": "Regional Banks",
       "conviction": "rotation",
-      "shares": 104.474,
+      "shares": 97.114,
       "avg_entry": 70.17,
       "price": 71.72,
-      "value": 7492.9,
+      "value": 6965.04,
       "drawdown": 0,
       "ret": 0.0221,
       "thesis": "Regional Banks \u2014 momentum rotation.",
-      "weight": 0.0709
+      "weight": 0.0665
     },
     {
       "ticker": "EPOL",
@@ -296,7 +296,7 @@
       "drawdown": 0.0168,
       "ret": -0.0168,
       "thesis": "Poland \u2014 momentum rotation.",
-      "weight": 0.0635
+      "weight": 0.064
     },
     {
       "ticker": "EMXC",
@@ -309,7 +309,7 @@
       "drawdown": 0,
       "ret": 0.1485,
       "thesis": "EM ex-China \u2014 momentum rotation.",
-      "weight": 0.0579
+      "weight": 0.0584
     },
     {
       "ticker": "EWN",
@@ -322,7 +322,7 @@
       "drawdown": 0,
       "ret": 0.1109,
       "thesis": "Netherlands \u2014 momentum rotation.",
-      "weight": 0.056
+      "weight": 0.0565
     },
     {
       "ticker": "EWJ",
@@ -335,7 +335,7 @@
       "drawdown": 0,
       "ret": 0.0661,
       "thesis": "Japan \u2014 momentum rotation.",
-      "weight": 0.0537
+      "weight": 0.0542
     },
     {
       "ticker": "ARGT",
@@ -348,20 +348,7 @@
       "drawdown": 0.0061,
       "ret": -0.0061,
       "thesis": "Argentina \u2014 momentum rotation.",
-      "weight": 0.0534
-    },
-    {
-      "ticker": "EWI",
-      "theme": "Italy",
-      "conviction": "rotation",
-      "shares": 90.564,
-      "avg_entry": 60.73,
-      "price": 60.6,
-      "value": 5488.19,
-      "drawdown": 0.0021,
-      "ret": -0.0021,
-      "thesis": "Italy \u2014 momentum rotation.",
-      "weight": 0.0519
+      "weight": 0.0539
     },
     {
       "ticker": "THD",
@@ -374,107 +361,102 @@
       "drawdown": 0,
       "ret": 0.0179,
       "thesis": "Thailand \u2014 momentum rotation.",
-      "weight": 0.0513
+      "weight": 0.0518
     },
     {
-      "ticker": "EWY",
-      "theme": "South Korea",
+      "ticker": "XLF",
+      "theme": "Financials",
       "conviction": "rotation",
-      "shares": 23.175,
-      "avg_entry": 211.45,
-      "price": 219.2,
-      "value": 5079.99,
+      "shares": 97.595,
+      "avg_entry": 52.23,
+      "price": 53.57,
+      "value": 5228.16,
       "drawdown": 0,
-      "ret": 0.0367,
-      "thesis": "South Korea \u2014 momentum rotation.",
-      "weight": 0.0481
+      "ret": 0.0257,
+      "thesis": "Financials \u2014 momentum rotation.",
+      "weight": 0.0499
+    },
+    {
+      "ticker": "FEZ",
+      "theme": "Eurozone",
+      "conviction": "rotation",
+      "shares": 70.398,
+      "avg_entry": 69.61,
+      "price": 70.06,
+      "value": 4932.06,
+      "drawdown": 0,
+      "ret": 0.0065,
+      "thesis": "Eurozone \u2014 momentum rotation.",
+      "weight": 0.0471
     }
   ],
   "themes": [
     {
       "theme": "Intl Dividend",
-      "weight": 0.1613
-    },
-    {
-      "theme": "Developed Intl",
-      "weight": 0.0875
-    },
-    {
-      "theme": "Intl Broad",
-      "weight": 0.0862
-    },
-    {
-      "theme": "Taiwan",
-      "weight": 0.0838
+      "weight": 0.1627
     },
     {
       "theme": "Greece",
-      "weight": 0.0746
+      "weight": 0.0917
     },
     {
-      "theme": "Regional Banks",
-      "weight": 0.0709
+      "theme": "Developed Intl",
+      "weight": 0.0883
     },
     {
-      "theme": "Poland",
-      "weight": 0.0635
-    },
-    {
-      "theme": "EM ex-China",
-      "weight": 0.0579
-    },
-    {
-      "theme": "Netherlands",
-      "weight": 0.056
-    },
-    {
-      "theme": "Japan",
-      "weight": 0.0537
-    },
-    {
-      "theme": "Argentina",
-      "weight": 0.0534
+      "theme": "Intl Broad",
+      "weight": 0.087
     },
     {
       "theme": "Italy",
-      "weight": 0.0519
+      "weight": 0.0679
+    },
+    {
+      "theme": "Regional Banks",
+      "weight": 0.0665
+    },
+    {
+      "theme": "Poland",
+      "weight": 0.064
+    },
+    {
+      "theme": "EM ex-China",
+      "weight": 0.0584
+    },
+    {
+      "theme": "Netherlands",
+      "weight": 0.0565
+    },
+    {
+      "theme": "Japan",
+      "weight": 0.0542
+    },
+    {
+      "theme": "Argentina",
+      "weight": 0.0539
     },
     {
       "theme": "Thailand",
-      "weight": 0.0513
+      "weight": 0.0518
     },
     {
-      "theme": "South Korea",
-      "weight": 0.0481
+      "theme": "Financials",
+      "weight": 0.0499
+    },
+    {
+      "theme": "Eurozone",
+      "weight": 0.0471
     }
   ],
   "moves": [
     {
-      "date": "2026-06-16",
-      "ticker": "EWI",
-      "action": "BUY",
-      "rule": "Rotate in",
-      "rationale": "Rotated into EWI (Italy) \u2014 top of the 1m+3m momentum board among names not yet held.",
-      "judge": "mechanical",
-      "price": 60.73
-    },
-    {
-      "date": "2026-06-16",
-      "ticker": "SMH",
-      "action": "SELL",
-      "rule": "Locked +13%",
-      "rationale": "Locked SMH \u2014 slipped back through the +13% door (+7.9%).",
-      "judge": "mechanical",
-      "price": 616.0
-    },
-    {
       "date": "2026-06-15",
-      "ticker": "EWY",
+      "ticker": "FEZ",
       "action": "BUY",
       "rule": "Rotate in",
-      "rationale": "Rotated into EWY (South Korea) \u2014 top of the 1m+3m momentum board among names not yet held.",
+      "rationale": "Rotated into FEZ (Eurozone) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
       "judge": "mechanical",
-      "price": 211.45
+      "price": 69.61
     },
     {
       "date": "2026-06-15",
@@ -486,31 +468,13 @@
       "price": 29.69
     },
     {
-      "date": "2026-06-12",
-      "ticker": "EWT",
-      "action": "BUY",
-      "rule": "Rotate in",
-      "rationale": "Rotated into EWT (Taiwan) \u2014 top of the 1m+3m momentum board among names not yet held.",
-      "judge": "mechanical",
-      "price": 102.62
-    },
-    {
-      "date": "2026-06-12",
-      "ticker": "EWY",
-      "action": "SELL",
-      "rule": "Locked +13%",
-      "rationale": "Locked EWY \u2014 slipped back through the +13% door (+12.7%).",
-      "judge": "mechanical",
-      "price": 197.45
-    },
-    {
       "date": "2026-06-10",
-      "ticker": "SMH",
+      "ticker": "XLF",
       "action": "BUY",
       "rule": "Rotate in",
-      "rationale": "Rotated into SMH (Semiconductors) \u2014 top of the 1m+3m momentum board among names not yet held.",
+      "rationale": "Rotated into XLF (Financials) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
       "judge": "mechanical",
-      "price": 570.91
+      "price": 52.23
     },
     {
       "date": "2026-06-10",
@@ -523,39 +487,21 @@
     },
     {
       "date": "2026-06-05",
+      "ticker": "EWI",
+      "action": "BUY",
+      "rule": "Rotate in",
+      "rationale": "Rotated into EWI (Italy) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
+      "judge": "mechanical",
+      "price": 58.04
+    },
+    {
+      "date": "2026-06-05",
       "ticker": "KRE",
       "action": "BUY",
       "rule": "Rotate in",
-      "rationale": "Rotated into KRE (Regional Banks) \u2014 top of the 1m+3m momentum board among names not yet held.",
+      "rationale": "Rotated into KRE (Regional Banks) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
       "judge": "mechanical",
       "price": 70.17
-    },
-    {
-      "date": "2026-06-05",
-      "ticker": "GREK",
-      "action": "BUY",
-      "rule": "Rotate in",
-      "rationale": "Rotated into GREK (Greece) \u2014 top of the 1m+3m momentum board among names not yet held.",
-      "judge": "mechanical",
-      "price": 71.72
-    },
-    {
-      "date": "2026-06-05",
-      "ticker": "EWY",
-      "action": "BUY",
-      "rule": "Rotate in",
-      "rationale": "Rotated into EWY (South Korea) \u2014 top of the 1m+3m momentum board among names not yet held.",
-      "judge": "mechanical",
-      "price": 175.19
-    },
-    {
-      "date": "2026-06-05",
-      "ticker": "TAN",
-      "action": "SELL",
-      "rule": "Stop \u22128%",
-      "rationale": "Cut TAN \u2014 broke the \u22128% stop (-10.0%).",
-      "judge": "mechanical",
-      "price": 64.05
     },
     {
       "date": "2026-06-05",
@@ -577,12 +523,12 @@
     },
     {
       "date": "2026-06-01",
-      "ticker": "TAN",
+      "ticker": "GREK",
       "action": "BUY",
       "rule": "Rotate in",
-      "rationale": "Rotated into TAN (Solar) \u2014 top of the 1m+3m momentum board among names not yet held.",
+      "rationale": "Rotated into GREK (Greece) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
       "judge": "mechanical",
-      "price": 71.13
+      "price": 74.6
     },
     {
       "date": "2026-06-01",
@@ -598,7 +544,7 @@
       "ticker": "XME",
       "action": "BUY",
       "rule": "Rotate in",
-      "rationale": "Rotated into XME (Metals & Mining) \u2014 top of the 1m+3m momentum board among names not yet held.",
+      "rationale": "Rotated into XME (Metals & Mining) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
       "judge": "mechanical",
       "price": 125.21
     },
@@ -607,7 +553,7 @@
       "ticker": "ARGT",
       "action": "BUY",
       "rule": "Rotate in",
-      "rationale": "Rotated into ARGT (Argentina) \u2014 top of the 1m+3m momentum board among names not yet held.",
+      "rationale": "Rotated into ARGT (Argentina) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
       "judge": "mechanical",
       "price": 97.7
     },
@@ -634,7 +580,7 @@
       "ticker": "EPOL",
       "action": "BUY",
       "rule": "Rotate in",
-      "rationale": "Rotated into EPOL (Poland) \u2014 top of the 1m+3m momentum board among names not yet held.",
+      "rationale": "Rotated into EPOL (Poland) \u2014 top of the 1m+3m momentum board among names not on cooldown.",
       "judge": "mechanical",
       "price": 40.43
     },
@@ -659,61 +605,21 @@
   ],
   "trade_days": [
     {
-      "date": "2026-06-16",
-      "n": 2,
-      "theme": "Rotation",
-      "opened": [
-        {
-          "ticker": "EWI",
-          "weight": 0.0524,
-          "theme": "Italy"
-        }
-      ],
-      "closed": [
-        {
-          "ticker": "SMH",
-          "weight": 0.0524,
-          "theme": "Semiconductors"
-        }
-      ],
-      "changed": []
-    },
-    {
       "date": "2026-06-15",
       "n": 2,
       "theme": "Rotation",
       "opened": [
         {
-          "ticker": "EWY",
-          "weight": 0.0463,
-          "theme": "South Korea"
+          "ticker": "FEZ",
+          "weight": 0.0467,
+          "theme": "Eurozone"
         }
       ],
       "closed": [
         {
           "ticker": "IEZ",
-          "weight": 0.0463,
+          "weight": 0.0467,
           "theme": "Oil Equipment"
-        }
-      ],
-      "changed": []
-    },
-    {
-      "date": "2026-06-12",
-      "n": 2,
-      "theme": "Rotation",
-      "opened": [
-        {
-          "ticker": "EWT",
-          "weight": 0.0784,
-          "theme": "Taiwan"
-        }
-      ],
-      "closed": [
-        {
-          "ticker": "EWY",
-          "weight": 0.0784,
-          "theme": "South Korea"
         }
       ],
       "changed": []
@@ -724,15 +630,15 @@
       "theme": "Rotation",
       "opened": [
         {
-          "ticker": "SMH",
-          "weight": 0.0506,
-          "theme": "Semiconductors"
+          "ticker": "XLF",
+          "weight": 0.0503,
+          "theme": "Financials"
         }
       ],
       "closed": [
         {
           "ticker": "XME",
-          "weight": 0.0506,
+          "weight": 0.0503,
           "theme": "Metals & Mining"
         }
       ],
@@ -740,40 +646,30 @@
     },
     {
       "date": "2026-06-05",
-      "n": 6,
+      "n": 4,
       "theme": "Rotation",
       "opened": [
         {
-          "ticker": "EWY",
-          "weight": 0.0729,
-          "theme": "South Korea"
-        },
-        {
-          "ticker": "GREK",
-          "weight": 0.0729,
-          "theme": "Greece"
-        },
-        {
           "ticker": "KRE",
-          "weight": 0.0729,
+          "weight": 0.0673,
           "theme": "Regional Banks"
+        },
+        {
+          "ticker": "EWI",
+          "weight": 0.0673,
+          "theme": "Italy"
         }
       ],
       "closed": [
         {
           "ticker": "SMH",
-          "weight": 0.0776,
+          "weight": 0.0772,
           "theme": "Semiconductors"
         },
         {
           "ticker": "EWT",
-          "weight": 0.0578,
+          "weight": 0.0575,
           "theme": "Taiwan"
-        },
-        {
-          "ticker": "TAN",
-          "weight": 0.0831,
-          "theme": "Solar"
         }
       ],
       "changed": []
@@ -784,9 +680,9 @@
       "theme": "Rotation",
       "opened": [
         {
-          "ticker": "TAN",
+          "ticker": "GREK",
           "weight": 0.0879,
-          "theme": "Solar"
+          "theme": "Greece"
         }
       ],
       "closed": [
@@ -935,7 +831,7 @@
   ],
   "intraday": [],
   "dividends": {
-    "total": 742.77,
+    "total": 880.61,
     "per": [
       {
         "ticker": "VYMI",
@@ -976,6 +872,11 @@
         "ticker": "EPOL",
         "amount": 50.97,
         "dps": 0.302
+      },
+      {
+        "ticker": "EWI",
+        "amount": 137.84,
+        "dps": 1.174
       }
     ]
   }
