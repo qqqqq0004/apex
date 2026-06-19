@@ -6,11 +6,11 @@
 <title>Apex — proposal 2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600;6..96,800;6..96,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0E0D0B; --surf:#15130F; --ink:#ECE6D7; --mut:#7E7868; --faint:#4A463C;
-  --line:#272320; --accent:#CBF74A; --down:#FF5B47; --serif:'Bodoni Moda',serif; --mono:'Space Mono',monospace;
+  --line:#272320; --accent:#CBF74A; --down:#FF5B47; --serif:'Syne',sans-serif; --mono:'Inter',sans-serif;
 }
 [data-theme="light"]{
   --bg:#E8E2D3; --surf:#DFD8C7; --ink:#14120D; --mut:#6B6555; --faint:#B7AF9C;
@@ -37,11 +37,11 @@ a{color:inherit;text-decoration:none}
 /* masthead */
 .mast{position:relative;padding:clamp(22px,4vw,40px) clamp(18px,4vw,52px) clamp(14px,2vw,22px);
   border-bottom:1px solid var(--line)}
-.mast .logo{font-family:var(--serif);font-weight:900;font-size:clamp(58px,15vw,164px);
-  line-height:.82;letter-spacing:-.03em;margin:0}
+.mast .logo{font-family:var(--serif);font-weight:800;font-size:clamp(52px,12vw,126px);
+  line-height:.84;letter-spacing:-.04em;margin:0}
 .mast .logo .pt{color:var(--accent)}
 .mast .meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:14px;flex-wrap:wrap;gap:14px}
-.mast .tagline{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2vw,21px);color:var(--mut)}
+.mast .tagline{font-family:var(--serif);font-weight:600;font-size:clamp(13px,1.6vw,17px);letter-spacing:-.01em;color:var(--mut)}
 .switch{display:flex;border:1px solid var(--line)}
 .switch b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;cursor:pointer;color:var(--mut)}
 .switch b.on{background:var(--accent);color:#0E0D0B}
@@ -55,9 +55,9 @@ a{color:inherit;text-decoration:none}
 .hero{display:grid;grid-template-columns:minmax(0,1fr);border-bottom:1px solid var(--line)}
 .hgrid{display:grid;grid-template-columns:1.05fr 1.35fr}
 .hl{padding:clamp(26px,4vw,46px) clamp(18px,4vw,52px);border-right:1px solid var(--line);position:relative}
-.hl .nav{font-family:var(--serif);font-weight:500;font-size:clamp(46px,8.5vw,104px);line-height:.9;
-  letter-spacing:-.02em;margin:18px 0 0}
-.hl .ret{font-family:var(--serif);font-weight:800;font-size:clamp(40px,7vw,84px);line-height:1;margin-top:6px}
+.hl .nav{font-family:var(--serif);font-weight:600;font-size:clamp(40px,7.4vw,88px);line-height:.92;
+  letter-spacing:-.03em;margin:18px 0 0}
+.hl .ret{font-family:var(--serif);font-weight:800;font-size:clamp(38px,6.4vw,76px);line-height:1;letter-spacing:-.03em;margin-top:8px}
 .hl .since{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);display:block;margin-top:10px}
 .hl .today{margin-top:22px;font-size:12px;letter-spacing:.04em;color:var(--ink)}
 .hl .today .acc{font-weight:700}
@@ -87,8 +87,8 @@ a{color:inherit;text-decoration:none}
 /* section head */
 .sec{padding:clamp(30px,4vw,52px) clamp(18px,4vw,52px) 0}
 .shead{display:flex;align-items:flex-end;gap:18px;border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:8px}
-.shead .no{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,58px);line-height:.8;color:var(--accent)}
-.shead h2{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(22px,3vw,34px);margin:0;letter-spacing:-.01em}
+.shead .no{font-family:var(--serif);font-weight:800;font-size:clamp(30px,4.4vw,52px);line-height:.8;color:var(--accent)}
+.shead h2{font-family:var(--serif);font-weight:700;font-size:clamp(20px,2.6vw,30px);margin:0;letter-spacing:-.02em}
 .shead .m{margin-left:auto;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
 
 /* holdings index */
