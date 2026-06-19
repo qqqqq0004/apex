@@ -7,7 +7,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Imperial+Script&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#E8E1CE; --surf:#ECE5D0; --ink:#1B1812; --mut:#8B8370; --faint:#B9B19C; --line:#D7CDB6;
@@ -56,6 +56,8 @@ a{color:inherit;text-decoration:none}.rule{height:1px;background:var(--line);bor
 nav{display:flex;align-items:center;gap:26px;padding:14px var(--pad) 20px}
 nav .brand{display:flex;align-items:baseline}
 nav .brand .bx{font-size:46px;line-height:.8;letter-spacing:0}
+nav .brand .bx.fr{font-family:'Fraunces',serif;font-weight:700;font-size:37px;letter-spacing:-.02em;line-height:.95}
+.bx-t34{font-family:'Fraunces',serif;font-weight:700;letter-spacing:-.02em}
 nav .brand sup{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.04em;margin-left:3px}
 nav .sw{display:flex;gap:4px;margin-left:14px;border:1px solid var(--ink);border-radius:999px;padding:3px}
 nav .sw b{font-size:11px;font-weight:700;letter-spacing:-.01em;text-transform:uppercase;padding:6px 14px;border-radius:999px;color:var(--mut);cursor:pointer}
@@ -65,8 +67,7 @@ nav .right .live{font-size:10px;font-weight:700;letter-spacing:.1em;text-transfo
 nav .right .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:1px}
 .themes{display:flex;gap:7px;align-items:center}
 .tcir{width:17px;height:17px;border-radius:50%;background:var(--c);border:1px solid rgba(0,0,0,.18);padding:0;cursor:pointer}
-.tcir.mg{background:linear-gradient(90deg,#0a0a0a 50%,#f3f2ee 50%);position:relative}
-.tcir.mg::after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(45deg,transparent 46%,#7a7a7a 46%,#7a7a7a 54%,transparent 54%)}
+.tcir.mg{background:linear-gradient(90deg,#0a0a0a 0 50%,#f3f2ee 50% 100%)}
 .tcir.on{box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--ink)}
 nav .right button.sync{font-family:var(--fs);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:7px 13px;cursor:pointer}
 nav .right button.sync:hover{border-color:var(--ink)}
@@ -98,7 +99,12 @@ nav .right button.sync:hover{border-color:var(--ink)}
 .st-S{font:700 7.5px var(--fs);fill:var(--stamp-ink);letter-spacing:2.4px;opacity:.65}
 .st-N{font:700 9px var(--fs);fill:var(--stamp-accent);letter-spacing:0}
 .st-B{font:700 8px var(--fs);fill:var(--accent-ink);letter-spacing:1.6px}
-@media(max-width:1080px){.stamp{display:none}.top{justify-content:flex-start}}
+.seal{flex:0 0 auto;width:clamp(176px,14vw,206px);transform:rotate(-2deg);align-self:flex-start;margin-top:2px}
+.seal svg{display:block;width:100%;height:auto}
+.s2-T{font-family:'Fraunces',serif;font-weight:700;font-size:30px;fill:var(--stamp-ink);letter-spacing:-.5px}
+.s2-S{font:700 7px var(--fs);fill:var(--stamp-ink);letter-spacing:2px;opacity:.7}
+.s2-N{font:700 8px var(--fs);fill:var(--stamp-accent);letter-spacing:.5px}
+@media(max-width:1080px){.stamp,.seal{display:none}.top{justify-content:flex-start}}
 
 .perf{padding:0 var(--pad) clamp(26px,3vw,40px)}
 .chead{display:flex;align-items:baseline;gap:18px;border-top:1px solid var(--ink);padding-top:14px;margin-bottom:10px}
@@ -194,7 +200,7 @@ footer .fine .script{text-transform:none;font-size:21px;color:var(--mut);letter-
       <button class="tcir" style="--c:#2C2519" onclick="setTheme('dark',this)" aria-label="Brown"></button>
       <button class="tcir" style="--c:#108053" onclick="setTheme('green',this)" aria-label="Green"></button>
       <button class="tcir" style="--c:#781113" onclick="setTheme('red',this)" aria-label="Red"></button>
-      <button class="tcir mg" onclick="location.href='margiela.html'" aria-label="Maison Margiela"></button>
+      <button class="tcir mg" onclick="gotoMargiela()" aria-label="Maison Margiela"></button>
     </span>
     <button class="sync" onclick="location.href=location.pathname+'?t='+Date.now()">↻ Sync</button>
   </span>
@@ -217,7 +223,7 @@ footer .fine .script{text-transform:none;font-size:21px;color:var(--mut);letter-
       <div class="o"><div class="lbl">Dividends</div><div class="v pn" id="ovDiv"></div></div>
     </div>
   </div>
-  <div class="stamp">
+  <div class="stamp" id="stampApex">
     <svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Apex stamp">
       <rect x="0" y="0" width="240" height="300" fill="var(--stamp-bg)"/>
       <rect x="20" y="20" width="200" height="260" fill="none" stroke="var(--stamp-ink)" stroke-width="1.4"/>
@@ -233,6 +239,24 @@ footer .fine .script{text-transform:none;font-size:21px;color:var(--mut);letter-
       <line x1="40" y1="218" x2="200" y2="218" stroke="var(--stamp-ink)" stroke-width="1.4"/>
       <rect x="25" y="240" width="190" height="24" fill="var(--stamp-accent)"/>
       <text x="120" y="256" text-anchor="middle" class="st-B">CONCENTRATED MOMENTUM</text>
+    </svg>
+  </div>
+  <div class="seal" id="stampTop34" style="display:none">
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Top 34 seal">
+      <circle cx="120" cy="120" r="115" fill="var(--stamp-bg)"/>
+      <circle cx="120" cy="120" r="115" fill="none" stroke="var(--stamp-ink)" stroke-width="2"/>
+      <circle cx="120" cy="120" r="104" fill="none" stroke="var(--stamp-ink)" stroke-width=".8"/>
+      <text x="120" y="60" text-anchor="middle" class="s2-S">NASDAQ · 100</text>
+      <line x1="92" y1="70" x2="148" y2="70" stroke="var(--stamp-ink)" stroke-width=".8"/>
+      <text x="120" y="116" text-anchor="middle" class="s2-T">Top 34</text>
+      <g fill="var(--stamp-accent)">
+        <rect x="84" y="150" width="8" height="20"/><rect x="96" y="139" width="8" height="31"/>
+        <rect x="108" y="131" width="8" height="39"/><rect x="120" y="144" width="8" height="26"/>
+        <rect x="132" y="136" width="8" height="34"/><rect x="144" y="153" width="8" height="17"/>
+      </g>
+      <line x1="78" y1="171" x2="162" y2="171" stroke="var(--stamp-ink)" stroke-width="1.2"/>
+      <text x="120" y="190" text-anchor="middle" class="s2-S">EQUAL WEIGHT · BUY &amp; HOLD</text>
+      <text x="120" y="208" text-anchor="middle" class="s2-N">N°2 · 2026</text>
     </svg>
   </div>
 </div>
@@ -261,18 +285,12 @@ footer .fine .script{text-transform:none;font-size:21px;color:var(--mut);letter-
 
 <div class="sec">
   <div class="sh"><span class="no">04</span><h2>About</h2><span class="m">how it works</span></div>
-  <div class="prose">
-    <p><b><span class="script" style="font-size:1.9em;letter-spacing:0">Apex</span> is a concentrated, rules-based momentum portfolio — run in public.</b> Ten names, equal weight at entry, no hedging. Winners are held as long as they trend; a position is sold the moment it breaks — closing below its long-term moving average, or falling hard from its recent high. The freed cash rotates into the next hottest name in a confirmed uptrend.</p>
-    <p>Every decision is dated and shown, the wins and the scars alike. It's paper-tracked: there's no brokerage connection, so you place your own trades. NAV is <b>price return</b> — it excludes dividends — to mirror how a copy-trading platform scores a portfolio. Dividends are tracked apart, never folded into the headline number.</p>
-  </div>
+  <div class="prose" id="aboutProse"></div>
 </div>
 
 <div class="sec">
   <div class="sh"><span class="no">05</span><h2>Where the positions come from</h2><span class="m">selection</span></div>
-  <div class="prose">
-    <p>Names are chosen <b>mechanically, not by gut.</b> A universe of liquid, large-cap stocks is ranked by trend strength — recent momentum and whether the name trades above its long-term moving average. When a slot opens, it's filled by the highest-ranked stock in a confirmed uptrend that we don't already hold. Exits are just as mechanical: a trend break below the 200-day line, or a deep drawdown from the high.</p>
-    <p>The <b>Top 34</b> book is deliberately simpler — the 34 largest Nasdaq-100 companies by market cap, equal-weighted and held, with a light rebalance once a month. One portfolio picks; the other just owns the giants. Side by side they answer one question: does concentration and timing beat simply holding the index leaders?</p>
-  </div>
+  <div class="prose" id="whereProse"></div>
 </div>
 
 <footer>
@@ -289,6 +307,15 @@ const sig=n=>arr(n)+pct(n);
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const fmtDate=d=>{const[y,mo,da]=d.split('-');return MON[+mo-1]+' '+(+da)+', '+y;};
 function cssv(n){return getComputedStyle(document.body).getPropertyValue(n).trim();}
+function gotoMargiela(){location.href=(curPF==='top34'?'margiela-top34.html':'margiela.html');}
+const COPY={
+ apex:{
+  about:`<p><b><span class="script" style="font-size:1.9em;letter-spacing:0">Apex</span> is a concentrated, rules-based momentum portfolio — run in public.</b> Ten names, equal weight at entry, no hedging. Winners are held as long as they trend; a position is sold the moment it breaks — closing below its long-term moving average, or falling hard from its recent high. The freed cash rotates into the next hottest name in a confirmed uptrend.</p><p>Every decision is dated and shown, the wins and the scars alike. It's paper-tracked: there's no brokerage connection, so you place your own trades. NAV is <b>price return</b> — it excludes dividends — to mirror how a copy-trading platform scores a portfolio. Dividends are tracked apart, never folded into the headline number.</p>`,
+  where:`<p>Names are chosen <b>mechanically, not by gut.</b> A universe of liquid, large-cap stocks is ranked by trend strength — recent momentum and whether the name trades above its long-term moving average. When a slot opens, it's filled by the highest-ranked stock in a confirmed uptrend that we don't already hold. Exits are just as mechanical: a trend break below the 200-day line, or a deep drawdown from the high.</p><p>Set against the <b>Top 34</b> book, it answers one question: does concentration and timing beat simply holding the index leaders?</p>`},
+ top34:{
+  about:`<p><b><span class="bx-t34" style="font-size:1.5em">Top 34</span> is a buy &amp; hold of the Nasdaq-100's biggest names — run in public.</b> The 34 largest Nasdaq-100 companies by market cap, bought equal-weight and held, with a light token rebalance once a month. No picking, no timing — just owning the index leaders.</p><p>It's the deliberately-simple counterweight to Apex's concentrated momentum book. Paper-tracked, no brokerage connection. NAV is <b>price return</b> (it excludes dividends) to mirror how a copy-trading platform scores a portfolio; dividends are tracked apart.</p>`,
+  where:`<p>There's no selection logic — the book is simply the <b>34 largest Nasdaq-100 companies by market cap</b> on the start date, equal-weighted. The only ongoing move is a small monthly rebalance that trims the most-overweight name into the most-underweight, so the book stays roughly even without churning gains away.</p><p>Set against Apex, it answers one question: does concentration and timing actually beat just holding the giants?</p>`}
+};
 function setTheme(t,el){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('apexTheme',t);
   document.querySelectorAll('.tcir').forEach(c=>c.classList.remove('on'));if(el)el.classList.add('on');
   if(window.__chart)themeChart(window.__chart);}
@@ -311,6 +338,12 @@ function render(S,pf){
   document.getElementById('brandName').textContent=pf==='top34'?'Top 34':'Apex';
   document.getElementById('brandNo').textContent=pf==='top34'?'N°2':'N°1';
   document.getElementById('stampName').textContent=pf==='top34'?'Top 34':'Apex';
+  const bx=document.getElementById('brandName');
+  bx.classList.toggle('script',pf!=='top34'); bx.classList.toggle('fr',pf==='top34');
+  document.getElementById('stampApex').style.display=pf==='top34'?'none':'';
+  document.getElementById('stampTop34').style.display=pf==='top34'?'':'none';
+  document.getElementById('aboutProse').innerHTML=COPY[pf].about;
+  document.getElementById('whereProse').innerHTML=COPY[pf].where;
   document.getElementById('ovBenchLbl').innerHTML=m.benchmark_label;
   document.getElementById('legLbl').innerHTML='vs '+m.benchmark_label;
   document.getElementById('ovSince').textContent='Since '+m.start_date.slice(5).replace('-',' ').replace(/^0/,'');
