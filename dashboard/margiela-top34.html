@@ -37,7 +37,15 @@
   .tag{border:1px solid var(--line);padding:3px 8px;font-size:9.5px;letter-spacing:.14em;
     text-transform:uppercase;font-weight:600}
   .tag.inv{background:var(--ink);color:var(--inv-ink)}
-  .hctl{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+  .hctl{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+  .ibtn{cursor:pointer;border:1px solid var(--grid);background:transparent;color:var(--mut);font-family:var(--font);
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:6px 9px;display:flex;align-items:center;gap:6px}
+  .ibtn:hover{border-color:var(--ink);color:var(--ink)}
+  .pfseg{display:flex;border:1px solid var(--grid)}
+  .pfseg a{padding:6px 11px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--mut)}
+  .pfseg a.on{background:var(--ink);color:var(--inv-ink)}
+  .pfseg a:first-child{border-right:1px solid var(--grid)}
+  .hctl .no{width:30px;height:30px}
   .no{font-size:10px;letter-spacing:.2em;border:1px solid var(--line);border-radius:50%;
     width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-weight:600}
   .toggle{cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink);
@@ -173,14 +181,11 @@
       </div>
     </div>
     <div class="hctl">
+      <div class="pfseg"><a href="margiela.html">Apex</a><a href="margiela-top34.html" class="on">Top 34</a></div>
+      <button class="ibtn" onclick="location.href=location.pathname+'?t='+Date.now()" title="Refresh">↻</button>
+      <button class="ibtn" id="themeBtn"><span class="dotmark"></span><span id="themeLabel">Dark</span></button>
+      <button class="ibtn" onclick="location.href='index.html'">← Editions</button>
       <div class="no">N°2</div>
-      <button class="toggle" onclick="location.href=location.pathname+'?t='+Date.now()">↻ REFRESH</button>
-      <button class="toggle" id="themeBtn"><span class="dotmark"></span><span id="themeLabel">DARK</span></button>
-      <div style="display:flex;border:1px solid var(--line);margin-top:2px">
-        <a href="margiela.html" style="padding:7px 13px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink);border-right:1px solid var(--line)">Apex</a>
-        <a href="margiela-top34.html" style="padding:7px 13px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;background:var(--ink);color:var(--inv-ink)">Top 34</a>
-      </div>
-      <button class="toggle" onclick="location.href='index.html'">← Editions</button>
     </div>
   </header>
 
