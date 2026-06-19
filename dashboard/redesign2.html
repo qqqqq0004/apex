@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apex — proposal 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600;6..96,800;6..96,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0E0D0B; --surf:#15130F; --ink:#ECE6D7; --mut:#7E7868; --faint:#4A463C;
+  --line:#272320; --accent:#CBF74A; --down:#FF5B47; --serif:'Bodoni Moda',serif; --mono:'Space Mono',monospace;
+}
+[data-theme="light"]{
+  --bg:#E8E2D3; --surf:#DFD8C7; --ink:#14120D; --mut:#6B6555; --faint:#B7AF9C;
+  --line:#CDC5B2; --accent:#6E8B14; --down:#C13A26;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--mono);
+  -webkit-font-smoothing:antialiased;font-size:14px}
+.mono{font-family:var(--mono)}.serif{font-family:var(--serif)}
+.acc{color:var(--accent)}.dn{color:var(--down)}.tnum{font-variant-numeric:tabular-nums}
+.lbl{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut)}
+a{color:inherit;text-decoration:none}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+.bleed{padding:0 clamp(18px,4vw,52px)}
+
+/* top status bar */
+.status{display:flex;gap:18px;align-items:center;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--mut);padding:11px clamp(18px,4vw,52px);border-bottom:1px solid var(--line)}
+.status .live{color:var(--ink)}.status .live b{color:var(--accent)}
+.status .sp{margin-left:auto}
+@keyframes blink{50%{opacity:.25}}
+.status .live b{animation:blink 1.6s steps(1) infinite}
+
+/* masthead */
+.mast{position:relative;padding:clamp(22px,4vw,40px) clamp(18px,4vw,52px) clamp(14px,2vw,22px);
+  border-bottom:1px solid var(--line)}
+.mast .logo{font-family:var(--serif);font-weight:900;font-size:clamp(58px,15vw,164px);
+  line-height:.82;letter-spacing:-.03em;margin:0}
+.mast .logo .pt{color:var(--accent)}
+.mast .meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:14px;flex-wrap:wrap;gap:14px}
+.mast .tagline{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2vw,21px);color:var(--mut)}
+.switch{display:flex;border:1px solid var(--line)}
+.switch b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;cursor:pointer;color:var(--mut)}
+.switch b.on{background:var(--accent);color:#0E0D0B}
+.switch b+b{border-left:1px solid var(--line)}
+.tools{display:flex;gap:8px}
+.tbtn{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 13px;cursor:pointer}
+.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* hero: asymmetric */
+.hero{display:grid;grid-template-columns:minmax(0,1fr);border-bottom:1px solid var(--line)}
+.hgrid{display:grid;grid-template-columns:1.05fr 1.35fr}
+.hl{padding:clamp(26px,4vw,46px) clamp(18px,4vw,52px);border-right:1px solid var(--line);position:relative}
+.hl .nav{font-family:var(--serif);font-weight:500;font-size:clamp(46px,8.5vw,104px);line-height:.9;
+  letter-spacing:-.02em;margin:18px 0 0}
+.hl .ret{font-family:var(--serif);font-weight:800;font-size:clamp(40px,7vw,84px);line-height:1;margin-top:6px}
+.hl .since{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);display:block;margin-top:10px}
+.hl .today{margin-top:22px;font-size:12px;letter-spacing:.04em;color:var(--ink)}
+.hl .today .acc{font-weight:700}
+.hl .divn{margin-top:20px;font-size:11px;line-height:1.7;color:var(--mut);max-width:34ch}
+.hl .divn b{color:var(--ink)}
+.vtag{position:absolute;top:46px;right:-1px;writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--faint);padding:0 6px}
+
+.hr-{padding:clamp(20px,3vw,34px) clamp(18px,4vw,52px);display:flex;flex-direction:column}
+.crow{display:flex;align-items:center;gap:18px}
+.crow .leg{display:flex;gap:18px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.crow .leg i{display:inline-block;width:16px;height:2px;background:var(--accent);vertical-align:middle;margin-right:7px}
+.crow .leg .b i{background:transparent;border-top:1.5px dashed var(--mut);height:0}
+.crow .rng{display:flex;margin-left:auto;border:1px solid var(--line)}
+.crow .rng b{font-size:10px;letter-spacing:.1em;padding:7px 12px;cursor:pointer;color:var(--mut)}
+.crow .rng b.on{background:var(--ink);color:var(--bg)}
+.crow .rng b+b{border-left:1px solid var(--line)}
+.chartbox{flex:1;min-height:250px;margin-top:18px;position:relative}
+.xax{display:flex;justify-content:space-between;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:8px}
+
+/* ledger stat row */
+.ledger{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.ledger .cell{padding:22px clamp(18px,4vw,52px);border-right:1px solid var(--line)}
+.ledger .cell:last-child{border-right:none}
+.ledger .cell .v{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.6vw,40px);margin-top:12px;line-height:1}
+
+/* section head */
+.sec{padding:clamp(30px,4vw,52px) clamp(18px,4vw,52px) 0}
+.shead{display:flex;align-items:flex-end;gap:18px;border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:8px}
+.shead .no{font-family:var(--serif);font-weight:900;font-size:clamp(34px,5vw,58px);line-height:.8;color:var(--accent)}
+.shead h2{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(22px,3vw,34px);margin:0;letter-spacing:-.01em}
+.shead .m{margin-left:auto;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+
+/* holdings index */
+.idx{margin-top:4px}
+.irow{display:grid;grid-template-columns:42px 1.4fr 1.3fr 1.4fr .9fr 1fr;align-items:center;
+  gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.irow .no{font-size:11px;color:var(--faint);letter-spacing:.1em}
+.irow .tkr{font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:-.01em}
+.irow .thm{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.irow .bar{height:3px;background:var(--line)}
+.irow .bar i{display:block;height:100%;background:var(--accent)}
+.irow .r{text-align:right;font-weight:700;font-size:14px}
+.irow .val{text-align:right;font-size:12px;color:var(--mut)}
+.irow:hover .tkr{color:var(--accent)}
+
+/* allocation: one segmented bar */
+.allwrap{margin-top:22px;padding-bottom:6px}
+.segbar{display:flex;height:46px;border:1px solid var(--line)}
+.segbar .seg{border-right:1px solid var(--bg);display:flex;align-items:flex-end;padding:8px 10px;
+  font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;overflow:hidden;white-space:nowrap}
+.segbar .seg:last-child{border-right:none}
+.seglg{display:flex;gap:24px;margin-top:14px;flex-wrap:wrap;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.seglg span i{display:inline-block;width:9px;height:9px;margin-right:7px;vertical-align:-1px}
+
+/* moves */
+.mv{display:grid;grid-template-columns:1fr;margin-top:6px}
+.mrow{display:grid;grid-template-columns:90px 130px 1fr;gap:18px;align-items:baseline;
+  padding:18px 0;border-bottom:1px solid var(--line)}
+.mrow .dt{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.mrow .act{font-family:var(--serif);font-weight:600;font-size:18px}
+.mrow .act .tag{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 7px;margin-right:9px;vertical-align:2px}
+.mrow .tag.b{background:var(--accent);color:#0E0D0B}.mrow .tag.s{border:1px solid var(--ink);color:var(--ink)}
+.mrow p{margin:0;font-size:12px;line-height:1.6;color:var(--mut)}.mrow p b{color:var(--ink)}
+
+footer{padding:34px clamp(18px,4vw,52px) 56px;font-size:10px;letter-spacing:.08em;line-height:1.9;
+  text-transform:uppercase;color:var(--faint);border-top:1px solid var(--line);margin-top:40px}
+footer b{color:var(--accent)}
+@media(max-width:820px){.hgrid{grid-template-columns:1fr}.hl{border-right:none;border-bottom:1px solid var(--line)}
+  .ledger{grid-template-columns:1fr 1fr}.ledger .cell:nth-child(2){border-right:none}
+  .irow{grid-template-columns:30px 1.3fr 1fr .8fr;gap:10px}.irow .thm,.irow .val{display:none}.vtag{display:none}}
+</style>
+</head>
+<body>
+
+<div class="status">
+  <span class="live"><b>●</b> Live</span>
+  <span>Paper Index N°01</span>
+  <span>Concentrated Momentum</span>
+  <span class="sp">2026.06.19 — 15:00 ET</span>
+</div>
+
+<div class="mast">
+  <h1 class="logo serif">APEX<span class="pt">.</span></h1>
+  <div class="meta">
+    <div class="tagline">Ten convictions. No hedging. Sell the broken.</div>
+    <div class="switch"><b class="on">Apex</b><b>Top 34</b></div>
+    <div class="tools">
+      <button class="tbtn" onclick="var h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='light'?'':'light')">Invert</button>
+      <button class="tbtn">↻ Sync</button>
+    </div>
+  </div>
+</div>
+
+<div class="hero"><div class="hgrid">
+  <div class="hl">
+    <div class="vtag">NAV / Price Return</div>
+    <div class="lbl">Net Asset Value</div>
+    <div class="nav tnum">$111,185</div>
+    <div class="ret acc tnum">+11.1%</div>
+    <span class="since">Since inception · 05.22.2026</span>
+    <div class="today"><span class="acc">▲ +$2,940</span> today &nbsp;·&nbsp; +2.7% &nbsp;·&nbsp; vs S&amp;P +0.2%</div>
+    <div class="divn">Price return — excludes dividends. Held positions would have paid you <b>$86</b> in dividend cash, tracked apart from NAV.</div>
+  </div>
+  <div class="hr-">
+    <div class="crow">
+      <div class="leg"><span><i></i>Apex</span><span class="b"><i></i>S&amp;P 500</span></div>
+      <div class="rng"><b>1D</b><b>1W</b><b>1M</b><b class="on">All</b></div>
+    </div>
+    <div class="chartbox">
+      <svg viewBox="0 0 840 270" width="100%" height="100%" preserveAspectRatio="none" style="display:block">
+        <line x1="0" y1="232" x2="840" y2="232" stroke="var(--line)" stroke-width="1"/>
+        <path d="M16 226 L70 220 L116 234 L168 210 L214 218 L266 188 L312 196 L364 164 L410 180 L460 130 L506 156 L556 116 L602 132 L650 96 L696 112 L744 72 L790 90 L824 52"
+              fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M16 226 L140 227 L264 222 L388 219 L512 214 L636 210 L760 206 L824 203"
+              fill="none" stroke="var(--mut)" stroke-width="1.4" stroke-dasharray="4 5"/>
+        <circle cx="460" cy="130" r="3.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="744" cy="72" r="3.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="824" cy="52" r="4.5" fill="var(--accent)"/>
+      </svg>
+    </div>
+    <div class="xax"><span>05.22</span><span>05.30</span><span>06.06</span><span>06.12</span><span>06.18</span></div>
+  </div>
+</div></div>
+
+<div class="ledger">
+  <div class="cell"><div class="lbl">Total Return</div><div class="v acc tnum">+11.1%</div></div>
+  <div class="cell"><div class="lbl">S&amp;P 500</div><div class="v tnum">+0.2%</div></div>
+  <div class="cell"><div class="lbl">Alpha</div><div class="v acc tnum">+10.9%</div></div>
+  <div class="cell"><div class="lbl">Dividends</div><div class="v tnum">$86</div></div>
+</div>
+
+<div class="sec">
+  <div class="shead"><span class="no serif">01</span><h2>Holdings</h2><span class="m">Ten names · equal weight at entry</span></div>
+  <div class="idx">
+    <div class="irow"><span class="no">01</span><span class="tkr">NVDA</span><span class="thm">AI / Semiconductors</span><span class="bar"><i style="width:100%"></i></span><span class="r acc">+13.0%</span><span class="val tnum">$12,640</span></div>
+    <div class="irow"><span class="no">02</span><span class="tkr">Avgo</span><span class="thm">AI / Semiconductors</span><span class="bar"><i style="width:90%"></i></span><span class="r acc">+11.1%</span><span class="val tnum">$11,090</span></div>
+    <div class="irow"><span class="no">03</span><span class="tkr">Googl</span><span class="thm">Megacap Tech</span><span class="bar"><i style="width:88%"></i></span><span class="r acc">+10.5%</span><span class="val tnum">$11,140</span></div>
+    <div class="irow"><span class="no">04</span><span class="tkr">Meta</span><span class="thm">Megacap Tech</span><span class="bar"><i style="width:84%"></i></span><span class="r acc">+9.4%</span><span class="val tnum">$10,920</span></div>
+    <div class="irow"><span class="no">05</span><span class="tkr">Dell</span><span class="thm">AI / Hardware</span><span class="bar"><i style="width:70%"></i></span><span class="r acc">+6.2%</span><span class="val tnum">$10,310</span></div>
+    <div class="irow"><span class="no">06</span><span class="tkr">Pltr</span><span class="thm">AI / Software</span><span class="bar"><i style="width:60%"></i></span><span class="r dn">−2.6%</span><span class="val tnum">$9,740</span></div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="shead"><span class="no serif">02</span><h2>Allocation</h2><span class="m">By theme</span></div>
+  <div class="allwrap">
+    <div class="segbar">
+      <div class="seg" style="width:46%;background:var(--accent);color:#0E0D0B">AI / Semis · 46</div>
+      <div class="seg" style="width:28%;background:var(--ink);color:var(--bg)">Megacap · 28</div>
+      <div class="seg" style="width:16%;background:var(--surf);color:var(--ink);border:1px solid var(--line)">Software · 16</div>
+      <div class="seg" style="width:10%;background:transparent;color:var(--mut);border:1px solid var(--line)">HW · 10</div>
+    </div>
+    <div class="seglg">
+      <span><i style="background:var(--accent)"></i>AI / Semis</span>
+      <span><i style="background:var(--ink)"></i>Megacap Tech</span>
+      <span><i style="background:var(--surf);border:1px solid var(--line)"></i>AI / Software</span>
+      <span><i style="border:1px solid var(--line)"></i>Hardware</span>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="shead"><span class="no serif">03</span><h2>Recent moves</h2><span class="m">Decided 15:00 ET</span></div>
+  <div class="mv">
+    <div class="mrow"><span class="dt">06.17.26</span><span class="act"><span class="tag b">Buy</span>Dell</span><p>Rotated into <b>DELL</b> — hottest available in AI / Hardware, up <b>18%</b> over six months.</p></div>
+    <div class="mrow"><span class="dt">06.17.26</span><span class="act"><span class="tag s">Sell</span>Lunr</span><p><b>LUNR</b> fell <b>50%</b> from its high — the trend broke. Exit, lock it in.</p></div>
+  </div>
+</div>
+
+<footer>
+  Paper-tracked — not investment advice — no brokerage connection — you execute your own trades —
+  NAV is price return, excludes dividends — <b>Proposal 2 · placeholder data</b>
+</footer>
+</body>
+</html>
