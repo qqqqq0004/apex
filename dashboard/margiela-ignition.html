@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SWEET SPOT</title>
+<title>IGNITION</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root{
@@ -173,7 +173,7 @@
 
   <header>
     <div class="mast">
-      <h1 class="tight">SWEET SPOT</h1>
+      <h1 class="tight">IGNITION</h1>
       <div class="strat" id="strat">—</div>
       <div class="tagrow">
         <span class="tag inv" id="modeTag">—</span>
@@ -182,11 +182,11 @@
       </div>
     </div>
     <div class="hctl">
-      <div class="pfseg"><a href="margiela.html">Apex</a><a href="margiela-top34.html" class="on">Sweet Spot</a><a href="margiela-bedrock.html">Bedrock</a><a href="margiela-slipstream.html">Slipstream</a><a href="margiela-ignition.html">Ignition</a></div>
+      <div class="pfseg"><a href="margiela.html">Apex</a><a href="margiela-top34.html">Sweet Spot</a><a href="margiela-bedrock.html">Bedrock</a><a href="margiela-slipstream.html">Slipstream</a><a href="margiela-ignition.html" class="on">Ignition</a></div>
       <button class="ibtn" onclick="location.href=location.pathname+'?t='+Date.now()" title="Refresh">↻</button>
       <button class="ibtn" id="themeBtn"><span class="dotmark"></span><span id="themeLabel">Dark</span></button>
       <button class="ibtn" onclick="location.href='index.html'">← Editions</button>
-      <div class="no">N°2</div>
+      <div class="no">N°5</div>
     </div>
   </header>
 
@@ -240,8 +240,8 @@
   <section>
     <div class="shead"><span class="sn">06</span><span class="st">About</span></div>
     <div style="padding:14px 0 22px;max-width:66ch;font-size:13.5px;line-height:1.65;color:var(--mut);letter-spacing:-.01em">
-      <p style="margin:0 0 16px"><b style="color:var(--ink)">Sweet Spot is a buy &amp; hold of the Nasdaq-100's biggest names — run in public.</b> The 34 largest Nasdaq-100 companies by market cap, bought equal-weight and held, with a light token rebalance once a month. No picking, no timing — just owning the index leaders. The name fits the risk: the balanced middle between Apex's aggression and Bedrock's caution.</p>
-      <p style="margin:0">It's the deliberately-simple counterweight to Apex's concentrated momentum book. Paper-tracked, no brokerage connection. NAV is price return (excludes dividends) to mirror how a copy-trading platform scores a portfolio; dividends are tracked apart.</p>
+      <p style="margin:0 0 16px"><b style="color:var(--ink)">Ignition is a deliberately high-risk "smart lottery" — run in public.</b> Small-cap deep-tech that could be the next NVIDIA or SanDisk if its technology wins, bought <i>before</i> the breakout: silicon photonics, quantum computing &amp; security, AI-power (nuclear / GaN), novel memory, compute-in-memory and lidar. Most of these names will go nowhere; a few might 10–50×. So it's spread across ~16 names in three conviction tiers — bigger weights to the survivors with real revenue, tiny ones to the pre-revenue moonshots. One winner is meant to pay for many misses.</p>
+      <p style="margin:0">It's the defensive counterweight to Apex's concentrated momentum book. The goal isn't to win every bull market — it's to beat inflation comfortably, keep rough pace with the S&amp;P over time, and hold its ground when the high-fliers break. Paper-tracked, no brokerage connection. NAV is price return (excludes dividends) to mirror how a copy-trading platform scores a portfolio; dividends are tracked apart.</p>
     </div>
   </section>
 
@@ -249,8 +249,8 @@
   <section style="border-bottom:none">
     <div class="shead"><span class="sn">07</span><span class="st">Where the positions come from</span></div>
     <div style="padding:14px 0 22px;max-width:66ch;font-size:13.5px;line-height:1.65;color:var(--mut);letter-spacing:-.01em">
-      <p style="margin:0 0 16px">No selection logic — the book is simply the 34 largest Nasdaq-100 companies by market cap on the start date, equal-weighted. The only ongoing move is a small monthly rebalance that trims the most-overweight name into the most-underweight, so the book stays roughly even without churning gains away.</p>
-      <p style="margin:0">Set against Apex, it answers one question: does concentration and timing actually beat just holding the giants?</p>
+      <p style="margin:0 0 16px">Names came from a <b style="color:var(--ink)">fact-checked deep-research pass</b> across the frontier-compute verticals — chosen on forward thesis (the technology, the moat, the catalysts), not on what's already run. Then they were tiered by conviction and seeded <b style="color:var(--ink)">live, today</b>: no backtest, no hindsight, the clock starts now and every move is dated from here. Management is deliberately light, because over-managing a basket like this only adds drag: <b style="color:var(--ink)">hold</b>, but <b style="color:var(--ink)">cut</b> a name down 50% from entry (the thesis is dead) and <b style="color:var(--ink)">skim</b> a quarter off any name that 4×'s (bank house money, let the rest run). No market-crash breaker — at this risk tier you ride it out.</p>
+      <p style="margin:0">Set against Apex, it answers a different question: how much of the market's return can you keep while taking far less risk — and pulling ahead when the momentum trade rolls over?</p>
       <div class="foot" id="disclaimer" style="margin-top:22px"></div>
     </div>
   </section>
@@ -303,7 +303,7 @@ function themeChart(ch){
 
 async function main(){
   let S;
-  try{ S=await (await fetch('../data/nasdaq34_state.json',{cache:'no-store'})).json(); }
+  try{ S=await (await fetch('../data/ignition_state.json',{cache:'no-store'})).json(); }
   catch(e){ document.getElementById('metrics').innerHTML='<div class="metric">No data. Run the engine.</div>'; return; }
   const m=S.meta;
 
@@ -377,7 +377,7 @@ async function main(){
     type:'line',
     plugins:[{id:'tdotsPos',afterRender(){positionTradeDots();}}],
     data:{labels:[],datasets:[
-      {label:'Sweet Spot',data:[],borderWidth:2,pointRadius:0,tension:.02,fill:false},
+      {label:'Ignition',data:[],borderWidth:2,pointRadius:0,tension:.02,fill:false},
       {label:m.benchmark_label,data:[],borderWidth:1.4,borderDash:[5,4],pointRadius:0,tension:.02,fill:false},
     ]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
