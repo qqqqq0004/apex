@@ -5,11 +5,11 @@
     "last_date": "2026-06-18",
     "mode": "forward",
     "strategy": "Slipstream \u00b7 momentum ETF rotation",
-    "total_value": 104888.59,
+    "total_value": 104899.71,
     "cash": 0.0,
-    "total_return": 0.0489,
+    "total_return": 0.049,
     "benchmark_return": 0.0177,
-    "alpha": 0.0312,
+    "alpha": 0.0313,
     "num_trades": 28,
     "benchmark_label": "S&P 500",
     "risk": "Medium",
@@ -186,8 +186,8 @@
     },
     {
       "date": "2026-06-18",
-      "value": 104888.57,
-      "ret": 0.0489,
+      "value": 104899.69,
+      "ret": 0.049,
       "benchmark": 101773.13,
       "benchmark_ret": 0.0177,
       "cash": 0.0
@@ -356,12 +356,12 @@
       "conviction": "rotation",
       "shares": 55.6,
       "avg_entry": 98.13,
-      "price": 96.9,
-      "value": 5387.64,
-      "drawdown": 0.0125,
-      "ret": -0.0125,
+      "price": 97.1,
+      "value": 5398.76,
+      "drawdown": 0.0105,
+      "ret": -0.0105,
       "thesis": "Argentina \u2014 momentum rotation.",
-      "weight": 0.0514
+      "weight": 0.0515
     },
     {
       "ticker": "IYT",
@@ -387,7 +387,7 @@
       "drawdown": 0.048,
       "ret": -0.048,
       "thesis": "Copper Miners \u2014 momentum rotation.",
-      "weight": 0.0436
+      "weight": 0.0435
     }
   ],
   "themes": [
@@ -397,7 +397,7 @@
     },
     {
       "theme": "Emerging Mkts",
-      "weight": 0.1323
+      "weight": 0.1322
     },
     {
       "theme": "EM ex-China",
@@ -429,7 +429,7 @@
     },
     {
       "theme": "Argentina",
-      "weight": 0.0514
+      "weight": 0.0515
     },
     {
       "theme": "Transport",
@@ -437,7 +437,7 @@
     },
     {
       "theme": "Copper Miners",
-      "weight": 0.0436
+      "weight": 0.0435
     }
   ],
   "moves": [

@@ -5,7 +5,7 @@
     "last_date": "2026-06-18",
     "mode": "forward",
     "strategy": "Bedrock \u00b7 defensive, actively managed",
-    "total_value": 97424.31,
+    "total_value": 97418.64,
     "cash": 0.0,
     "total_return": -0.0258,
     "benchmark_return": 0.0015,
@@ -162,7 +162,7 @@
     },
     {
       "date": "2026-06-18",
-      "value": 97424.3,
+      "value": 97418.64,
       "ret": -0.0258,
       "benchmark": 100147.52,
       "benchmark_ret": 0.0015,
@@ -176,10 +176,10 @@
       "conviction": "core",
       "shares": 31.469,
       "avg_entry": 144.44,
-      "price": 150.56,
-      "value": 4738.05,
+      "price": 150.38,
+      "value": 4732.38,
       "drawdown": 0,
-      "ret": 0.0424,
+      "ret": 0.0411,
       "thesis": "Defensive holding (Staples).",
       "weight": 0.0486
     },
@@ -298,7 +298,7 @@
       "drawdown": 0.0151,
       "ret": -0.0151,
       "thesis": "Defensive holding (Waste).",
-      "weight": 0.0459
+      "weight": 0.046
     },
     {
       "ticker": "RSG",
@@ -468,7 +468,7 @@
     },
     {
       "theme": "Discount Retail",
-      "weight": 0.0945
+      "weight": 0.0946
     },
     {
       "theme": "Waste",
