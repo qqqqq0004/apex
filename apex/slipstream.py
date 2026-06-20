@@ -66,7 +66,9 @@ MIN_HOLD = 5                      # hold a fresh name >=1 week before the lock /
 # window: the next COOL_SESSIONS sessions are skipped too, so the book doesn't
 # just dump the same broken-by-beta names the moment the panic day ends. Normal
 # rules resume once the dust settles. Another panic mid-cooloff resets the clock.
-PANIC_DROP = -0.02
+PANIC_DROP = -0.025  # only genuine deep selloffs, not shallow ~-2% wobbles. A
+                     # 6-month A/B showed firing on ~-2% dip-days (which bounce)
+                     # was pure drag (~3pp); -2.5% keeps the crash net without it.
 COOL_SESSIONS = 5   # ~1 trading week. Across 877 S&P panic days since 1927 the
                     # median time to the post-panic BOTTOM is 5 sessions, so the
                     # book resumes just past where the market typically troughs
