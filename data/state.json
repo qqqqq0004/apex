@@ -2,13 +2,13 @@
   "meta": {
     "initial_deposit": 100000.0,
     "start_date": "2026-06-16",
-    "last_date": "2026-06-18",
+    "last_date": "2026-06-22",
     "mode": "forward",
     "total_value": 103080.66,
     "cash": 0.0,
-    "total_return": 0.0304,
-    "benchmark_return": -0.0014,
-    "alpha": 0.0318,
+    "total_return": 0.0308,
+    "benchmark_return": -0.0051,
+    "alpha": 0.0359,
     "num_trades": 12,
     "benchmark_label": "S&P 500",
     "strategy": "Concentrated thematic momentum",
@@ -38,6 +38,14 @@
       "ret": 0.0304,
       "benchmark": 99856.62,
       "benchmark_ret": -0.0014,
+      "cash": 0.0
+    },
+    {
+      "date": "2026-06-22",
+      "value": 103080.66,
+      "ret": 0.0308,
+      "benchmark": 99486.64,
+      "benchmark_ret": -0.0051,
       "cash": 0.0
     }
   ],
@@ -206,6 +214,15 @@
     }
   ],
   "moves": [
+    {
+      "date": "2026-06-22",
+      "ticker": null,
+      "action": "NO_MOVE",
+      "rule": "Hold",
+      "rationale": "All holdings still trending up \u2014 holding. Let winners run.",
+      "judge": "momentum",
+      "price": null
+    },
     {
       "date": "2026-06-18",
       "ticker": null,
@@ -800,8 +817,8 @@
     },
     {
       "t": "2026-06-22 19:00",
-      "value": 102911.46,
-      "benchmark": 98583.09
+      "value": 102980.96,
+      "benchmark": 98579.78
     }
   ],
   "dividends": {
