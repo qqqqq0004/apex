@@ -14,3 +14,5 @@ data/review.json
 !data/apex.db
 !data/state.json
 !data/lab.json
+# private content engine + brand kit + drafts (local/private only)
+/social/
