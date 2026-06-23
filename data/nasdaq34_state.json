@@ -5,11 +5,11 @@
     "last_date": "2026-06-23",
     "mode": "forward",
     "strategy": "Sweet Spot \u00b7 Nasdaq-100 mega-caps, equal weight",
-    "total_value": 105596.02,
+    "total_value": 105596.9,
     "cash": 0,
     "total_return": 0.056,
-    "benchmark_return": -0.0149,
-    "alpha": 0.0709,
+    "benchmark_return": -0.0162,
+    "alpha": 0.0722,
     "num_trades": 1,
     "benchmark_label": "S&P 500",
     "risk": "Medium",
@@ -178,10 +178,10 @@
     },
     {
       "date": "2026-06-23",
-      "value": 105596.02,
+      "value": 105596.9,
       "ret": 0.056,
-      "benchmark": 98511.34,
-      "benchmark_ret": -0.0149,
+      "benchmark": 98382.6,
+      "benchmark_ret": -0.0162,
       "cash": 0
     }
   ],
@@ -491,10 +491,10 @@
       "conviction": "core",
       "shares": 13.659,
       "avg_entry": 215.33,
-      "price": 200.0,
-      "value": 2731.79,
-      "drawdown": 0.0712,
-      "ret": -0.0712,
+      "price": 200.04,
+      "value": 2732.33,
+      "drawdown": 0.071,
+      "ret": -0.071,
       "thesis": "Top-34 Nasdaq-100 (Semiconductors).",
       "weight": 0.0259
     },
@@ -543,10 +543,10 @@
       "conviction": "core",
       "shares": 7.68,
       "avg_entry": 382.97,
-      "price": 346.09,
-      "value": 2657.92,
-      "drawdown": 0.0963,
-      "ret": -0.0963,
+      "price": 346.13,
+      "value": 2658.25,
+      "drawdown": 0.0962,
+      "ret": -0.0962,
       "thesis": "Top-34 Nasdaq-100 (Communications).",
       "weight": 0.0252
     },
@@ -561,7 +561,7 @@
       "drawdown": 0.1042,
       "ret": -0.1042,
       "thesis": "Top-34 Nasdaq-100 (Consumer).",
-      "weight": 0.025
+      "weight": 0.0249
     },
     {
       "ticker": "MSFT",
@@ -4054,7 +4054,17 @@
     {
       "t": "2026-06-23 15:30",
       "value": 105591.81,
-      "benchmark": 98477.05
+      "benchmark": 98357.73
+    },
+    {
+      "t": "2026-06-23 16:00",
+      "value": 106053.48,
+      "benchmark": 98455.61
+    },
+    {
+      "t": "2026-06-23 16:30",
+      "value": 106046.74,
+      "benchmark": 98448.9
     }
   ],
   "dividends": {

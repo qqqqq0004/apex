@@ -5,11 +5,11 @@
     "last_date": "2026-06-23",
     "mode": "forward",
     "strategy": "Ignition \u00b7 generational-breakout moonshots",
-    "total_value": 94362.75,
+    "total_value": 94371.16,
     "cash": 0.0,
-    "total_return": -0.0564,
-    "benchmark_return": -0.017,
-    "alpha": -0.0394,
+    "total_return": -0.0563,
+    "benchmark_return": -0.0176,
+    "alpha": -0.0387,
     "num_trades": 0,
     "benchmark_label": "S&P 500",
     "risk": "High",
@@ -34,10 +34,10 @@
     },
     {
       "date": "2026-06-23",
-      "value": 94362.72,
-      "ret": -0.0564,
-      "benchmark": 98298.6,
-      "benchmark_ret": -0.017,
+      "value": 94371.14,
+      "ret": -0.0563,
+      "benchmark": 98237.68,
+      "benchmark_ret": -0.0176,
       "cash": 0.0
     }
   ],
@@ -74,10 +74,10 @@
       "conviction": "anchor",
       "shares": 41.799,
       "avg_entry": 191.39,
-      "price": 177.35,
-      "value": 7413.14,
-      "drawdown": 0.0734,
-      "ret": -0.0734,
+      "price": 177.5,
+      "value": 7419.41,
+      "drawdown": 0.0726,
+      "ret": -0.0726,
       "thesis": "Nuclear Fuel \u2014 anchor.",
       "weight": 0.0786
     },
@@ -152,10 +152,10 @@
       "conviction": "moonshot",
       "shares": 98.087,
       "avg_entry": 61.17,
-      "price": 57.16,
-      "value": 5606.67,
-      "drawdown": 0.0656,
-      "ret": -0.0656,
+      "price": 57.19,
+      "value": 5609.61,
+      "drawdown": 0.0651,
+      "ret": -0.0651,
       "thesis": "Nuclear / SMR \u2014 moonshot.",
       "weight": 0.0594
     },
@@ -196,7 +196,7 @@
       "drawdown": 0.1169,
       "ret": -0.1169,
       "thesis": "Photonics \u2014 moonshot.",
-      "weight": 0.0562
+      "weight": 0.0561
     },
     {
       "ticker": "LWLG",
@@ -231,9 +231,9 @@
       "shares": 162.009,
       "avg_entry": 24.69,
       "price": 25.03,
-      "value": 4055.88,
+      "value": 4055.08,
       "drawdown": 0,
-      "ret": 0.014,
+      "ret": 0.0138,
       "thesis": "Quantum Compute \u2014 lottery.",
       "weight": 0.043
     },
@@ -254,7 +254,7 @@
   "themes": [
     {
       "theme": "Photonics",
-      "weight": 0.1836
+      "weight": 0.1835
     },
     {
       "theme": "Quantum Security",
@@ -527,13 +527,18 @@
     },
     {
       "t": "2026-06-23 15:30",
-      "value": 94362.17,
-      "benchmark": 98368.91
+      "value": 94336.19,
+      "benchmark": 98249.72
     },
     {
       "t": "2026-06-23 16:00",
-      "value": 94203.66,
-      "benchmark": 98368.91
+      "value": 94706.15,
+      "benchmark": 98347.5
+    },
+    {
+      "t": "2026-06-23 16:30",
+      "value": 94624.75,
+      "benchmark": 98354.18
     }
   ],
   "dividends": {

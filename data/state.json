@@ -4,7 +4,7 @@
     "start_date": "2026-06-16",
     "last_date": "2026-06-22",
     "mode": "forward",
-    "total_value": 98392.74,
+    "total_value": 98372.07,
     "cash": 0.0,
     "total_return": 0.0308,
     "benchmark_return": -0.0051,
@@ -56,12 +56,12 @@
       "conviction": "momentum",
       "shares": 10.18,
       "avg_entry": 982.35,
-      "price": 1036.2,
-      "value": 10548.23,
+      "price": 1034.98,
+      "value": 10535.76,
       "drawdown": 0,
-      "ret": 0.0548,
+      "ret": 0.0536,
       "thesis": "Momentum leader in Energy / Power.",
-      "weight": 0.1072
+      "weight": 0.1071
     },
     {
       "ticker": "RIOT",
@@ -160,10 +160,10 @@
       "conviction": "momentum",
       "shares": 21.034,
       "avg_entry": 419.32,
-      "price": 428.17,
-      "value": 9006.03,
+      "price": 427.78,
+      "value": 8997.83,
       "drawdown": 0,
-      "ret": 0.0211,
+      "ret": 0.0202,
       "thesis": "Rotated in: hot momentum, +224% 6mo.",
       "weight": 0.0915
     },
@@ -190,7 +190,7 @@
     },
     {
       "theme": "Crypto / Fintech",
-      "weight": 0.2085,
+      "weight": 0.2086,
       "min": null,
       "max": null
     },
@@ -202,7 +202,7 @@
     },
     {
       "theme": "Energy / Power",
-      "weight": 0.1072,
+      "weight": 0.1071,
       "min": null,
       "max": null
     },
@@ -942,8 +942,18 @@
     },
     {
       "t": "2026-06-23 15:30",
-      "value": 98387.08,
-      "benchmark": 97362.35
+      "value": 98373.03,
+      "benchmark": 97244.38
+    },
+    {
+      "t": "2026-06-23 16:00",
+      "value": 98776.5,
+      "benchmark": 97341.16
+    },
+    {
+      "t": "2026-06-23 16:30",
+      "value": 98748.39,
+      "benchmark": 97327.23
     }
   ],
   "dividends": {
