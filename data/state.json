@@ -4,7 +4,7 @@
     "start_date": "2026-06-16",
     "last_date": "2026-06-22",
     "mode": "forward",
-    "total_value": 99737.99,
+    "total_value": 98925.34,
     "cash": 0.0,
     "total_return": 0.0308,
     "benchmark_return": -0.0051,
@@ -56,12 +56,12 @@
       "conviction": "momentum",
       "shares": 10.18,
       "avg_entry": 982.35,
-      "price": 1055.47,
-      "value": 10744.39,
+      "price": 1050.16,
+      "value": 10690.28,
       "drawdown": 0,
-      "ret": 0.0744,
+      "ret": 0.069,
       "thesis": "Momentum leader in Energy / Power.",
-      "weight": 0.1077
+      "weight": 0.1081
     },
     {
       "ticker": "RIOT",
@@ -69,12 +69,12 @@
       "conviction": "momentum",
       "shares": 365.23,
       "avg_entry": 27.38,
-      "price": 28.83,
-      "value": 10529.58,
+      "price": 28.8,
+      "value": 10518.63,
       "drawdown": 0,
-      "ret": 0.053,
+      "ret": 0.0519,
       "thesis": "Momentum leader in Crypto / Fintech.",
-      "weight": 0.1056
+      "weight": 0.1063
     },
     {
       "ticker": "MU",
@@ -82,25 +82,12 @@
       "conviction": "momentum",
       "shares": 9.797,
       "avg_entry": 1020.76,
-      "price": 1074.56,
-      "value": 10527.06,
+      "price": 1057.61,
+      "value": 10361.01,
       "drawdown": 0,
-      "ret": 0.0527,
+      "ret": 0.0361,
       "thesis": "Momentum leader in AI / Semis.",
-      "weight": 0.1055
-    },
-    {
-      "ticker": "MARA",
-      "theme": "Crypto / Fintech",
-      "conviction": "momentum",
-      "shares": 683.06,
-      "avg_entry": 14.64,
-      "price": 15.07,
-      "value": 10297.13,
-      "drawdown": 0,
-      "ret": 0.0297,
-      "thesis": "Momentum leader in Crypto / Fintech.",
-      "weight": 0.1032
+      "weight": 0.1047
     },
     {
       "ticker": "PANW",
@@ -108,12 +95,25 @@
       "conviction": "momentum",
       "shares": 35.144,
       "avg_entry": 284.54,
-      "price": 290.78,
-      "value": 10219.46,
+      "price": 289.62,
+      "value": 10178.53,
       "drawdown": 0,
-      "ret": 0.0219,
+      "ret": 0.0179,
       "thesis": "Momentum leader in Other momentum.",
-      "weight": 0.1025
+      "weight": 0.1029
+    },
+    {
+      "ticker": "MARA",
+      "theme": "Crypto / Fintech",
+      "conviction": "momentum",
+      "shares": 683.06,
+      "avg_entry": 14.64,
+      "price": 14.84,
+      "value": 10133.2,
+      "drawdown": 0,
+      "ret": 0.0133,
+      "thesis": "Momentum leader in Crypto / Fintech.",
+      "weight": 0.1024
     },
     {
       "ticker": "MRVL",
@@ -121,12 +121,12 @@
       "conviction": "momentum",
       "shares": 35.885,
       "avg_entry": 278.67,
-      "price": 281.66,
-      "value": 10107.3,
-      "drawdown": 0,
-      "ret": 0.0107,
+      "price": 278.33,
+      "value": 9987.8,
+      "drawdown": 0.0012,
+      "ret": -0.0012,
       "thesis": "Momentum leader in AI / Semis.",
-      "weight": 0.1013
+      "weight": 0.101
     },
     {
       "ticker": "CRWD",
@@ -134,12 +134,12 @@
       "conviction": "momentum",
       "shares": 14.432,
       "avg_entry": 692.91,
-      "price": 687.78,
-      "value": 9925.91,
-      "drawdown": 0.0074,
-      "ret": -0.0074,
+      "price": 686.58,
+      "value": 9908.65,
+      "drawdown": 0.0091,
+      "ret": -0.0091,
       "thesis": "Momentum leader in Other momentum.",
-      "weight": 0.0995
+      "weight": 0.1002
     },
     {
       "ticker": "ARM",
@@ -147,12 +147,12 @@
       "conviction": "momentum",
       "shares": 25.231,
       "avg_entry": 396.34,
-      "price": 371.5,
-      "value": 9373.27,
-      "drawdown": 0.0627,
-      "ret": -0.0627,
+      "price": 369.03,
+      "value": 9310.95,
+      "drawdown": 0.0689,
+      "ret": -0.0689,
       "thesis": "Momentum leader in AI / Semis.",
-      "weight": 0.094
+      "weight": 0.0941
     },
     {
       "ticker": "DELL",
@@ -160,12 +160,12 @@
       "conviction": "momentum",
       "shares": 21.034,
       "avg_entry": 419.32,
-      "price": 433.57,
-      "value": 9119.61,
+      "price": 429.0,
+      "value": 9023.49,
       "drawdown": 0,
-      "ret": 0.034,
+      "ret": 0.0231,
       "thesis": "Rotated in: hot momentum, +224% 6mo.",
-      "weight": 0.0914
+      "weight": 0.0912
     },
     {
       "ticker": "RKLB",
@@ -173,18 +173,18 @@
       "conviction": "momentum",
       "shares": 91.533,
       "avg_entry": 109.25,
-      "price": 97.17,
-      "value": 8894.28,
-      "drawdown": 0.1106,
-      "ret": -0.1106,
+      "price": 96.28,
+      "value": 8812.81,
+      "drawdown": 0.1187,
+      "ret": -0.1187,
       "thesis": "Momentum leader in Space.",
-      "weight": 0.0892
+      "weight": 0.0891
     }
   ],
   "themes": [
     {
       "theme": "AI / Semis",
-      "weight": 0.3923,
+      "weight": 0.391,
       "min": null,
       "max": null
     },
@@ -196,19 +196,19 @@
     },
     {
       "theme": "Other momentum",
-      "weight": 0.202,
+      "weight": 0.2031,
       "min": null,
       "max": null
     },
     {
       "theme": "Energy / Power",
-      "weight": 0.1077,
+      "weight": 0.1081,
       "min": null,
       "max": null
     },
     {
       "theme": "Space",
-      "weight": 0.0892,
+      "weight": 0.0891,
       "min": null,
       "max": null
     }
@@ -922,8 +922,13 @@
     },
     {
       "t": "2026-06-23 13:30",
-      "value": 99753.3,
-      "benchmark": 97730.83
+      "value": 98794.79,
+      "benchmark": 97526.04
+    },
+    {
+      "t": "2026-06-23 14:00",
+      "value": 98925.34,
+      "benchmark": 97565.15
     }
   ],
   "dividends": {
