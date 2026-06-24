@@ -34,7 +34,7 @@ from collections import defaultdict
 import pandas as pd
 import yfinance as yf
 
-from . import divs, jsonio, livebar
+from . import divs, jsonio, livebar, midday
 from .paths import DATA_DIR
 
 try:
@@ -272,6 +272,8 @@ def build():
         return f"{x*100:+.1f}%"
 
     # ---- walk forward ----
+    # trade-price frame: 12:00-1:30pm fills from the cutoff forward, close before it
+    tpx = midday.blend(px, midday.fetch(survivors + [BENCH], FETCH_START), midday.FROM)
     prev_bench = bench_seed
     cooloff = 0                              # sessions still to skip after a panic
     for k in range(k0 + 1, len(dates)):
@@ -317,7 +319,7 @@ def build():
         # 1) process exits — cores on big moves, rotation on the doors
         for t in list(holdings):
             h = holdings[t]
-            p = px[t].iloc[k]
+            p = tpx[t].iloc[k]
             if pd.isna(p):
                 continue
             p = float(p)
@@ -377,7 +379,7 @@ def build():
             if cands:
                 per = core_cash / len(cands)
                 for t in cands:
-                    p = float(px[t].iloc[k])
+                    p = float(tpx[t].iloc[k])
                     holdings[t] = {"shares": per / p, "entry_price": p, "entry_date": d,
                                    "entry_k": k, "armed": False, "armed_days": 0,
                                    "core": True, "cat": CAT[t]}
@@ -397,7 +399,7 @@ def build():
             if cands:
                 per = rot_cash / len(cands)
                 for t in cands:
-                    p = float(px[t].iloc[k])
+                    p = float(tpx[t].iloc[k])
                     holdings[t] = {"shares": per / p, "entry_price": p, "entry_date": d,
                                    "entry_k": k, "armed": False, "armed_days": 0,
                                    "core": False, "cat": CAT[t]}

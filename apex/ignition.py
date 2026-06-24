@@ -30,7 +30,7 @@ from collections import defaultdict
 import pandas as pd
 import yfinance as yf
 
-from . import jsonio, livebar
+from . import jsonio, livebar, midday
 from .paths import DATA_DIR
 
 try:
@@ -92,6 +92,8 @@ def _daily():
 
 def build():
     px = _daily()
+    # trade-price frame: close in the past, 12:00-1:30pm fills from the cutoff on
+    tpx = midday.blend(px, midday.fetch(TICKERS + [BENCH], FETCH_START), midday.FROM)
     dates = list(px.index)
     if not dates or BENCH not in px.columns:
         print("WARN ignition: empty price fetch; keeping existing state.")
@@ -131,7 +133,7 @@ def build():
         if pd.isna(px[BENCH].iloc[k]):
             continue
         book_by_date[d] = {"h": {t: holdings[t]["shares"] for t in holdings}, "cash": cash}
-        price = {t: float(px[t].iloc[k]) for t in holdings if pd.notna(px[t].iloc[k])}
+        price = {t: float(tpx[t].iloc[k]) for t in holdings if pd.notna(tpx[t].iloc[k])}
         pv = cash + sum(holdings[t]["shares"] * price.get(t, holdings[t]["entry_price"]) for t in holdings)
         for t in list(holdings):
             if t not in price:

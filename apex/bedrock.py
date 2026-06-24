@@ -27,7 +27,7 @@ from collections import defaultdict
 import pandas as pd
 import yfinance as yf
 
-from . import divs, jsonio, livebar
+from . import divs, jsonio, livebar, midday
 from .paths import DATA_DIR
 
 try:
@@ -113,6 +113,8 @@ def _period(d):
 
 def build():
     px = _daily()
+    # trade-price frame: 12:00-1:30pm fills from the cutoff forward, close before it
+    tpx = midday.blend(px, midday.fetch(list(CAT) + [BENCH], FETCH_START), midday.FROM)
     dates = list(px.index)
     if not dates or BENCH not in px.columns:
         print("WARN bedrock: empty price fetch; keeping existing state.")
@@ -153,7 +155,7 @@ def build():
         if pd.isna(px[BENCH].iloc[k]):
             continue
         book_by_date[d] = {"h": {t: holdings[t]["shares"] for t in holdings}, "cash": cash}
-        price = {t: float(px[t].iloc[k]) for t in holdings if pd.notna(px[t].iloc[k])}
+        price = {t: float(tpx[t].iloc[k]) for t in holdings if pd.notna(tpx[t].iloc[k])}
 
         per_review = _period(d) != last_period
         if per_review:
@@ -172,7 +174,7 @@ def build():
                     continue
                 repl = max(cand, key=lambda b: _trend(px, b, k))
                 val = holdings[t]["shares"] * price[t]
-                rp = float(px[repl].iloc[k])
+                rp = float(tpx[repl].iloc[k])
                 closed.append({"ticker": t, "weight": round(val / pv0, 4) if pv0 else 0, "theme": CAT[t]})
                 opened.append({"ticker": repl, "weight": round(val / pv0, 4) if pv0 else 0, "theme": CAT[repl]})
                 moves.append({"date": d, "ticker": t, "action": "SELL", "rule": "Health swap",
@@ -223,7 +225,7 @@ def build():
                                    "theme": "Review", "closed": closed, "opened": opened,
                                    "changed": changed})
 
-        val = cash + sum(holdings[t]["shares"] * price.get(t, holdings[t]["entry_price"])
+        val = cash + sum(holdings[t]["shares"] * (float(px[t].iloc[k]) if pd.notna(px[t].iloc[k]) else holdings[t]["entry_price"])
                          for t in holdings)
         bp = float(px[BENCH].iloc[k])
         curve.append({"date": d, "value": round(val, 2), "ret": round(val / CAPITAL - 1, 4),
