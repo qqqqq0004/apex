@@ -18,14 +18,14 @@ body{display:flex;flex-direction:column;min-height:100vh}
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .rev{opacity:0;animation:up .7s cubic-bezier(.2,.7,.2,1) forwards}
 
-header{padding:clamp(18px,3vw,38px) var(--pad) clamp(22px,3vw,32px)}
+header{padding:clamp(8px,1.6vw,18px) var(--pad) clamp(12px,1.8vw,20px)}
 header .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut);font-weight:600}
 header .k b{color:var(--ink)}
 header h1{font-family:var(--disp);font-weight:700;font-size:clamp(36px,6.4vw,66px);letter-spacing:-.03em;margin:16px 0 0;line-height:1}
 header p{margin:14px 0 0;font-size:clamp(14px,1.8vw,17px);color:var(--mut);max-width:48ch;line-height:1.5}
 
-.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:clamp(16px,3vw,30px) var(--pad) clamp(40px,6vw,72px)}
-.card{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:clamp(360px,56vh,560px);
+.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:clamp(4px,1vw,12px) var(--pad) clamp(16px,2.5vw,32px)}
+.card{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:clamp(300px,44vh,470px);
   border-radius:20px;padding:clamp(26px,3vw,38px);overflow:hidden;text-decoration:none;border:1px solid var(--line);
   transition:transform .35s cubic-bezier(.2,.7,.2,1);cursor:pointer}
 .card:hover{transform:translateY(-10px)}

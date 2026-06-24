@@ -128,7 +128,7 @@ nav .risk{margin-left:12px;font-family:var(--disp);font-size:10px;font-weight:70
   </nav>
 
   <section class="hero">
-    <div class="kick rev" id="kick" style="animation-delay:.05s">A public paper portfolio, every move dated</div>
+    <div class="kick rev" id="kick" style="animation-delay:.05s">A public portfolio, every move dated</div>
     <div class="alpha disp tnum rev" id="alpha" style="animation-delay:.1s">—</div>
     <div class="sub rev" id="sub" style="animation-delay:.16s"></div>
     <div class="score rev" style="animation-delay:.24s">
@@ -235,7 +235,7 @@ function render(S,pf){
   document.getElementById('nmA').textContent=name;
   document.getElementById('nmB').innerHTML=bench;document.getElementById('legB').innerHTML=bench;
   document.getElementById('legA').textContent=name;
-  document.getElementById('kick').textContent='A public paper portfolio · since '+fmtD(m.start_date)+' '+m.start_date.slice(0,4);
+  document.getElementById('kick').textContent='A public portfolio · since '+fmtD(m.start_date)+' '+m.start_date.slice(0,4);
 
   // risk badge
   var risk=m.risk||'—', rc={Low:'#28E08C',Medium:'#E0B528',High:'#FF6B6B'}[risk]||'var(--mut)';
@@ -297,7 +297,6 @@ function render(S,pf){
   // honesty
   document.getElementById('htags').innerHTML=
     '<span class="htag"><b>100% public</b></span>'+
-    '<span class="htag"><b>Paper-traded</b> · you place your own trades</span>'+
     '<span class="htag"><b>Price return</b> · dividends tracked apart</span>'+
     '<span class="htag"><b>Every move dated</b></span>'+
     '<span class="htag">'+(alpha>=0?'Beating':'Trailing')+' the '+bench+' by <b>'+pctn(alpha)+'</b></span>';
