@@ -4,15 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Apex — choose an edition</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- system Helvetica, no web fonts -->
 <style>
 :root{--bg:#0A0A09;--ink:#ECE8DF;--mut:#7E7A70;--faint:#46443D;--line:#211F1B;
-  --sans:'Inter',system-ui,sans-serif;--disp:'Space Grotesk',sans-serif;--hv:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --sans:"Helvetica Neue","HelveticaNeue","Helvetica Neue LT Std",Helvetica,Arial,sans-serif;--disp:var(--sans);--hv:var(--sans);
   --pad:clamp(18px,5vw,64px)}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans);letter-spacing:-0.02em;-webkit-font-smoothing:antialiased}
 body{display:flex;flex-direction:column;min-height:100vh}
 .grain{position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px}

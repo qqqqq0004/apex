@@ -4,17 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Apex — Scoreboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- system Helvetica, no web fonts -->
 <style>
 :root{
   --bg:#0B0D0C; --surf:#121514; --surf2:#171B19; --ink:#ECF1EE; --mut:#7F8884; --faint:#4A514D;
   --line:#222825; --accent:#28E08C; --accent-dim:#159A60; --accent-ghost:rgba(40,224,140,.13); --down:#FF6B6B;
-  --disp:'Space Grotesk',sans-serif; --sans:'Inter',system-ui,sans-serif; --pad:clamp(18px,5vw,64px);
+  --sans:"Helvetica Neue","HelveticaNeue","Helvetica Neue LT Std",Helvetica,Arial,sans-serif; --disp:var(--sans); --pad:clamp(18px,5vw,64px);
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);letter-spacing:-0.02em;-webkit-font-smoothing:antialiased}
 .tnum{font-variant-numeric:tabular-nums}.disp{font-family:var(--disp)}
 .up{color:var(--accent)}.dn{color:var(--down)}
 a{color:inherit;text-decoration:none}
