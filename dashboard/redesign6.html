@@ -355,12 +355,12 @@ async function orderSwitch(){
     try{var s=await(await fetch(PF_URL[b.dataset.pf],{cache:'no-store'})).json();
         var r=s.meta&&s.meta.total_return;return r==null?-Infinity:r;}catch(e){return -Infinity;}
   }));
-  btns.map(function(b,i){return {b:b,r:rets[i]};})
-      .sort(function(x,y){return y.r-x.r;})
-      .forEach(function(o){sw.appendChild(o.b);});
+  var sorted=btns.map(function(b,i){return {b:b,r:rets[i]};}).sort(function(x,y){return y.r-x.r;});
+  sorted.forEach(function(o){sw.appendChild(o.b);});
+  return sorted.length?sorted[0].b.dataset.pf:null;
 }
-orderSwitch();
-load(localStorage.getItem('apexPF')||'apex');
+// Always open to the best performer (falls back to apex if the fetch fails).
+orderSwitch().then(function(best){load(best||'apex');});
 </script>
 </body>
 </html>

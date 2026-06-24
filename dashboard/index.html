@@ -18,7 +18,7 @@ body{display:flex;flex-direction:column;min-height:100vh}
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .rev{opacity:0;animation:up .7s cubic-bezier(.2,.7,.2,1) forwards}
 
-header{padding:clamp(38px,7vw,80px) var(--pad) clamp(22px,3vw,32px)}
+header{padding:clamp(18px,3vw,38px) var(--pad) clamp(22px,3vw,32px)}
 header .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut);font-weight:600}
 header .k b{color:var(--ink)}
 header h1{font-family:var(--disp);font-weight:700;font-size:clamp(36px,6.4vw,66px);letter-spacing:-.03em;margin:16px 0 0;line-height:1}
@@ -42,7 +42,7 @@ header p{margin:14px 0 0;font-size:clamp(14px,1.8vw,17px);color:var(--mut);max-w
 
 /* N°1 — Margiela, the deep dive */
 .c2{background:#F3F2EE;color:#0A0A0A}
-.c2 .name{font-family:var(--hv);font-weight:700;font-size:clamp(54px,9vw,104px);letter-spacing:-.06em}
+.c2 .name{font-family:var(--hv);font-weight:700;font-size:clamp(38px,6vw,76px);letter-spacing:-.05em;line-height:.92}
 .c2 .enter{color:#0A0A0A}
 .c2 .ball{width:22px;height:22px;border-radius:50%;background:linear-gradient(90deg,#0a0a0a 0 50%,#f3f2ee 50% 100%);border:1px solid #0a0a0a}
 .c2 .grid5{display:flex;gap:14px;font-family:var(--hv);font-size:11px;letter-spacing:.1em;color:#0a0a0a;opacity:.55;border-top:1px solid #0a0a0a;padding-top:10px}
@@ -73,7 +73,7 @@ footer b{color:var(--mut)}
       <circle cx="82" cy="27" r="5.5" fill="#28E08C"/></svg>
     <span class="wm">Open Book</span>
   </div>
-  <div class="k rev" style="animation-delay:.04s">Five strategies, run in public · every move dated</div>
+  <div class="k rev" style="animation-delay:.04s">Strategies, run in public · every move dated</div>
   <h1 class="rev" style="animation-delay:.06s">Two ways in.</h1>
   <p class="rev" style="animation-delay:.12s">Same portfolio, same honest data — read it deep, or read it fast. Pick your lane.</p>
 </header>
@@ -101,5 +101,22 @@ footer b{color:var(--mut)}
 </main>
 
 <footer>Not investment advice · No brokerage connection · NAV is price return · Every move dated · <b>Choose an edition</b><a href="https://divine-math-28c4.nico-alvear2002.workers.dev/" target="_blank" rel="noopener" title="Studio" aria-label="Studio" style="color:var(--faint);text-decoration:none;padding:0 10px;margin-left:4px">·</a></footer>
+<script>
+// Both cards lead with the current best performer (all-time return), live.
+(async function(){
+  var books=[['../data/state.json','Apex'],['../data/nasdaq34_state.json','Sweet Spot'],
+    ['../data/bedrock_state.json','Bedrock'],['../data/slipstream_state.json','Slipstream'],
+    ['../data/ignition_state.json','Ignition']];
+  var got=await Promise.all(books.map(async function(b){
+    try{var s=await(await fetch(b[0],{cache:'no-store'})).json();
+        var r=s.meta&&s.meta.total_return;return r==null?null:{name:b[1],r:r};}catch(e){return null;}
+  }));
+  var v=got.filter(Boolean).sort(function(a,b){return b.r-a.r;});
+  if(!v.length) return;
+  var best=v[0], pct=(best.r>=0?'+':'−')+(Math.abs(best.r)*100).toFixed(1)+'%';
+  var n1=document.querySelector('.c3 .name'); if(n1) n1.textContent=pct;
+  var n2=document.querySelector('.c2 .name'); if(n2) n2.textContent=best.name.toUpperCase();
+})();
+</script>
 </body>
 </html>
