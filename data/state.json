@@ -4,7 +4,7 @@
     "start_date": "2026-06-16",
     "last_date": "2026-06-23",
     "mode": "forward",
-    "total_value": 96277.89,
+    "total_value": 96291.06,
     "cash": 0.0,
     "total_return": -0.0163,
     "benchmark_return": -0.0194,
@@ -64,12 +64,12 @@
       "conviction": "momentum",
       "shares": 10.18,
       "avg_entry": 982.35,
-      "price": 1056.23,
-      "value": 10752.13,
+      "price": 1057.65,
+      "value": 10766.53,
       "drawdown": 0,
-      "ret": 0.0752,
+      "ret": 0.0767,
       "thesis": "Momentum leader in Energy / Power.",
-      "weight": 0.1117
+      "weight": 0.1118
     },
     {
       "ticker": "MU",
@@ -77,12 +77,12 @@
       "conviction": "momentum",
       "shares": 9.797,
       "avg_entry": 1020.76,
-      "price": 1047.92,
-      "value": 10266.08,
+      "price": 1048.51,
+      "value": 10271.86,
       "drawdown": 0,
-      "ret": 0.0266,
+      "ret": 0.0272,
       "thesis": "Momentum leader in AI / Semis.",
-      "weight": 0.1066
+      "weight": 0.1067
     },
     {
       "ticker": "PANW",
@@ -103,12 +103,12 @@
       "conviction": "momentum",
       "shares": 365.23,
       "avg_entry": 27.38,
-      "price": 27.44,
-      "value": 10021.91,
+      "price": 27.42,
+      "value": 10014.61,
       "drawdown": 0,
-      "ret": 0.0022,
+      "ret": 0.0015,
       "thesis": "Momentum leader in Crypto / Fintech.",
-      "weight": 0.1041
+      "weight": 0.104
     },
     {
       "ticker": "MRVL",
@@ -117,7 +117,7 @@
       "shares": 35.885,
       "avg_entry": 278.67,
       "price": 276.7,
-      "value": 9929.13,
+      "value": 9929.31,
       "drawdown": 0.0071,
       "ret": -0.0071,
       "thesis": "Momentum leader in AI / Semis.",
@@ -142,12 +142,12 @@
       "conviction": "momentum",
       "shares": 683.06,
       "avg_entry": 14.64,
-      "price": 14.01,
-      "value": 9566.26,
-      "drawdown": 0.0434,
-      "ret": -0.0434,
+      "price": 14.0,
+      "value": 9562.84,
+      "drawdown": 0.0437,
+      "ret": -0.0437,
       "thesis": "Momentum leader in Crypto / Fintech.",
-      "weight": 0.0994
+      "weight": 0.0993
     },
     {
       "ticker": "DELL",
@@ -155,10 +155,10 @@
       "conviction": "momentum",
       "shares": 21.034,
       "avg_entry": 419.32,
-      "price": 433.85,
-      "value": 9125.5,
+      "price": 434.06,
+      "value": 9129.92,
       "drawdown": 0,
-      "ret": 0.0347,
+      "ret": 0.0352,
       "thesis": "Rotated in: hot momentum, +224% 6mo.",
       "weight": 0.0948
     },
@@ -168,10 +168,10 @@
       "conviction": "momentum",
       "shares": 25.231,
       "avg_entry": 396.34,
-      "price": 359.11,
-      "value": 9060.78,
-      "drawdown": 0.0939,
-      "ret": -0.0939,
+      "price": 359.08,
+      "value": 9059.9,
+      "drawdown": 0.094,
+      "ret": -0.094,
       "thesis": "Momentum leader in AI / Semis.",
       "weight": 0.0941
     },
@@ -204,13 +204,13 @@
     },
     {
       "theme": "Crypto / Fintech",
-      "weight": 0.2035,
+      "weight": 0.2033,
       "min": null,
       "max": null
     },
     {
       "theme": "Energy / Power",
-      "weight": 0.1117,
+      "weight": 0.1118,
       "min": null,
       "max": null
     },
@@ -1119,8 +1119,18 @@
     },
     {
       "t": "2026-06-24 15:30",
-      "value": 96274.54,
-      "benchmark": 97070.75
+      "value": 96290.38,
+      "benchmark": 97166.19
+    },
+    {
+      "t": "2026-06-24 16:00",
+      "value": 99204.83,
+      "benchmark": 97721.31
+    },
+    {
+      "t": "2026-06-24 16:30",
+      "value": 99166.18,
+      "benchmark": 97730.83
     }
   ],
   "dividends": {
