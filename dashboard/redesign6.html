@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Apex — Scoreboard</title>
-<!-- system Helvetica, no web fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0B0D0C; --surf:#121514; --surf2:#171B19; --ink:#ECF1EE; --mut:#7F8884; --faint:#4A514D;
@@ -107,6 +108,8 @@ nav .risk{margin-left:12px;font-family:var(--disp);font-size:10px;font-weight:70
 .htag{font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:7px 13px;letter-spacing:.02em}
 .htag b{color:var(--ink);font-weight:600}
 .fine{margin-top:26px;font-size:11px;color:var(--faint);line-height:1.7;letter-spacing:.02em}
+/* numbers → Inter 800 (Rasmus Andersson); the words stay Helvetica */
+.hero .alpha,.score .side .rt,.stat .v,.hrow .rt,.hrow .vl,.hrow .wt{font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:800}
 </style>
 </head>
 <body>
