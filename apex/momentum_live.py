@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime
 
 import pandas as pd
 import yfinance as yf
@@ -23,11 +24,28 @@ from . import ledger, export, scout, intraday, midday
 from .paths import CONFIG_DIR
 
 try:
+    from zoneinfo import ZoneInfo
+    _ET = ZoneInfo("America/New_York")
+except Exception:
+    _ET = None
+
+try:
     sys.stdout.reconfigure(encoding="utf-8")
 except Exception:
     pass
 
 BENCH = "^GSPC"
+
+# The midday execution slot, in ET minutes-since-midnight. The day's one trade fires at
+# the first refresh inside this window (≈2:00pm), filling at the 12:00–1:30pm prices —
+# never at the 4pm close. The lower bound sits just after the 12:00–1:30 window has fully
+# printed; past the upper bound we don't open a new trade that day (we only mark NAV).
+_TRADE_LO = 13 * 60 + 35     # 1:35pm ET
+_TRADE_HI = 15 * 60 + 5      # 3:05pm ET
+
+
+def _now_et():
+    return datetime.now(_ET) if _ET else datetime.utcnow()
 
 
 def _cfg():
@@ -101,8 +119,56 @@ def init(capital=None):
     return date
 
 
+def _prices_only(holds, last, date):
+    """Data-only tick: refresh last_prices + rebuild the intraday curve. No equity
+    point, no trades — used before the midday window opens."""
+    with ledger.connect() as conn:
+        lp = ledger.get_meta(conn, "last_prices", {}) or {}
+        for t in holds + [BENCH]:
+            if t in last and pd.notna(last[t]):
+                lp[t] = float(last[t])
+        ledger.set_meta(conn, "last_prices", lp)
+    export.export_state()
+    intraday.attach()
+
+
+def _mark(last, date, *, committed, hold_note=False):
+    """Mark today's NAV at `last` (the regular-close bar once the session ends, so a
+    post-close call lands on the 4pm close — snapshot_equity upserts by date). Refreshes
+    per-position prices and the intraday curve. No trading."""
+    with ledger.connect() as conn:
+        cash = ledger.get_cash(conn)
+        total = cash + sum(p["shares"] * float(last.get(p["ticker"], p["avg_entry"]))
+                           for p in ledger.open_positions(conn))
+        ledger.snapshot_equity(conn, date, total, cash, benchmark=float(last[BENCH]))
+        ledger.set_meta(conn, "last_date", date)
+        if committed:
+            ledger.set_meta(conn, "last_committed_date", date)
+        lp = ledger.get_meta(conn, "last_prices", {}) or {}
+        for p in ledger.open_positions(conn):
+            lp[p["ticker"]] = float(last.get(p["ticker"], p["avg_entry"]))
+        if BENCH in last and pd.notna(last[BENCH]):
+            lp[BENCH] = float(last[BENCH])
+        ledger.set_meta(conn, "last_prices", lp)
+        if hold_note:
+            ledger.log_decision(conn, date, "NO_MOVE",
+                                "All holdings still trending up — holding. Let winners "
+                                "run.", rule="Hold", judge="momentum")
+    export.export_state()
+    intraday.attach()
+    return total
+
+
 def run(end=None):
-    """One forward step: apply trend-break exits, refill from the hottest names."""
+    """One forward step, executed at MIDDAY (not the close).
+
+    Called every ~30 min by the refresh workflow; it self-gates on the ET clock:
+      • before ~1:35pm ET            -> data-only refresh (no trade yet)
+      • the ~2:00pm ET window        -> apply trend-break exits + refills, filling at the
+                                        12:00–1:30pm prices; this is the day's one move
+      • already traded / after 3pm   -> just re-mark NAV at the regular close
+    so a day's trade always lands in the noon window and never at the 4pm close. NAV is
+    still marked at the close (the post-close tick lands there)."""
     cfg = _cfg()
     exit_ma = cfg["exit_ma"]
     exit_dd = cfg["exit_drawdown_from_high"]
@@ -111,17 +177,41 @@ def run(end=None):
     with ledger.connect() as conn:
         holds = [p["ticker"] for p in ledger.open_positions(conn)]
     px = _download(holds + [BENCH], end=end).ffill()
+    if px.empty:
+        print("No data; skipping.")
+        return
     date = px.index[-1].strftime("%Y-%m-%d")
     last = px.iloc[-1]
+
+    et = _now_et()
+    et_min = et.hour * 60 + et.minute
+    weekday = et.weekday() < 5
+    with ledger.connect() as conn:
+        already = ledger.get_meta(conn, "last_committed_date") == date
+
+    # Already traded today -> keep NAV marked at the latest regular price (settles at close).
+    if already:
+        _mark(last, date, committed=False)
+        print(f"{date}: re-marked NAV at close (already traded today).")
+        return
+    # Outside the midday trade window -> no new trade.
+    if not (weekday and _TRADE_LO <= et_min <= _TRADE_HI):
+        if weekday and et_min > _TRADE_HI:
+            # past the window with no trade today -> mark a hold at the close, so the day
+            # still gets its NAV point (e.g. all holdings held, or the window was missed).
+            _mark(last, date, committed=True, hold_note=True)
+            print(f"{date}: no midday trade; marked hold at close.")
+        else:
+            _prices_only(holds, last, date)
+            print(f"{date}: pre-window refresh (no trade).")
+        return
+
+    # --- inside the midday window, not yet traded: this is the day's move ---
     # from the cutoff forward, trades fill in the 12:00-1:30pm ET window, not the close
     _mid = midday.fetch(holds + [BENCH], px.index[0].strftime("%Y-%m-%d"))
-
     moves = 0
     sold_today = []
     with ledger.connect() as conn:
-        if ledger.get_meta(conn, "last_committed_date") == date:
-            print(f"{date} already processed.")
-            return
         # --- exits: trend break ---
         for p in ledger.open_positions(conn):
             t = p["ticker"]
@@ -183,31 +273,14 @@ def run(end=None):
                                         price=price)
                     moves += 1
 
-    # --- snapshot + export ---
-    with ledger.connect() as conn:
-        cash = ledger.get_cash(conn)
-        total = cash + sum(p["shares"] * float(last.get(p["ticker"], p["avg_entry"]))
-                           for p in ledger.open_positions(conn))
-        ledger.snapshot_equity(conn, date, total, cash, benchmark=float(last[BENCH]))
-        ledger.set_meta(conn, "last_date", date)
-        ledger.set_meta(conn, "last_committed_date", date)
-        lp = ledger.get_meta(conn, "last_prices", {})
-        for p in ledger.open_positions(conn):
-            lp[p["ticker"]] = float(last.get(p["ticker"], p["avg_entry"]))
-        ledger.set_meta(conn, "last_prices", lp)
-        if moves == 0:
-            ledger.log_decision(conn, date, "NO_MOVE",
-                                "All holdings still trending up — holding. Let winners "
-                                "run.", rule="Hold", judge="momentum")
-    export.export_state()
-    intraday.attach()
-    print(f"{date}: {moves} move(s). Portfolio ${total:,.0f}.")
+    total = _mark(last, date, committed=True, hold_note=(moves == 0))
+    print(f"{date}: {moves} midday move(s). Portfolio ${total:,.0f}.")
 
 
 def refresh():
-    """Data-only refresh: re-price the book and rebuild the intraday curve, with
-    NO trading. Safe to run repeatedly during the session so the dashboard (and the
-    1D 'today' view) update live. Trades only ever happen in run() at the close."""
+    """Data-only refresh: re-price the book and rebuild the intraday curve, with NO
+    trading and NO equity snapshot. Kept for manual use; the scheduled refresh now calls
+    run(), which self-gates and only trades inside the midday window."""
     with ledger.connect() as conn:
         holds = [p["ticker"] for p in ledger.open_positions(conn)]
     df = _download(holds + [BENCH], days=8).ffill()

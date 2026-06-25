@@ -4,7 +4,8 @@ on:
   schedule:
     # Every 30 min across the FULL extended session, weekdays. 08:00-23:30 UTC ≈
     # 4:00am-7:30pm ET (pre-market + regular + after-hours), plus the 8pm ET close.
-    # Data-only: NO trades happen here.
+    # momentum_live self-gates: data-only outside the midday slot, and Apex's ONE daily
+    # trade fires at the first tick in the 1:35-3:05pm ET window (≈2pm). No 4pm trades.
     - cron: "0,30 8-23 * * 1-5"
     - cron: "0 0 * * 2-6"
   workflow_dispatch: {}
@@ -27,8 +28,8 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Re-price book + rebuild intraday (no trading)
-        run: python -m apex.momentum_live refresh
+      - name: Re-price book + rebuild intraday (trades only in the midday window)
+        run: python -m apex.momentum_live run
       - name: Rebuild Top-34 Nasdaq portfolio (buy & hold)
         run: python -m apex.nasdaq34
       - name: Rebuild Bedrock portfolio (defensive buy & hold)

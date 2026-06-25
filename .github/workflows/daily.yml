@@ -27,7 +27,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run daily momentum update
+      # Apex's trade fires earlier, in the midday window (via the refresh workflow). This
+      # post-close run just marks Apex's NAV at the 4pm close — it never opens a 4pm trade.
+      - name: Mark Apex NAV at the close
         run: python -m apex.momentum_live run
 
       - name: Rebuild Top-34 Nasdaq portfolio (buy & hold)
