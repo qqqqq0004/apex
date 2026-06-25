@@ -4,11 +4,11 @@
     "start_date": "2026-06-16",
     "last_date": "2026-06-25",
     "mode": "forward",
-    "total_value": 98236.15,
+    "total_value": 98276.49,
     "cash": 0.0,
-    "total_return": -0.0176,
-    "benchmark_return": -0.0204,
-    "alpha": 0.0028,
+    "total_return": -0.0172,
+    "benchmark_return": -0.0205,
+    "alpha": 0.0033,
     "num_trades": 14,
     "benchmark_label": "S&P 500",
     "strategy": "Concentrated thematic momentum",
@@ -66,10 +66,10 @@
     },
     {
       "date": "2026-06-25",
-      "value": 98236.15,
-      "ret": -0.0176,
-      "benchmark": 97958.55,
-      "benchmark_ret": -0.0204,
+      "value": 98276.49,
+      "ret": -0.0172,
+      "benchmark": 97951.64,
+      "benchmark_ret": -0.0205,
       "cash": 0.0
     }
   ],
@@ -93,12 +93,12 @@
       "conviction": "momentum",
       "shares": 10.18,
       "avg_entry": 982.35,
-      "price": 1082.38,
-      "value": 11018.22,
+      "price": 1085.47,
+      "value": 11049.73,
       "drawdown": 0,
-      "ret": 0.1018,
+      "ret": 0.105,
       "thesis": "Momentum leader in Energy / Power.",
-      "weight": 0.1122
+      "weight": 0.1124
     },
     {
       "ticker": "PANW",
@@ -111,7 +111,7 @@
       "drawdown": 0,
       "ret": 0.03,
       "thesis": "Momentum leader in Other momentum.",
-      "weight": 0.1049
+      "weight": 0.1048
     },
     {
       "ticker": "RIOT",
@@ -184,10 +184,10 @@
       "conviction": "momentum",
       "shares": 21.034,
       "avg_entry": 419.32,
-      "price": 409.03,
-      "value": 8603.44,
-      "drawdown": 0.0245,
-      "ret": -0.0245,
+      "price": 409.45,
+      "value": 8612.28,
+      "drawdown": 0.0235,
+      "ret": -0.0235,
       "thesis": "Rotated in: hot momentum, +224% 6mo.",
       "weight": 0.0876
     },
@@ -208,25 +208,25 @@
   "themes": [
     {
       "theme": "AI / Semis",
-      "weight": 0.4836,
+      "weight": 0.4835,
       "min": null,
       "max": null
     },
     {
       "theme": "Other momentum",
-      "weight": 0.2046,
+      "weight": 0.2045,
       "min": null,
       "max": null
     },
     {
       "theme": "Crypto / Fintech",
-      "weight": 0.1997,
+      "weight": 0.1996,
       "min": null,
       "max": null
     },
     {
       "theme": "Energy / Power",
-      "weight": 0.1122,
+      "weight": 0.1124,
       "min": null,
       "max": null
     }
@@ -1335,8 +1335,18 @@
     },
     {
       "t": "2026-06-25 15:30",
-      "value": 98273.51,
-      "benchmark": 97015.08
+      "value": 98323.84,
+      "benchmark": 97191.37
+    },
+    {
+      "t": "2026-06-25 16:00",
+      "value": 98339.23,
+      "benchmark": 97435.25
+    },
+    {
+      "t": "2026-06-25 16:30",
+      "value": 98374.89,
+      "benchmark": 97433.93
     }
   ],
   "dividends": {

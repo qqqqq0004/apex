@@ -8,8 +8,8 @@
     "total_value": 107143.45,
     "cash": 0,
     "total_return": 0.0714,
-    "benchmark_return": -0.0181,
-    "alpha": 0.0895,
+    "benchmark_return": -0.0152,
+    "alpha": 0.0866,
     "num_trades": 1,
     "benchmark_label": "S&P 500",
     "risk": "Medium",
@@ -196,8 +196,8 @@
       "date": "2026-06-25",
       "value": 107143.45,
       "ret": 0.0714,
-      "benchmark": 98191.49,
-      "benchmark_ret": -0.0181,
+      "benchmark": 98479.16,
+      "benchmark_ret": -0.0152,
       "cash": 0
     }
   ],
@@ -4390,7 +4390,17 @@
     {
       "t": "2026-06-25 15:30",
       "value": 107170.19,
-      "benchmark": 98125.8
+      "benchmark": 98304.11
+    },
+    {
+      "t": "2026-06-25 16:00",
+      "value": 107385.6,
+      "benchmark": 98550.78
+    },
+    {
+      "t": "2026-06-25 16:30",
+      "value": 107376.83,
+      "benchmark": 98556.15
     }
   ],
   "dividends": {

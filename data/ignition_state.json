@@ -5,11 +5,11 @@
     "last_date": "2026-06-25",
     "mode": "forward",
     "strategy": "Ignition \u00b7 generational-breakout moonshots",
-    "total_value": 89340.74,
+    "total_value": 89345.58,
     "cash": 0.0,
-    "total_return": -0.1066,
-    "benchmark_return": -0.0177,
-    "alpha": -0.0889,
+    "total_return": -0.1065,
+    "benchmark_return": -0.0167,
+    "alpha": -0.0898,
     "num_trades": 0,
     "benchmark_label": "S&P 500",
     "risk": "High",
@@ -50,10 +50,10 @@
     },
     {
       "date": "2026-06-25",
-      "value": 89340.73,
-      "ret": -0.1066,
-      "benchmark": 98226.96,
-      "benchmark_ret": -0.0177,
+      "value": 89345.58,
+      "ret": -0.1065,
+      "benchmark": 98334.09,
+      "benchmark_ret": -0.0167,
       "cash": 0.0
     }
   ],
@@ -90,10 +90,10 @@
       "conviction": "anchor",
       "shares": 41.799,
       "avg_entry": 191.39,
-      "price": 170.26,
-      "value": 7116.78,
-      "drawdown": 0.1104,
-      "ret": -0.1104,
+      "price": 170.38,
+      "value": 7121.79,
+      "drawdown": 0.1098,
+      "ret": -0.1098,
       "thesis": "Nuclear Fuel \u2014 anchor.",
       "weight": 0.0797
     },
@@ -181,10 +181,10 @@
       "conviction": "moonshot",
       "shares": 98.087,
       "avg_entry": 61.17,
-      "price": 51.02,
-      "value": 5004.41,
-      "drawdown": 0.1659,
-      "ret": -0.1659,
+      "price": 51.01,
+      "value": 5003.43,
+      "drawdown": 0.1661,
+      "ret": -0.1661,
       "thesis": "Nuclear / SMR \u2014 moonshot.",
       "weight": 0.056
     },
@@ -247,9 +247,9 @@
       "shares": 162.009,
       "avg_entry": 24.69,
       "price": 21.91,
-      "value": 3548.81,
-      "drawdown": 0.1128,
-      "ret": -0.1128,
+      "value": 3549.62,
+      "drawdown": 0.1126,
+      "ret": -0.1126,
       "thesis": "Quantum Compute \u2014 lottery.",
       "weight": 0.0397
     },
@@ -1018,13 +1018,18 @@
     },
     {
       "t": "2026-06-25 15:30",
-      "value": 89396.68,
-      "benchmark": 98194.82
+      "value": 89394.89,
+      "benchmark": 98196.16
     },
     {
       "t": "2026-06-25 16:00",
-      "value": 89478.8,
-      "benchmark": 98338.11
+      "value": 89790.86,
+      "benchmark": 98442.56
+    },
+    {
+      "t": "2026-06-25 16:30",
+      "value": 89711.11,
+      "benchmark": 98437.21
     }
   ],
   "dividends": {
