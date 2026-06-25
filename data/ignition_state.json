@@ -5,11 +5,11 @@
     "last_date": "2026-06-25",
     "mode": "forward",
     "strategy": "Ignition \u00b7 generational-breakout moonshots",
-    "total_value": 89079.99,
+    "total_value": 88775.78,
     "cash": 0.0,
-    "total_return": -0.1092,
-    "benchmark_return": -0.0159,
-    "alpha": -0.0933,
+    "total_return": -0.1122,
+    "benchmark_return": -0.017,
+    "alpha": -0.0952,
     "num_trades": 0,
     "benchmark_label": "S&P 500",
     "risk": "High",
@@ -50,10 +50,10 @@
     },
     {
       "date": "2026-06-25",
-      "value": 89079.96,
-      "ret": -0.1092,
-      "benchmark": 98406.41,
-      "benchmark_ret": -0.0159,
+      "value": 88775.79,
+      "ret": -0.1122,
+      "benchmark": 98304.63,
+      "benchmark_ret": -0.017,
       "cash": 0.0
     }
   ],
@@ -64,12 +64,12 @@
       "conviction": "anchor",
       "shares": 93.491,
       "avg_entry": 85.57,
-      "price": 88.23,
-      "value": 8248.69,
+      "price": 88.01,
+      "value": 8228.12,
       "drawdown": 0,
-      "ret": 0.0311,
+      "ret": 0.0285,
       "thesis": "DC Cooling \u2014 anchor.",
-      "weight": 0.0926
+      "weight": 0.0927
     },
     {
       "ticker": "MTSI",
@@ -77,12 +77,12 @@
       "conviction": "anchor",
       "shares": 20.439,
       "avg_entry": 391.41,
-      "price": 381.02,
-      "value": 7787.64,
-      "drawdown": 0.0265,
-      "ret": -0.0265,
+      "price": 382.64,
+      "value": 7820.85,
+      "drawdown": 0.0224,
+      "ret": -0.0224,
       "thesis": "Photonics / RF \u2014 anchor.",
-      "weight": 0.0874
+      "weight": 0.0881
     },
     {
       "ticker": "LEU",
@@ -90,12 +90,12 @@
       "conviction": "anchor",
       "shares": 41.799,
       "avg_entry": 191.39,
-      "price": 173.15,
-      "value": 7237.58,
-      "drawdown": 0.0953,
-      "ret": -0.0953,
+      "price": 171.08,
+      "value": 7151.05,
+      "drawdown": 0.1061,
+      "ret": -0.1061,
       "thesis": "Nuclear Fuel \u2014 anchor.",
-      "weight": 0.0812
+      "weight": 0.0806
     },
     {
       "ticker": "AAOI",
@@ -103,12 +103,12 @@
       "conviction": "anchor",
       "shares": 49.428,
       "avg_entry": 161.85,
-      "price": 136.27,
-      "value": 6735.87,
-      "drawdown": 0.158,
-      "ret": -0.158,
+      "price": 134.95,
+      "value": 6670.37,
+      "drawdown": 0.1662,
+      "ret": -0.1662,
       "thesis": "Photonics \u2014 anchor.",
-      "weight": 0.0756
+      "weight": 0.0751
     },
     {
       "ticker": "MRAM",
@@ -116,12 +116,12 @@
       "conviction": "anchor",
       "shares": 295.094,
       "avg_entry": 27.11,
-      "price": 21.49,
-      "value": 6341.57,
-      "drawdown": 0.2073,
-      "ret": -0.2073,
+      "price": 21.43,
+      "value": 6325.34,
+      "drawdown": 0.2093,
+      "ret": -0.2093,
       "thesis": "Novel Memory \u2014 anchor.",
-      "weight": 0.0712
+      "weight": 0.0713
     },
     {
       "ticker": "LAES",
@@ -129,12 +129,12 @@
       "conviction": "moonshot",
       "shares": 1923.077,
       "avg_entry": 3.12,
-      "price": 3.15,
-      "value": 6067.31,
+      "price": 3.13,
+      "value": 6022.5,
       "drawdown": 0,
-      "ret": 0.0112,
+      "ret": 0.0038,
       "thesis": "Quantum Security \u2014 moonshot.",
-      "weight": 0.0681
+      "weight": 0.0678
     },
     {
       "ticker": "BTQ",
@@ -142,12 +142,12 @@
       "conviction": "moonshot",
       "shares": 1057.269,
       "avg_entry": 5.68,
-      "price": 5.33,
-      "value": 5635.24,
-      "drawdown": 0.0608,
-      "ret": -0.0608,
+      "price": 5.29,
+      "value": 5592.42,
+      "drawdown": 0.0679,
+      "ret": -0.0679,
       "thesis": "Quantum Security \u2014 moonshot.",
-      "weight": 0.0633
+      "weight": 0.063
     },
     {
       "ticker": "GSIT",
@@ -155,12 +155,12 @@
       "conviction": "moonshot",
       "shares": 791.557,
       "avg_entry": 7.58,
-      "price": 6.79,
-      "value": 5374.67,
-      "drawdown": 0.1042,
-      "ret": -0.1042,
+      "price": 6.83,
+      "value": 5406.33,
+      "drawdown": 0.0989,
+      "ret": -0.0989,
       "thesis": "Compute-in-Memory \u2014 moonshot.",
-      "weight": 0.0603
+      "weight": 0.0609
     },
     {
       "ticker": "OUST",
@@ -168,12 +168,12 @@
       "conviction": "moonshot",
       "shares": 128.838,
       "avg_entry": 46.57,
-      "price": 40.91,
-      "value": 5270.78,
-      "drawdown": 0.1215,
-      "ret": -0.1215,
+      "price": 41.01,
+      "value": 5283.01,
+      "drawdown": 0.1195,
+      "ret": -0.1195,
       "thesis": "Lidar \u2014 moonshot.",
-      "weight": 0.0592
+      "weight": 0.0595
     },
     {
       "ticker": "OKLO",
@@ -181,12 +181,12 @@
       "conviction": "moonshot",
       "shares": 98.087,
       "avg_entry": 61.17,
-      "price": 52.22,
-      "value": 5122.12,
-      "drawdown": 0.1463,
-      "ret": -0.1463,
+      "price": 51.81,
+      "value": 5081.9,
+      "drawdown": 0.153,
+      "ret": -0.153,
       "thesis": "Nuclear / SMR \u2014 moonshot.",
-      "weight": 0.0575
+      "weight": 0.0572
     },
     {
       "ticker": "POET",
@@ -194,10 +194,10 @@
       "conviction": "moonshot",
       "shares": 493.827,
       "avg_entry": 12.15,
-      "price": 10.12,
-      "value": 4997.53,
-      "drawdown": 0.1671,
-      "ret": -0.1671,
+      "price": 10.09,
+      "value": 4982.72,
+      "drawdown": 0.1695,
+      "ret": -0.1695,
       "thesis": "Photonics \u2014 moonshot.",
       "weight": 0.0561
     },
@@ -207,12 +207,12 @@
       "conviction": "lottery",
       "shares": 373.972,
       "avg_entry": 13.37,
-      "price": 11.99,
-      "value": 4483.92,
-      "drawdown": 0.1032,
-      "ret": -0.1032,
+      "price": 11.98,
+      "value": 4479.66,
+      "drawdown": 0.1041,
+      "ret": -0.1041,
       "thesis": "Quantum Compute \u2014 lottery.",
-      "weight": 0.0503
+      "weight": 0.0505
     },
     {
       "ticker": "NVTS",
@@ -220,12 +220,12 @@
       "conviction": "moonshot",
       "shares": 249.792,
       "avg_entry": 24.02,
-      "price": 17.91,
-      "value": 4473.7,
-      "drawdown": 0.2544,
-      "ret": -0.2544,
+      "price": 17.93,
+      "value": 4478.77,
+      "drawdown": 0.2535,
+      "ret": -0.2535,
       "thesis": "Power Semis \u2014 moonshot.",
-      "weight": 0.0502
+      "weight": 0.0505
     },
     {
       "ticker": "LWLG",
@@ -233,12 +233,12 @@
       "conviction": "lottery",
       "shares": 511.247,
       "avg_entry": 9.78,
-      "price": 8.11,
-      "value": 4146.22,
-      "drawdown": 0.1708,
-      "ret": -0.1708,
+      "price": 8.13,
+      "value": 4156.44,
+      "drawdown": 0.1687,
+      "ret": -0.1687,
       "thesis": "Photonics \u2014 lottery.",
-      "weight": 0.0465
+      "weight": 0.0468
     },
     {
       "ticker": "QBTS",
@@ -246,12 +246,12 @@
       "conviction": "lottery",
       "shares": 162.009,
       "avg_entry": 24.69,
-      "price": 22.33,
-      "value": 3617.82,
-      "drawdown": 0.0955,
-      "ret": -0.0955,
+      "price": 22.17,
+      "value": 3592.55,
+      "drawdown": 0.1019,
+      "ret": -0.1019,
       "thesis": "Quantum Compute \u2014 lottery.",
-      "weight": 0.0406
+      "weight": 0.0405
     },
     {
       "ticker": "RGTI",
@@ -259,58 +259,58 @@
       "conviction": "lottery",
       "shares": 187.266,
       "avg_entry": 21.36,
-      "price": 18.9,
-      "value": 3539.33,
-      "drawdown": 0.1152,
-      "ret": -0.1152,
+      "price": 18.71,
+      "value": 3503.75,
+      "drawdown": 0.1241,
+      "ret": -0.1241,
       "thesis": "Quantum Compute \u2014 lottery.",
-      "weight": 0.0397
+      "weight": 0.0395
     }
   ],
   "themes": [
     {
       "theme": "Photonics",
-      "weight": 0.1783
+      "weight": 0.1781
     },
     {
       "theme": "Quantum Security",
-      "weight": 0.1314
+      "weight": 0.1308
     },
     {
       "theme": "Quantum Compute",
-      "weight": 0.1307
+      "weight": 0.1304
     },
     {
       "theme": "DC Cooling",
-      "weight": 0.0926
+      "weight": 0.0927
     },
     {
       "theme": "Photonics / RF",
-      "weight": 0.0874
+      "weight": 0.0881
     },
     {
       "theme": "Nuclear Fuel",
-      "weight": 0.0812
+      "weight": 0.0806
     },
     {
       "theme": "Novel Memory",
-      "weight": 0.0712
+      "weight": 0.0713
     },
     {
       "theme": "Compute-in-Memory",
-      "weight": 0.0603
+      "weight": 0.0609
     },
     {
       "theme": "Lidar",
-      "weight": 0.0592
+      "weight": 0.0595
     },
     {
       "theme": "Nuclear / SMR",
-      "weight": 0.0575
+      "weight": 0.0572
     },
     {
       "theme": "Power Semis",
-      "weight": 0.0502
+      "weight": 0.0505
     }
   ],
   "moves": [
@@ -973,13 +973,18 @@
     },
     {
       "t": "2026-06-25 11:00",
-      "value": 88996.84,
+      "value": 88992.56,
       "benchmark": 98332.75
     },
     {
       "t": "2026-06-25 11:30",
-      "value": 89087.96,
-      "benchmark": 98354.18
+      "value": 88711.29,
+      "benchmark": 98312.67
+    },
+    {
+      "t": "2026-06-25 12:00",
+      "value": 88764.26,
+      "benchmark": 98324.72
     }
   ],
   "dividends": {
