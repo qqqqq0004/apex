@@ -6,9 +6,9 @@
     "mode": "forward",
     "total_value": 96422.37,
     "cash": 0.0,
-    "total_return": -0.0364,
+    "total_return": -0.0358,
     "benchmark_return": -0.0204,
-    "alpha": -0.016,
+    "alpha": -0.0154,
     "num_trades": 14,
     "benchmark_label": "S&P 500",
     "strategy": "Concentrated thematic momentum",
@@ -58,8 +58,8 @@
     },
     {
       "date": "2026-06-24",
-      "value": 96360.47,
-      "ret": -0.0364,
+      "value": 96422.37,
+      "ret": -0.0358,
       "benchmark": 97961.35,
       "benchmark_ret": -0.0204,
       "cash": 0.0
@@ -303,14 +303,14 @@
       "opened": [
         {
           "ticker": "AMD",
-          "weight": 0.0819,
+          "weight": 0.0818,
           "theme": "AI / Semis"
         }
       ],
       "closed": [
         {
           "ticker": "RKLB",
-          "weight": 0.0819,
+          "weight": 0.0818,
           "theme": "Space"
         }
       ],
@@ -1198,6 +1198,11 @@
     },
     {
       "t": "2026-06-24 19:30",
+      "value": 99967.6,
+      "benchmark": 97714.92
+    },
+    {
+      "t": "2026-06-24 20:00",
       "value": 99967.6,
       "benchmark": 97714.92
     }
