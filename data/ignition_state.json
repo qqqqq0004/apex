@@ -5,11 +5,11 @@
     "last_date": "2026-06-26",
     "mode": "forward",
     "strategy": "Ignition \u00b7 generational-breakout moonshots",
-    "total_value": 86796.77,
+    "total_value": 86810.45,
     "cash": 0.0,
-    "total_return": -0.132,
-    "benchmark_return": -0.0187,
-    "alpha": -0.1133,
+    "total_return": -0.1319,
+    "benchmark_return": -0.0238,
+    "alpha": -0.1081,
     "num_trades": 0,
     "benchmark_label": "S&P 500",
     "risk": "High",
@@ -58,10 +58,10 @@
     },
     {
       "date": "2026-06-26",
-      "value": 86796.77,
-      "ret": -0.132,
-      "benchmark": 98129.88,
-      "benchmark_ret": -0.0187,
+      "value": 86810.44,
+      "ret": -0.1319,
+      "benchmark": 97623.0,
+      "benchmark_ret": -0.0238,
       "cash": 0.0
     }
   ],
@@ -98,12 +98,12 @@
       "conviction": "anchor",
       "shares": 41.799,
       "avg_entry": 191.39,
-      "price": 165.25,
-      "value": 6907.36,
-      "drawdown": 0.1366,
-      "ret": -0.1366,
+      "price": 165.52,
+      "value": 6918.65,
+      "drawdown": 0.1352,
+      "ret": -0.1352,
       "thesis": "Nuclear Fuel \u2014 anchor.",
-      "weight": 0.0796
+      "weight": 0.0797
     },
     {
       "ticker": "AAOI",
@@ -189,12 +189,12 @@
       "conviction": "moonshot",
       "shares": 98.087,
       "avg_entry": 61.17,
-      "price": 50.05,
-      "value": 4909.27,
-      "drawdown": 0.1818,
-      "ret": -0.1818,
+      "price": 50.0,
+      "value": 4904.37,
+      "drawdown": 0.1826,
+      "ret": -0.1826,
       "thesis": "Nuclear / SMR \u2014 moonshot.",
-      "weight": 0.0566
+      "weight": 0.0565
     },
     {
       "ticker": "POET",
@@ -254,12 +254,12 @@
       "conviction": "lottery",
       "shares": 162.009,
       "avg_entry": 24.69,
-      "price": 22.72,
-      "value": 3680.03,
-      "drawdown": 0.08,
-      "ret": -0.08,
+      "price": 22.76,
+      "value": 3687.32,
+      "drawdown": 0.0782,
+      "ret": -0.0782,
       "thesis": "Quantum Compute \u2014 lottery.",
-      "weight": 0.0424
+      "weight": 0.0425
     },
     {
       "ticker": "RGTI",
@@ -278,7 +278,7 @@
   "themes": [
     {
       "theme": "Photonics",
-      "weight": 0.1775
+      "weight": 0.1774
     },
     {
       "theme": "Quantum Security",
@@ -298,7 +298,7 @@
     },
     {
       "theme": "Nuclear Fuel",
-      "weight": 0.0796
+      "weight": 0.0797
     },
     {
       "theme": "Novel Memory",
@@ -314,7 +314,7 @@
     },
     {
       "theme": "Nuclear / SMR",
-      "weight": 0.0566
+      "weight": 0.0565
     },
     {
       "theme": "Power Semis",
@@ -1186,13 +1186,18 @@
     },
     {
       "t": "2026-06-26 15:30",
-      "value": 86747.54,
-      "benchmark": 98214.91
+      "value": 86769.63,
+      "benchmark": 97635.06
     },
     {
       "t": "2026-06-26 16:00",
-      "value": 86750.18,
-      "benchmark": 98214.91
+      "value": 86945.21,
+      "benchmark": 98089.54
+    },
+    {
+      "t": "2026-06-26 16:30",
+      "value": 86981.54,
+      "benchmark": 97888.16
     }
   ],
   "dividends": {
