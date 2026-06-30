@@ -29,20 +29,27 @@ jobs:
 
       # Apex's trade fires earlier, in the midday window (via the refresh workflow). This
       # post-close run just marks Apex's NAV at the 4pm close — it never opens a 4pm trade.
+      # continue-on-error: each book is independent — one transient hiccup must never
+      # block the others or the publish step below (bad data is also handled in-engine).
       - name: Mark Apex NAV at the close
         run: python -m apex.momentum_live run
+        continue-on-error: true
 
       - name: Rebuild Top-34 Nasdaq portfolio (buy & hold)
         run: python -m apex.nasdaq34
+        continue-on-error: true
 
       - name: Rebuild Bedrock portfolio (defensive buy & hold)
         run: python -m apex.bedrock
+        continue-on-error: true
 
       - name: Rebuild Slipstream portfolio (momentum ETF rotation)
         run: python -m apex.slipstream
+        continue-on-error: true
 
       - name: Rebuild Ignition portfolio (generational-breakout moonshots)
         run: python -m apex.ignition
+        continue-on-error: true
 
       - name: Commit & publish updated data
         run: |

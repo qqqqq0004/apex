@@ -14,6 +14,7 @@ and reason on the existing page. Run `init` once at launch, then `run` daily.
 from __future__ import annotations
 
 import json
+import math
 import sys
 from datetime import datetime
 
@@ -137,23 +138,45 @@ def _mark(last, date, *, committed, hold_note=False):
     post-close call lands on the 4pm close — snapshot_equity upserts by date). Refreshes
     per-position prices and the intraday curve. No trading."""
     with ledger.connect() as conn:
+        lp = ledger.get_meta(conn, "last_prices", {}) or {}
+
+        def _price(t, fallback):
+            # live price -> last good price -> entry; never NaN
+            v = last.get(t)
+            if v is not None and pd.notna(v):
+                return float(v)
+            return float(lp.get(t, fallback))
+
         cash = ledger.get_cash(conn)
-        total = cash + sum(p["shares"] * float(last.get(p["ticker"], p["avg_entry"]))
+        total = cash + sum(p["shares"] * _price(p["ticker"], p["avg_entry"])
                            for p in ledger.open_positions(conn))
-        ledger.snapshot_equity(conn, date, total, cash, benchmark=float(last[BENCH]))
-        ledger.set_meta(conn, "last_date", date)
+        bv = last.get(BENCH)
+        bench = float(bv) if bv is not None and pd.notna(bv) else lp.get(BENCH)
+
+        # A committed trade is done regardless of data quality — mark it so we never re-trade.
         if committed:
             ledger.set_meta(conn, "last_committed_date", date)
-        lp = ledger.get_meta(conn, "last_prices", {}) or {}
+        # Only write the NAV point when the numbers are finite. A transient yfinance miss
+        # must NOT write a NULL/NaN equity row (that used to crash the whole refresh job);
+        # the last good snapshot stands and self-heals on the next clean tick.
+        if math.isfinite(total) and bench is not None and math.isfinite(float(bench)):
+            ledger.snapshot_equity(conn, date, total, cash, benchmark=float(bench))
+            ledger.set_meta(conn, "last_date", date)
+            if hold_note:
+                ledger.log_decision(conn, date, "NO_MOVE",
+                                    "All holdings still trending up — holding. Let winners "
+                                    "run.", rule="Hold", judge="momentum")
+        else:
+            print(f"{date}: incomplete price data — kept the last NAV snapshot (prices only).")
+
+        # refresh last_prices with whatever finite values we actually got
         for p in ledger.open_positions(conn):
-            lp[p["ticker"]] = float(last.get(p["ticker"], p["avg_entry"]))
-        if BENCH in last and pd.notna(last[BENCH]):
-            lp[BENCH] = float(last[BENCH])
+            v = last.get(p["ticker"])
+            if v is not None and pd.notna(v):
+                lp[p["ticker"]] = float(v)
+        if bv is not None and pd.notna(bv):
+            lp[BENCH] = float(bv)
         ledger.set_meta(conn, "last_prices", lp)
-        if hold_note:
-            ledger.log_decision(conn, date, "NO_MOVE",
-                                "All holdings still trending up — holding. Let winners "
-                                "run.", rule="Hold", judge="momentum")
     export.export_state()
     intraday.attach()
     return total
