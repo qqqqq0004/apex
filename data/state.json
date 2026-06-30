@@ -4,11 +4,11 @@
     "start_date": "2026-06-16",
     "last_date": "2026-06-30",
     "mode": "forward",
-    "total_value": 103261.53,
+    "total_value": 103349.8,
     "cash": 0.0,
-    "total_return": 0.0326,
+    "total_return": 0.0335,
     "benchmark_return": -0.0016,
-    "alpha": 0.0342,
+    "alpha": 0.0351,
     "num_trades": 14,
     "benchmark_label": "S&P 500",
     "strategy": "Concentrated thematic momentum",
@@ -90,8 +90,8 @@
     },
     {
       "date": "2026-06-30",
-      "value": 103261.53,
-      "ret": 0.0326,
+      "value": 103349.8,
+      "ret": 0.0335,
       "benchmark": 99840.37,
       "benchmark_ret": -0.0016,
       "cash": 0.0
@@ -109,7 +109,7 @@
       "drawdown": 0,
       "ret": 0.1985,
       "thesis": "Momentum leader in Other momentum.",
-      "weight": 0.1161
+      "weight": 0.116
     },
     {
       "ticker": "GEV",
@@ -122,7 +122,7 @@
       "drawdown": 0,
       "ret": 0.196,
       "thesis": "Momentum leader in Energy / Power.",
-      "weight": 0.1158
+      "weight": 0.1157
     },
     {
       "ticker": "MU",
@@ -130,12 +130,12 @@
       "conviction": "momentum",
       "shares": 9.797,
       "avg_entry": 1020.76,
-      "price": 1145.28,
-      "value": 11219.88,
+      "price": 1154.29,
+      "value": 11308.14,
       "drawdown": 0,
-      "ret": 0.122,
+      "ret": 0.1308,
       "thesis": "Momentum leader in AI / Semis.",
-      "weight": 0.1087
+      "weight": 0.1094
     },
     {
       "ticker": "CRWD",
@@ -148,7 +148,7 @@
       "drawdown": 0,
       "ret": 0.1014,
       "thesis": "Momentum leader in Other momentum.",
-      "weight": 0.1067
+      "weight": 0.1066
     },
     {
       "ticker": "MRVL",
@@ -161,7 +161,7 @@
       "drawdown": 0,
       "ret": 0.069,
       "thesis": "Momentum leader in AI / Semis.",
-      "weight": 0.1035
+      "weight": 0.1034
     },
     {
       "ticker": "RIOT",
@@ -187,7 +187,7 @@
       "drawdown": 0.0512,
       "ret": -0.0512,
       "thesis": "Momentum leader in Crypto / Fintech.",
-      "weight": 0.0919
+      "weight": 0.0918
     },
     {
       "ticker": "DELL",
@@ -200,7 +200,7 @@
       "drawdown": 0,
       "ret": 0.029,
       "thesis": "Rotated in: hot momentum, +224% 6mo.",
-      "weight": 0.0879
+      "weight": 0.0878
     },
     {
       "ticker": "ARM",
@@ -232,25 +232,25 @@
   "themes": [
     {
       "theme": "AI / Semis",
-      "weight": 0.4727,
+      "weight": 0.4732,
       "min": null,
       "max": null
     },
     {
       "theme": "Other momentum",
-      "weight": 0.2227,
+      "weight": 0.2225,
       "min": null,
       "max": null
     },
     {
       "theme": "Crypto / Fintech",
-      "weight": 0.1887,
+      "weight": 0.1886,
       "min": null,
       "max": null
     },
     {
       "theme": "Energy / Power",
-      "weight": 0.1158,
+      "weight": 0.1157,
       "min": null,
       "max": null
     }
@@ -1896,13 +1896,18 @@
     },
     {
       "t": "2026-06-30 18:30",
-      "value": 103052.24,
+      "value": 103054.34,
       "benchmark": 98878.67
     },
     {
       "t": "2026-06-30 19:00",
-      "value": 103070.61,
-      "benchmark": 98886.62
+      "value": 103287.98,
+      "benchmark": 98893.25
+    },
+    {
+      "t": "2026-06-30 19:30",
+      "value": 103306.69,
+      "benchmark": 98891.92
     }
   ],
   "dividends": {
