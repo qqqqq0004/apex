@@ -166,6 +166,30 @@
   .trow .tw .ax{margin:0 7px;color:var(--mut)}
   .foot{padding:22px 0 0;font-size:9.5px;letter-spacing:.08em;color:var(--mut);line-height:1.6}
   .empty{padding:40px 0;text-align:center;color:var(--mut);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+
+  /* ───── phones: reflow the dense desktop layout (everything above is desktop, untouched) ───── */
+  @media(max-width:680px){
+    .frame{padding:0 15px 84px}
+    header{flex-direction:column;gap:15px}
+    .hctl{justify-content:flex-start;width:100%}
+    .mast h1{font-size:clamp(46px,15vw,66px)}
+    .pfseg{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+    .pfseg a{white-space:nowrap}
+    .arow{flex-wrap:wrap;gap:6px 12px}
+    .arow .an{width:100%}
+    table{font-size:11.5px}
+    thead th,tbody td{padding:10px 3px}
+    .tk{font-size:12.5px}
+    .bar{width:40px}
+    .trow{flex-wrap:wrap}
+  }
+  @media(max-width:480px){
+    .metrics{grid-template-columns:repeat(2,1fr)}
+    .metric{border-right:1px solid var(--line)}
+    .metric:nth-child(3){border-right:1px solid var(--line)}
+    .metric:nth-child(2n){border-right:none}
+    .metric .v{font-size:25px}
+  }
 </style>
 </head>
 <body>
