@@ -4,12 +4,14 @@ on:
   schedule:
     # Every 30 min across the FULL extended session, weekdays. 08:00-23:30 UTC ≈
     # 4:00am-7:30pm ET (pre-market + regular + after-hours), plus the 8pm ET close.
-    # Off-peak minutes (:07/:37, NOT :00/:30) — GitHub's free scheduler drops far fewer
-    # runs when you avoid the top/bottom of the hour, its most congested times.
+    # Every ~15 min at off-peak minutes (:07,:22,:37,:52 — NOT the congested :00/:15/:30/:45).
+    # The extra attempts are deliberate redundancy: if GitHub's free scheduler drops one run,
+    # the next covers it, so effective cadence stays ~30 min even when scheduling is flaky.
+    # Idempotent (no data change -> no commit) and free on a public repo.
     # momentum_live self-gates regardless: data-only outside the midday slot, and Apex's
-    # ONE trade fires at the first tick in the 1:35-3:05pm ET window (≈2pm). No 4pm trades.
-    - cron: "7,37 8-23 * * 1-5"
-    - cron: "7 0 * * 2-6"
+    # ONE trade fires at the first tick in the 1:35-3:05pm ET window. No 4pm trades.
+    - cron: "7,22,37,52 8-23 * * 1-5"
+    - cron: "7,37 0 * * 2-6"
   workflow_dispatch: {}
 
 permissions:

@@ -2,11 +2,11 @@ name: Open Book news feed
 
 on:
   schedule:
-    # Hourly, ~8am–10pm ET, every day. GitHub cron is UTC with no DST, so 12:00–02:00 UTC
-    # covers 8am–10pm during EDT (7am–9pm in EST). Fires at :23 (off-peak, not :00) —
-    # GitHub drops far fewer scheduled runs when you avoid the top of the hour.
-    - cron: "23 12-23 * * *"
-    - cron: "23 0-2 * * *"
+    # Hourly, ~8am–10pm ET, every day (12:00–02:00 UTC ≈ 8am–10pm EDT). TWO off-peak
+    # attempts per hour (:13 and :43, not :00) — a backup so a dropped run doesn't leave
+    # news stale for a full hour. Idempotent (no change -> no commit), free on a public repo.
+    - cron: "13,43 12-23 * * *"
+    - cron: "13,43 0-2 * * *"
   workflow_dispatch: {}
 
 permissions:
