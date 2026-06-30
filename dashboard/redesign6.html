@@ -33,7 +33,14 @@ nav .ed{margin-left:auto;font-family:var(--disp);font-size:11px;letter-spacing:.
 nav .ed:hover{color:var(--ink)}
 nav .meta{margin-left:18px;font-family:var(--disp);font-size:11px;letter-spacing:.04em;color:var(--mut);text-transform:uppercase}
 nav .risk{margin-left:12px;font-family:var(--disp);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid currentColor;line-height:1}
-@media(max-width:720px){nav .ed{margin-left:auto}nav .meta{display:none}}
+@media(max-width:720px){
+  html,body{overflow-x:hidden}                 /* no more sideways scroll into black space */
+  nav{flex-wrap:wrap;gap:10px 12px}            /* let the row wrap instead of overflowing */
+  nav .ed{margin-left:auto}
+  nav .meta{display:none}
+  nav .sw{order:5;flex-basis:100%;margin-left:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  nav .sw b{white-space:nowrap}                /* switcher gets its own full-width line + scrolls */
+}
 
 .hero{padding:clamp(18px,4vw,44px) 0 clamp(26px,4vw,40px)}
 .hero .kick{font-size:12px;letter-spacing:.04em;color:var(--mut);font-weight:500;margin-bottom:14px}
