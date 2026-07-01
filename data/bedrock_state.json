@@ -4721,7 +4721,7 @@
     }
   ],
   "dividends": {
-    "total": 219.25,
+    "total": 256.05,
     "per": [
       {
         "ticker": "KO",
@@ -4732,6 +4732,11 @@
         "ticker": "PEP",
         "amount": 44.68,
         "dps": 1.48
+      },
+      {
+        "ticker": "MDLZ",
+        "amount": 36.8,
+        "dps": 0.5
       },
       {
         "ticker": "JNJ",
