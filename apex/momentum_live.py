@@ -120,6 +120,41 @@ def init(capital=None):
     return date
 
 
+def _apply_splits():
+    """Adjust open positions + their transactions for any stock split not yet applied, so
+    the ledger's fixed share count stays consistent with the split-adjusted price feed. A
+    split means you hold *more* shares at a lower price; without this a 4-for-1 split makes
+    a holding look like it dropped 75% and drags the whole NAV down. Idempotent — each
+    (ticker, split-date) is recorded in meta and applied exactly once."""
+    with ledger.connect() as conn:
+        applied = {tuple(x) for x in (ledger.get_meta(conn, "splits_applied", []) or [])}
+        firstbuy = {r["ticker"]: r["d"] for r in conn.execute(
+            "SELECT ticker, MIN(date) d FROM transactions WHERE action='BUY' GROUP BY ticker")}
+        holds = [p["ticker"] for p in ledger.open_positions(conn)]
+    for tk in holds:
+        try:
+            splits = yf.Ticker(tk).splits
+        except Exception:
+            continue
+        for dt, ratio in splits.items():
+            day = dt.strftime("%Y-%m-%d")
+            if (not ratio or ratio == 1 or (tk, day) in applied
+                    or day < firstbuy.get(tk, "9999")):
+                continue
+            with ledger.connect() as conn:
+                pos = next((p for p in ledger.open_positions(conn)
+                            if p["ticker"] == tk), None)
+                if pos:
+                    ledger.set_shares(conn, tk, pos["shares"] * ratio,
+                                      pos["avg_entry"] / ratio)
+                conn.execute("UPDATE transactions SET shares = shares * ?, price = price / ? "
+                             "WHERE ticker = ?", (ratio, ratio, tk))
+                applied.add((tk, day))
+                ledger.set_meta(conn, "splits_applied",
+                               sorted([list(x) for x in applied]))
+            print(f"Applied {ratio:g}-for-1 split for {tk} ({day}).")
+
+
 def _prices_only(holds, last, date):
     """Data-only tick: refresh last_prices + rebuild the intraday curve. No equity
     point, no trades — used before the midday window opens."""
@@ -192,6 +227,7 @@ def run(end=None):
       • already traded / after 3pm   -> just re-mark NAV at the regular close
     so a day's trade always lands in the noon window and never at the 4pm close. NAV is
     still marked at the close (the post-close tick lands there)."""
+    _apply_splits()   # keep share counts consistent with split-adjusted prices
     cfg = _cfg()
     exit_ma = cfg["exit_ma"]
     exit_dd = cfg["exit_drawdown_from_high"]
