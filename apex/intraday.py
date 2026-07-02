@@ -29,11 +29,12 @@ def build(days=30, interval="30m"):
         txns = [dict(r) for r in conn.execute(
             "SELECT date,ticker,action,shares FROM transactions ORDER BY id").fetchall()]
         eq = [dict(r) for r in conn.execute(
-            "SELECT date,cash FROM equity ORDER BY date").fetchall()]
+            "SELECT date,cash,total_value FROM equity ORDER BY date").fetchall()]
     if not txns or not eq:
         return []
 
     cash_by_date = {r["date"]: r["cash"] for r in eq}
+    tot_by_date = {r["date"]: r["total_value"] for r in eq}
     eq_dates = sorted(cash_by_date)
     tickers = sorted({t["ticker"] for t in txns})
     txn_by_date = defaultdict(list)
@@ -100,6 +101,29 @@ def build(days=30, interval="30m"):
             "value": round(float(val), 2),
             "benchmark": round(float(initial * bp / b0), 2) if pd.notna(bp) else None,
         })
+    # --- anchor the reconstructed NAV to the authoritative daily equity marks ---
+    # A per-ticker price glitch (e.g. Yahoo's daily vs 30-min feeds disagreeing after a
+    # split, as CRWD did — 30-min showing ~4x the daily) drifts the raw reconstruction.
+    # The daily snapshots are the source of truth, so scale each day's bars to hit that
+    # day's close value; carry the last scale forward for days not yet marked. The
+    # benchmark line is left untouched.
+    by_day = defaultdict(list)
+    for i, p in enumerate(out):
+        by_day[p["t"][:10]].append(i)
+    scale = 1.0
+    for d in sorted(by_day):
+        tv = tot_by_date.get(d)
+        if tv:
+            reg = [i for i in by_day[d] if out[i]["t"][11:] <= "16:00" and out[i]["value"]]
+            anchor_i = reg[-1] if reg else by_day[d][-1]
+            raw = out[anchor_i]["value"]
+            if raw:
+                scale = tv / raw
+        if abs(scale - 1.0) > 1e-9:
+            for i in by_day[d]:
+                if out[i]["value"] is not None:
+                    out[i]["value"] = round(out[i]["value"] * scale, 2)
+
     # The book is seeded at the launch *regular close*, so it has no real intraday
     # history on launch day. Keep only the regular-close bar as the $100k inception
     # anchor (not an after-hours bar); real intraday begins the next session.
